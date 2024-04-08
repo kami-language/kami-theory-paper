@@ -1,5 +1,5 @@
 
-\documentclass{article}
+\documentclass{scrartcl}
 
 
 \usepackage[numbers]{natbib}
@@ -15,16 +15,23 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{tabularray}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
 \newtheorem{definition}{Definition}
-\usepackage{algpseudocode}
+\newtheorem{example}{Example}
+\theoremstyle{plain}
+\newtheorem{corollary}{Corollary}
+% \usepackage{algpseudocode}
 \usepackage{graphicx}
 \usepackage{enumitem}
-\usepackage{pgfplots}
-\pgfplotsset{width=6cm,compat=1.9}
+% \usepackage{pgfplots}
+% \pgfplotsset{width=6cm,compat=1.9}
+\usepackage{mathpartir}
 
-\algrenewcommand\algorithmicrequire{\textbf{Input:}}
-\algrenewcommand\algorithmicensure{\textbf{Output:}}
-\usepackage{xcolor}
+% \algrenewcommand\algorithmicrequire{\textbf{Input:}}
+% \algrenewcommand\algorithmicensure{\textbf{Output:}}
+% \usepackage{xcolor}
 
 % checks and ticks (https://tex.stackexchange.com/questions/42619/xmark-that-complements-the-ams-checkmark)
 \usepackage{amssymb}% http://ctan.org/pkg/amssymb
@@ -36,26 +43,513 @@
 \author{Maxim Urschumzew}
 
 \date{\today}
-% Hint: \title{what ever}, \author{who care} and \date{when ever} could stand 
-% before or after the \begin{document} command 
-% BUT the \maketitle command MUST come AFTER the \begin{document} command! 
+% Hint: \title{what ever}, \author{who care} and \date{when ever} could stand
+% before or after the \begin{document} command
+% BUT the \maketitle command MUST come AFTER the \begin{document} command!
 \begin{document}
 
 \maketitle
+
+
+\newcommand{\primitive}[1]{\textsf{\textbf{#1}}}
+\newcommand{\primitiveMath}[1]{\mathsf{\mathbf{#1}}}
+\newcommand{\ChorMTT}{Chor${}_{\textrm{MTT}}$}
+\newcommand{\onleftarrow}[1]{\mathop{\smash{\xleftarrow{#1}}}}
+\newcommand{\ProcMTT}{Proc${}_{\textrm{MTT}}$}
 
 
 \begin{abstract}
   Kami, a programming language for distributed systems.
 \end{abstract}
 
+
 \section{Introduction}
+Modalities provide a way to extend a type theory with domain-specific
+``modes of being''. These can be used to track runtime properties of code
+directly in the type system. For example, modalities have been used to
+distinguish between evaluated and unevaluated code in the context of
+metaprogramming and staged execution\cite{davies2001modal}. They have also been used to encode the
+notion of ``location'' in ML5\cite{murphy2008modal}, a language for distributed
+systems. In fact, the ``\texttt{at}''-modality of ML5 serves the same purpose as the
+location annotations of choreographic
+languages\cite{cruz2022functional,giallorenzo2005object}, and it stands to
+reason that existing research on modalities could provide some stepping stones
+for the design of type systems for choreographic programming languages.
 
-\section{Formal}
+\medskip
 
+In this paper we explore how Chor$\lambda$\cite{cruz2022functional}, a functional choreographic
+programming language, can be rebased on top of a simply typed lambda calculus
+with modalities (a variant of MTT\cite{gratzer2023syntax}).
+This requires the introduction of two new concepts: Common
+knowledge between multiple participants, and local knowledge of global computations.
+
+\section{Preliminaries}
+We give a short introduction to Chor$\lambda$, and to Modal Type Theory (MTT).
+
+\subsection{Chor$\lambda$}
+Chor$\lambda$\cite{cruz2022functional} is a functional choreographic programming language introduced by
+Cruz-Filipe et~al. It is an extension of simply typed lambda calculus with
+location annotations. For example $t :
+\textsf{Bool} @ r$ means that $t$ evaluates to a value of type \textsf{Bool}
+located at role $r$. It has two communication primitives: \primitive{com} for
+communicating data and \primitive{select} for communicating choice of branching.
+
+\subsection{Modal Type Theory}
+Modal Type Theory\cite{gratzer2023syntax}, recently introduced by Gratzer in his
+thesis, is a framework for modal type theories. The
+language is parametrized by a system of modalities which are specified in form
+of a \textit{mode theory}.
+MTT has full dependent types, but we only present a simply typed fragment here.%
+\begin{definition}[{\cite[Chapter 6.1.1]{gratzer2023syntax}}]
+  A \textit{mode theory} is given by the following data:
+  \begin{itemize}
+  \item A set of \textit{modes} $M$. Every mode $m \in M$ instantiates a
+    distinct copy of the lambda calculus.
+    \item For each pair of modes $m, n \in M$, a set $m \to n$ of \textit{modalities}
+      between them. A modality $\mu : m \to n$ allows us to use types and terms
+      of mode $m$ in mode $n$. There might be multiple, distinct modalities $\mu , \nu : m
+      \to n$.
+    \item For every pair of modalities $\mu, \nu \in m \to n$ with matching domain
+      and codomain, a set $\mu \Rightarrow \nu$ of \textit{mode transformations} between them.
+      A transformation $\alpha : \mu \Rightarrow \nu$ allows us to convert
+      types and terms from under the modality $\mu$ to under the modality $\nu$.
+      There might be multiple, distinct transformations $\alpha, \beta : \mu
+      \Rightarrow \nu$.
+  \end{itemize}
+  Concretely, this data should assemble into a 2-category, in the sense that
+  identity modalities (of type $id_m : m \to m$) and identity transformations (of
+  type $id_\mu : \mu \Rightarrow \mu $) exist; modalities and transformations can
+  be composed if domain and codomain match up (we denote composition by $\mu \circ
+  \nu$ and $\alpha \circ \beta$ respectively), and unitality and associativity
+  laws hold as expected between these operations\cite{licata2016adjoint}.
+\end{definition}%
+
+\begin{definition}[{\cite[following Chapter 6.2]{gratzer2023syntax}}]
+  Let $\mathcal{M}$ be a mode theory. The modal type theory
+  MTT${}_{\mathcal{M}}$ is given by $M$ copies of
+  the simply typed lambda calculus, combined in the following way:
+  For each mode $m \in M$, let $\Gamma\in\textsf{Ctx}_m$, $A \in
+  \textsf{Type}_m$, $t \in \textsf{Term}_m$ and
+  $\Gamma \vdash_m t : A$ respectively denote the contexts, types, terms and
+  typing judgements of the $m$'th copy of lambda calculus. The core rules for
+  MTT${}_{\mathcal{M}}$ are displayed in figure \ref{fig:mtt_ctx},
+  \ref{fig:mtt_var} and \ref{fig:mtt_term}. In particular:
+  \begin{itemize}
+  \item The context extension rule \textsc{Ctx-Ext} says that all variables in
+    the context $\Gamma \in \textsf{Ctx}_m$ have to exist at mode $m$, but
+    they might
+    originate at a different mode $n$ and exist at $m$ by way of a modality
+    $\mu : n \to m$. This means that a variable in a context $\Gamma$ is of the
+    form $x : (A | \mu) \in \Gamma$, where $A$ is its type, $n$ is an arbitrary
+    mode, and $\mu : n \to m$ is the modality which
+    brought this variable into mode $m$. If the variable originates at the current
+    mode, then $\mu = id_m : m \to m$.
+  \item The rule \textsc{Ctx-Restr} allows us to restrict the use of variables
+    to those which are under a particular modality. That is, starting with a
+    context $\Gamma \in \textsf{Ctx}_n$ and a modality $\mu : m \to n$, the
+    restricted contex $\Gamma.\{\mu\}\in\textsf{Ctx}_m$ only allows projecting of a variable $x :
+    (A | \nu) \in \Gamma$ if there is a transformation $\xi : \nu \Rightarrow
+    \mu$. This is ensured by the corresponding variable rule \textsc{Var-Restr}.
+  \item Let $\mu : m \to n$ be a modality. The modal type contructor
+    \textsc{Mod} allows us to to lift a type $A \in
+    \textsf{Type}_m$ to mode $n$: we write the resulting type as $\langle A | \mu \rangle \in
+    \textsf{Type}_n$. The introduction rule \textsc{Mod-Intro} enforces that
+    terms of such a modal type may only depend on variables
+    which are themselves under the $\mu$ modality. The elimination rule \textsc{Mod-Elim} allows
+    us to assume that we have a variable $x : (A|\mu)$ in order to eliminate
+    from $\langle A | \mu \rangle$.
+
+  \end{itemize}
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Contexts
+\begin{figure}
+  \centering
+  \begin{mathpar}
+    \mprset{sep=1em}
+    \inferrule*[Lab=Ctx-Empty]
+    {\textrm{ }}
+    {\epsilon \in \textsf{Ctx}_n}
+
+    \inferrule*[Lab=Ctx-Ext]
+    {
+      A \in \textsf{Type}_m
+      \\
+      \Gamma \in \textsf{Ctx}_n
+      \\
+      \mu : m \to n
+    }
+    {\Gamma.(A|\mu) \in \textsf{Ctx}_n}
+    \\
+    \inferrule*[Lab=Ctx-Restr]
+    {
+      \Gamma \in \textsf{Ctx}_n
+      \\
+      \mu : m \to n
+    }
+    {\Gamma.\{\mu\} \in \textsf{Ctx}_m}
+  \end{mathpar}
+  \caption{Contexts in MTT}
+  \label{fig:mtt_ctx}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Types
+\begin{figure}
+  \centering
+  \begin{mathpar}
+    \mprset{sep=1em}
+    \inferrule*[Lab=Mod]
+    {\mu : m \to n
+      \\
+      A \in \textsf{Type}_m
+    }
+    {\langle A | \mu \rangle \in \textsf{Type}_n}
+
+    \inferrule*[Lab=Fun]
+    {\mu : m \to n
+      \\
+      A \in \textsf{Type}_m
+      \\
+      B \in \textsf{Type}_n
+    }
+    {(A | \mu) \to B \in \textsf{Type}_n}
+    \\
+    % \inferrule*[Lab=Nat]
+    % {\textsf{ }}
+    % {\mathbb{N} \in \textsf{Type}_m}
+    \inferrule*[Lab=Prod]
+    {A \in \textsf{Type}_m
+      \\
+      B \in \textsf{Type}_m
+    }
+    {A \times B \in \textsf{Type}_m}
+
+    \inferrule*[Lab=Sum]
+    {A \in \textsf{Type}_m
+      \\
+      B \in \textsf{Type}_m
+    }
+    {A + B \in \textsf{Type}_m}
+  \end{mathpar}
+  \caption{Types in MTT}
+  \label{fig:mtt_ctx}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% Variables
+\begin{figure}
+  \centering
+  \begin{mathpar}
+    \inferrule*[Lab=Var-Zero]
+    {{}}
+    {\primitive{zero}:(A|\mu) \in_{\textsf{id}} \Gamma.(A | \mu)}
+
+    \inferrule*[Lab=Var-Suc]
+    {x:(A|\mu) \in_{\nu} \Gamma}
+    {\primitive{suc\ }x:(A|\mu) \in_{\nu} \Gamma.(B | \eta)}
+    \\
+    \inferrule*[Lab=Var-Restr]
+    {x:(A|\mu) \in_{\nu} \Gamma}
+    {x:(A|\mu) \in_{\eta\circ\nu} \Gamma.\{\eta\}}
+  \end{mathpar}
+  \caption{De-Brujin variables with modality annotations in MTT}
+  \label{fig:mtt_var}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Terms
+\begin{figure}
+  \centering
+
+  \begin{mathpar}
+    \inferrule*[Lab=Var]
+    {
+      x:(A|\mu) \in_\nu \Gamma
+      \\
+      \xi : \mu \Rightarrow \nu
+    }
+    {\Gamma \vdash x^\xi : A}
+    \\
+    \inferrule*[Lab=Mod-Intro]
+    {\Gamma.\{\mu\} \vdash_m t : A}
+    {\Gamma \vdash_n \primitive{mod\ }t : \langle A | \mu \rangle}
+
+    \inferrule*[Lab=Mod-Elim]
+    {
+      \Gamma \vdash_m t : \langle A | \mu \rangle
+      \\
+      \Gamma.(x : A|\mu) \vdash_m s : B
+    }
+    {
+      \Gamma \vdash_m \primitive{letmod}\ x \leftarrow t\ \primitive{in}\ s : B
+    }
+    \\
+    \inferrule*[Lab=Fun-Intro]
+    {\Gamma.(x : A|\mu) \vdash_n t : B}
+    {\Gamma \vdash_n \primitiveMath{\lambda}x.t : (A | \mu) \to B}
+
+    \inferrule*[Lab=Fun-Elim]
+    {\Gamma \vdash_n f : (A | \mu) \to B
+      \\
+      \Gamma \vdash_m x : A
+    }
+    {\Gamma \vdash_m f\ x : B}
+    \\
+    \inferrule*[Lab=Prod-Intro]
+    {\Gamma \vdash_m a : A
+      \\
+      \Gamma \vdash_m b : B
+    }
+    {\Gamma \vdash_m (a\,\primitive{,}\,b) : A \times B}
+
+    \inferrule*[Lab=Prod-Fst]
+    {\Gamma \vdash_m x : A \times B}
+    {\Gamma \vdash_m \primitive{fst } x : A}
+
+    \inferrule*[Lab=Prod-Snd]
+    {\Gamma \vdash_m x : A \times B}
+    {\Gamma \vdash_m \primitive{snd } x : B}
+    \\
+    \inferrule*[Lab=Sum-Left]
+    {\Gamma \vdash_m x : A}
+    {\Gamma \vdash_m \primitive{left } x : A + B}
+
+    \inferrule*[Lab=Sum-Right]
+    {\Gamma \vdash_m x : B}
+    {\Gamma \vdash_m \primitive{right } x : A + B}
+
+    \inferrule*[Lab=Sum-Elim]
+    {\Gamma \vdash_m x : A + B
+      \\
+      \Gamma.(a : A|\textsf{id}) \vdash_m t : C
+      \\
+      \Gamma.(b : B|\textsf{id}) \vdash_m s : C
+    }
+    {\Gamma \vdash_m \primitive{case } x \primitive{ of } \{ \primitive{left } a
+      \mapsto t ; \primitive{right } b \mapsto s \}: C}
+    % \\
+    % \inferrule*[Lab=Nat-Zero]
+    % {\textsf{ }}
+    % {\Gamma \vdash_m \primitive{zero} : \mathbb{N}}
+
+    % \inferrule*[Lab=Nat-Suc]
+    % {\Gamma \vdash_m n : \mathbb{N}}
+    % {\Gamma \vdash_m \primitive{suc } n : \mathbb{N}}
+
+    % \inferrule*[Lab=Nat-Elim]
+    % {\Gamma \vdash_m n : \mathbb{N}}
+    % {\Gamma \vdash_m \primitive{suc } n : \mathbb{N}}
+\end{mathpar}
+  \caption{Typing rules for variables and types in MTT}
+  \label{fig:mtt_term}
+\end{figure}
+
+
+\section{Choreographic programming with MTT}
+The first, essential feature of modalities in MTT is that they restrict code availability:
+When constructing a term of type $\langle A | \mu \rangle$, only
+variables which are themselves under a $\mu$ modality can be used. This leads
+us naturally to the idea that we can use MTT for a distributed system with a set of
+participating roles $\rho$ by introducing modalities $@ r$ for each role $r \in
+\rho$. The type $\langle A | @ r \rangle$ then is interpreted as ``data of type
+$A$, located at role $r$''.
+
+\medskip
+
+The second feature of MTT is that transformations between
+modalities can be introduced in a controlled way. In order to allow a term at
+role $r$ to be transformed into a term at role $s$, we simply have to introduce
+a transformation $\tau_{r,s} : @r \Rightarrow @s$ between the corresponding
+modalities. These transformations can be chosen freely: we might disallow
+communications between some nodes and include multiple channels between some others.
+
+\subsection{A mode theory for choreographic programming}
+
+However, a mode theory with only $@$-modalities and transformations $\tau_{r,s}$
+is not enough to recover the full expressive power of
+Chor$\lambda$. In particular, expressing the \textbf{select} operator, which is
+used to notify other roles about decisions which happened locally at node $r$,
+requires the following additional features:
+\begin{enumerate}
+\item We
+  need modalities expressing the fact that some data is ``common knowledge'' of
+  multiple roles. We do so by allowing arbitrary conjunctions $r_1 \land \ldots
+  \land r_k$ in the modality. For example, the type $\langle \mathbb{N} |
+  @(r\land s) \rangle$ expresses the fact that there is a natural number which is
+  known by both roles $r$ and $s$.
+\item We need roles to reference data that is about to be sent to other
+  nodes. For this we use a new modality $\square$\footnote{Usually this symbol
+    is pronounced ``box'', but we also refer to it by ``quote''.}, which allows roles to
+  reference global choreographies locally. That is, if $A$
+  is a global choreography type, then $t : \langle A | \square \rangle$ is a
+  local term, containing a quoted representation of such a choreography.
+\end{enumerate}
+We define our mode theory with $@$ and $\square$ modalities and common knowledge
+locations as follows:
+\begin{definition}
+Let $\rho$ be a set of roles and $\textrm{Loc}_\rho$ be the freely generated
+meet-semilattice on $\rho$. The mode theory
+$\mathcal{M}^\rho_{\textrm{Chor}}$ is defined as follows:
+
+\begin{itemize}
+\item There are two modes: $\circ$ and
+  $\triangle$. The global mode $\circ$ represents the
+  global perspective on a choreography, encompassing computations and data
+  occuring at all roles. The local mode $\triangle$
+  represents the perspective of a single location (which might be the
+  conjunction of multiple roles) participating in the choreography.
+\item For each location $u \in \textrm{Loc}_\rho$ there is a modality $@u : \triangle \to
+  \circ$. Each of these modalities represents a different way of how a local
+  computation can be embedded in the global system. Concretely, $@u$ expresses
+  that the computation exists at location $u$.
+\item An additional modality $\square : \circ \to \triangle$, allowing global
+  computations to be referenced locally.
+\item For each location $u \in \textrm{Loc}_\rho$, a transformation
+  $\textsf{prepare}_u : \textsf{id}_\triangle \Rightarrow ({}@ u ;
+  \square)$. This transformation allows a process to prepare a local term to be evaluated by an
+  arbitrary role $u$. It happens in local mode ($\triangle$) and its
+  interpretation involves no communication.
+\item For each location $v \in \textrm{Loc}_\rho$, a transformation
+  $\textsf{eval}_v : (\square ; {}@ v) \Rightarrow \textsf{id}_\circ$. This
+  transformation is the only one involving communication between roles. It
+  describes that a global choreography, available in quoted form at location
+  $v$, can be scheduled to be executed by all involved roles.
+\item For each pair of locations $u, v \in \textrm{Loc}_\rho$ with $u \leq v$, a
+  transformation $\textsf{narrow}_{u,v} : @u \Rightarrow @v$.
+\item Additional equalities governing the interactions of the transformations.
+  For instance, composing $\textsf{prepare}_u$ and $\textsf{eval}_u$ for
+  the same role $u$ is equal to the identity transformation since it represents
+  a process communicating with itself.
+\end{itemize}
+\end{definition}
+\begin{corollary}
+  In {\upshape$\mathcal{M}^{\rho}_{\textrm{Chor}}$}, it is possible to recover a transformation
+  $\tau_{u,v} : @u \Rightarrow @v$ by composing {\upshape$\textsf{prepare}_v$}
+  and {\upshape$\textsf{eval}_u$}. Additionally, a process communicating with
+  itself is equal to the identity, {\upshape$\tau_{u,u} = \textsf{id}_u$}.
+\end{corollary}
+
+
+
+\section{Kami: An MTT based language for choreographic programming}
+
+
+Our mode theory expresses the interactions
+between participating roles in a distributed system, but standard MTT
+instantiated with $\mathcal{M}^{\rho}_{\textrm{Chor}}$ is not suitable to be used as a choreographic
+programming language. The problem is that there is no notion of
+deferred transformations: transformations are always pushed down the syntax
+tree as far as possible and only recorded at the variables. This means that in
+order to control the communication behaviour of terms, we need to introduce a
+dedicated term for not yet executed communications.
+In our semantics only $\textsf{eval}_v$ involves
+communications, so we simply add a dedicated term representing it. Its typing and
+reduction rules are displayed in figure \ref{fig:mtt_leteval}.
+
+\begin{figure}
+  \centering
+  \begin{mathpar}
+    \mprset{fraction={---},fractionaboveskip=0ex,fractionbelowskip=1ex}
+    \inferrule*[Lab=Let-Eval]
+    {
+      \Gamma \vdash t : \langle A | \square ; @v \rangle
+      \\
+      \Gamma.(x : A|\textsf{id}_\circ) \vdash s : B
+    }
+    {
+      \Gamma \vdash \primitive{let}\ x
+        \onleftarrow{\textsf{eval}_v} t\ \primitive{in}\ s : B
+    }
+    \\
+    \inferrule*[Lab=Let-Eval-$\beta$]
+    {
+    }
+    {
+      \Gamma \vdash \primitive{let}\ x \onleftarrow{\textsf{eval}_v}
+        t\ \primitive{in}\ s \rightsquigarrow \Gamma \vdash \primitive{mod}\ y
+        \leftarrow t\ \primitive{in}\ s [ x / y^{\textsf{eval}_v} ]
+    }
+  \end{mathpar}
+  \caption{Typing and reduction rule for deferred transformations.}
+  \label{fig:mtt_leteval}
+\end{figure}
+
+\medskip
+
+In order to allow for out-of-order execution of of independent processes, we use
+the same machinery as Chor$\lambda$: restricting reduction rules to ensure that
+communications between a pair of processes always occur in the same order and an
+additional rewriting relation which allows for independent processes to evaluate
+their terms independently.
+
+\begin{definition}
+  Let Chor${}_{\textrm{MTT}}$ be the type theory obtained by:
+  \begin{enumerate}
+  \item Initializing simply typed MTT with $\mathcal{M}^{\rho}_{\textrm{Chor}}$.
+  \item Extending it with the \textsc{Let-Eval} rule.
+  \item Restricting the reduction relation analogously how Chor$\lambda$
+    restricts the reduction relation of simply typed lambda calculus.
+  \end{enumerate}
+\end{definition}
+
+The expressivity of Chor$\lambda$ arises from the two primitives involved in
+process interaction: $\primitive{com}$ and $\primitive{select}$. Communication is
+easily reproduced in \ChorMTT{} by using $\textsf{prepare}$ and $\textsf{eval}$.
+\begin{example}
+In \ChorMTT, we can define a function $\textsf{com}_{A,u,v} : \langle A | @u
+\rangle \to \langle A | @v \rangle$ for each local type $A$ and pair of locations
+$u,v$.
+\begin{align*}\setlength{\jot}{0.5ex}
+  \textsf{com}_{A,u,v}\ a =
+  \ & \primitive{letmod}\ a_1 \leftarrow a\\
+    & \primitive{let}\ a_2 \onleftarrow{\textsf{eval}_u}
+        \primitive{mod}\ a_1^{\textsf{prepare}_v * @u}\\
+    & \primitive{in}\ \primitive{mod}\ a_2^{\textsf{id}}
+\end{align*}
+\end{example}
+Selection in Chor$\lambda$ works as follows: a process at role $r$
+chooses its future behaviour based on locally available data and afterwards
+communicates its choice using \primitive{select} statements to those processes which need to
+be aware of this choice. In \ChorMTT{} the same functionality is available, but has
+to be stated in reverse order. First the required data for choosing future
+behaviour is communicated from $r$ to all roles which need to be aware of this
+choice. After receiving the data, all relevant processes synchronously decide
+their future behaviour.
+\begin{example}
+  Let $A, B$ be local types, and $Z$ a global type. A function of the following
+  type can be derived in \ChorMTT:
+  \[
+    \textsf{choice}_{A,B,Z,r} : \langle A + B | @r \rangle
+    \to (\langle A | @r \rangle \to Z)
+    \to (\langle B | @r \rangle \to Z)
+    \to Z
+  \]
+  Note that since $Z$ is global, a value $z : Z$ is a choreography involving
+  possibly all roles\footnote{For the sake of brevity our mode theory
+    $\mathcal{M}^{\rho}_{\textrm{Chor}}$ as defined in this paper does not track which
+    roles are actually involved in a given term of global type. It can be done
+    though by extending the mode theory, as described briefly in the next section.}. The semantics
+  of $\textsf{choice}$ is: Given the knowledge of $A + B$ at role $r$, a global behaviour
+  $z : Z$ can be chosen for all roles, with the additional knowledge of either
+  the value $a : A$ or $b : B$ at role $r$. The function can be implemented in
+  such a way that only the information regarding which branch is going to be
+  chosen is communicated from $r$ to other processes, the actual value of $a$ or
+  $b$ stays at $r$.
+
+  The interaction of the $\square$ and $@r$ modalities are key to the definition
+  of choice. In \cite{gratzer2023syntax} such a function which allows induction ``from under a
+  modality'' is called \textit{crisp induction principle}.
+\end{example}
+
+\section{Semantics}
 
 
 \bibliographystyle{plainnat}
-\bibliography{doc}
+\bibliography{main}
 
 \end{document}
 
