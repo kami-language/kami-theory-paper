@@ -40,7 +40,9 @@
 \newcommand{\xmark}{\ding{55}}%
 
 \title{Kami: A modal type theory for distributed systems}
-\author{Maxim Urschumzew}
+
+\author{Maxim Urschumzew \and Miëtek Bak}
+
 
 \date{\today}
 % Hint: \title{what ever}, \author{who care} and \date{when ever} could stand
@@ -132,9 +134,14 @@ MTT has full dependent types, but we only present a simply typed fragment here.%
   For each mode $m \in M$, let $\Gamma\in\textsf{Ctx}_m$, $A \in
   \textsf{Type}_m$, $t \in \textsf{Term}_m$ and
   $\Gamma \vdash_m t : A$ respectively denote the contexts, types, terms and
-  typing judgements of the $m$'th copy of lambda calculus. The core rules for
-  MTT${}_{\mathcal{M}}$ are displayed in figure \ref{fig:mtt_ctx},
-  \ref{fig:mtt_var} and \ref{fig:mtt_term}. In particular:
+  typing judgements of the $m$'th copy of lambda calculus. The rules for
+  simply typed MTT${}_{\mathcal{M}}$ are displayed in figure \ref{fig:mtt_ctx},
+  \ref{fig:mtt_var} and \ref{fig:mtt_term}
+  \subsubsection*{Contexts}
+  The contexts are bla bla.
+  \subsubsection*{Types}
+  bla bla.
+
   \begin{itemize}
   \item The context extension rule \textsc{Ctx-Ext} says that all variables in
     the context $\Gamma \in \textsf{Ctx}_m$ have to exist at mode $m$, but
@@ -480,11 +487,6 @@ reduction rules are displayed in figure \ref{fig:mtt_leteval}.
 
 \medskip
 
-In order to allow for out-of-order execution of of independent processes, we use
-the same machinery as Chor$\lambda$: restricting reduction rules to ensure that
-communications between a pair of processes always occur in the same order and an
-additional rewriting relation which allows for independent processes to evaluate
-their terms independently.
 
 \begin{definition}
   Let Chor${}_{\textrm{MTT}}$ be the type theory obtained by:
@@ -495,6 +497,14 @@ their terms independently.
     restricts the reduction relation of simply typed lambda calculus.
   \end{enumerate}
 \end{definition}
+
+\subsection{Behavioural semantics and relation with Chor$\lambda$}
+
+In order to allow for out-of-order execution of of independent processes, we can use
+the same machinery as Chor$\lambda$: restricting reduction rules to ensure that
+communications between a pair of processes always occur in the same order and an
+additional rewriting relation which allows for independent processes to evaluate
+their terms independently.
 
 The expressivity of Chor$\lambda$ arises from the two primitives involved in
 process interaction: $\primitive{com}$ and $\primitive{select}$. Communication is
@@ -532,7 +542,7 @@ their future behaviour.
   possibly all roles\footnote{For the sake of brevity our mode theory
     $\mathcal{M}^{\rho}_{\textrm{Chor}}$ as defined in this paper does not track which
     roles are actually involved in a given term of global type. It can be done
-    though by extending the mode theory, as described briefly in the next section.}. The semantics
+    though by extending the mode theory with a family of global modes.}. The semantics
   of $\textsf{choice}$ is: Given the knowledge of $A + B$ at role $r$, a global behaviour
   $z : Z$ can be chosen for all roles, with the additional knowledge of either
   the value $a : A$ or $b : B$ at role $r$. The function can be implemented in
@@ -545,7 +555,30 @@ their future behaviour.
   modality'' is called \textit{crisp induction principle}.
 \end{example}
 
-\section{Semantics}
+\subsection{Categorical semantics}
+Following Gratzer, a categorical model for MTT$_{\mathcal{M}}$ is given by a
+functor $F : \mathcal{M}^{\textsf{coop}} \to \textbf{Cat}$, with additional
+conditions ensuring that $F$ supports all type formers and their terms. We give
+such a functor for our mode theory $\mathcal{M}_{\textrm{Chor}}$, and then
+sketch how the type formers are to be integrated.
+
+Let $\rho$ be a set of roles and let $\textbf{STLC}$ be the syntax
+category of the simply typed lambda calculus with sum types. Viewing the set
+$\rho$ as a discrete category, we denote by $\textbf{STLC}^\rho$ the functor
+category $\rho \to \textbf{STLC}$. That is, an object $(\Gamma_i)_{i\in\rho}$
+is a $\rho$-indexed family of $\textbf{STLC}$-contexts and a morphism
+$(\Gamma_i)_{i\in\rho} \to (\Delta_i)_{i\in\rho}$ is given by a $\rho$-indexed
+family of substitutions $(\sigma_i : \Gamma_i \to \Delta_i)_{i\in\rho}$.
+
+\begin{definition}
+  We define the \textit{category of global terms} by $\mathcal{G}^\rho = \textbf{STLC}^{\rho}[\textrm{eval}]$ to be the.
+\end{definition}
+
+\subsection{Endpoint projection}
+
+
+
+
 
 
 \bibliographystyle{plainnat}
