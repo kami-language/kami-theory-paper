@@ -139,12 +139,11 @@ MTT has full dependent types, but we only present a simply typed fragment here.%
   simply typed MTT${}_{\mathcal{M}}$ are displayed in figure \ref{fig:mtt_ctx},
   \ref{fig:mtt_var} and \ref{fig:mtt_term}
   \subsubsection*{Contexts}
-  The contexts are bla bla.
-  \subsubsection*{Types}
-  bla bla.
-
+  Contexts of MTT (figure \ref{fig:mtt_ctx}) are defined as follows:
   \begin{itemize}
-  \item The context extension rule \textsc{Ctx-Ext} says that all variables in
+  \item The rule for empty contexts \textsc{Ctx-Empty} is as usual.
+  \item
+    The context extension rule \textsc{Ctx-Ext} says that all variables in
     the context $\Gamma \in \textsf{Ctx}_m$ have to exist at mode $m$, but
     they might
     originate at a different mode $n$ and exist at $m$ by way of a modality
@@ -153,22 +152,51 @@ MTT has full dependent types, but we only present a simply typed fragment here.%
     mode, and $\mu : n \to m$ is the modality which
     brought this variable into mode $m$. If the variable originates at the current
     mode, then $\mu = id_m : m \to m$.
-  \item The rule \textsc{Ctx-Restr} allows us to restrict the use of variables
+  \item
+    The rule \textsc{Ctx-Restr} allows us to restrict the use of variables
     to those which are under a particular modality. That is, starting with a
     context $\Gamma \in \textsf{Ctx}_n$ and a modality $\mu : m \to n$, the
     restricted contex $\Gamma.\{\mu\}\in\textsf{Ctx}_m$ only allows projecting of a variable $x :
     (A | \nu) \in \Gamma$ if there is a transformation $\xi : \nu \Rightarrow
     \mu$. This is ensured by the corresponding variable rule \textsc{Var-Restr}.
-  \item Let $\mu : m \to n$ be a modality. The modal type contructor
-    \textsc{Mod} allows us to to lift a type $A \in
+
+  \end{itemize}
+
+  \subsubsection*{Types}
+  Types of MTT (figure \ref{fig:mtt_type}) mirror standard types of simply typed
+  lambda calculus, with the following differences:
+
+  \begin{itemize}
+  \item Let $\mu : m \to n$ be a modality. There is a \textit{modal type contructor}
+    \textsc{Mod} which allows us to to lift a type $A \in
     \textsf{Type}_m$ to mode $n$: we write the resulting type as $\langle A | \mu \rangle \in
     \textsf{Type}_n$. The introduction rule \textsc{Mod-Intro} enforces that
     terms of such a modal type may only depend on variables
     which are themselves under the $\mu$ modality. The elimination rule \textsc{Mod-Elim} allows
     us to assume that we have a variable $x : (A|\mu)$ in order to eliminate
     from $\langle A | \mu \rangle$.
-
+  \item
+    The function type contains a built-in modality out of ergonomic reasons: for
+    types $A : \textsf{Type}_m$, $B : \textsf{Type}_n$ and a modality $\mu : m
+    \to n$, there is a primitive type $(A | \mu)\to B$. It behaves exactly as a
+    non-modal function type composed with a modal type, i.e., it is a more
+    usable syntax for the type $\langle A | \mu \rangle \to B$.
   \end{itemize}
+
+  \subsubsection*{Terms}
+  Terms of MTT (figure \ref{fig:mtt_term}) are different from terms of simply
+  typed lambda calculus in the following ways:
+  \begin{itemize}
+  \item There are new terms for introduction and elimination of modal types
+    (\textsc{Mod-Intro} and \textsc{Mod-Elim}).
+  \item The function introduction rule (\textsc{Fun-Intro}) preserves the
+    additional modality by putting it into the context, alongside the new variables' type.
+  \item The function elimination rule (\textsc{Fun-Intro}) deals with its modality annotation by
+    restricting the context with it.
+  \item All other terms are mode-local and all occuring modalities are required
+    to be identities.
+  \end{itemize}
+
 \end{definition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -243,7 +271,7 @@ MTT has full dependent types, but we only present a simply typed fragment here.%
     {A + B \in \textsf{Type}_m}
   \end{mathpar}
   \caption{Types in MTT}
-  \label{fig:mtt_ctx}
+  \label{fig:mtt_type}
 \end{figure}
 
 
@@ -630,7 +658,7 @@ such. To properly express these arrows, we need the following definition:
 \begin{definition} Define
   \begin{align*}
     [{-}] : \textbf{STLC}^\rho &\to \textbf{STLC} \\
-    (Y_j)_{j\in\rho} &\mapsto \product_{j \in \rho} Y_j
+    (Y_j)_{j\in\rho} &\mapsto \prod_{j \in \rho} Y_j
   \end{align*}
   to be the function mapping a family $(Y_j)_{j\in\rho} \in \textbf{STLC}^\rho$
   to the product of its components.
