@@ -600,8 +600,12 @@ $M_\mu$ are ``adjoint'' in an appropriate sense\footnote{In the dependently
 
 While such a generic Model of MTT is required for Gratzer's goals, our intended
 semantics, in particular the fact that we want to compile Kami programs into
-real-world executables lead us to considering a less general, but more
+real-world executables leads us to considering a less general, but more
 specifically useful class of models.
+
+In the following we give the definition of our special class of models and
+sketch how MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$, i.e., the underlying type
+theory of Kami can be interpreted in them.
 
 \begin{definition}
   Let $\mathcal{M}$ be a mode theory. A \textit{covariant model} for
@@ -632,7 +636,7 @@ Such a covariant model is a special case of a contravariant model in the sense o
 
 For our concrete use-case, we intend to obtain a covariant model in the following way:
 
-Let $\rho$ be a set of roles and let $\textbf{STLC}$ be the syntax
+Let $\rho$ be a finite set of roles and let $\textbf{STLC}$ be the syntax
 category of the simply typed lambda calculus with sum types. Viewing the set
 $\rho$ as a discrete category, we denote by $\textbf{STLC}^\rho$ the functor
 category $\rho \to \textbf{STLC}$. That is, an object $(\Gamma_i)_{i\in\rho}$
@@ -687,12 +691,17 @@ communication operation which communicates a global state $X \in
 \end{theorem}
 
 In particular, in this model, only the transformation $\textsf{eval}_v : (\square ;
-{}@ v) \Rightarrow \textsf{id}_\circ$ is modeled with the freely adjoined
+{}@ v) \Rightarrow \textsf{id}_\circ$ is built up from the freely adjoined
 $\textsf{com}$ arrows, since it is the only one involving communication. All
 other transformations are modeled by arrows already existing as part of the
 cartesian closed structure of each processes' individual category $\mathcal{C}$.
 
-
+\begin{corollary}
+  There is a translation function from the syntax category of
+  MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$ to $\textbf{SyncIntProc}_{\mathcal{C}}$.
+\end{corollary}
+In other words, this gives us a compilation procedure for Kami programs into any
+target language with cartesian closed categorical semantics and synchronous communication primitives.
 
 
 
