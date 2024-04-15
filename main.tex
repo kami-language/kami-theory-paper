@@ -21,7 +21,9 @@
 \newtheorem{definition}{Definition}
 \newtheorem{example}{Example}
 \theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}
+\newtheorem{conjecture}{Conjecture}
 % \usepackage{algpseudocode}
 \usepackage{graphicx}
 \usepackage{enumitem}
@@ -63,7 +65,6 @@
 \begin{abstract}
   Kami, a programming language for distributed systems.
 \end{abstract}
-
 
 \section{Introduction}
 Modalities provide a way to extend a type theory with domain-specific
@@ -468,15 +469,15 @@ reduction rules are displayed in figure \ref{fig:mtt_leteval}.
       \Gamma.(x : A|\textsf{id}_\circ) \vdash s : B
     }
     {
-      \Gamma \vdash \primitive{let}\ x
-        \onleftarrow{\textsf{eval}_v} t\ \primitive{in}\ s : B
+      \Gamma \vdash \primitive{leteval}_v\ x
+        \leftarrow t\ \primitive{in}\ s : B
     }
     \\
     \inferrule*[Lab=Let-Eval-$\beta$]
     {
     }
     {
-      \Gamma \vdash \primitive{let}\ x \onleftarrow{\textsf{eval}_v}
+      \Gamma \vdash \primitive{leteval}_v\ x \leftarrow
         t\ \primitive{in}\ s \rightsquigarrow \Gamma \vdash \primitive{mod}\ y
         \leftarrow t\ \primitive{in}\ s [ x / y^{\textsf{eval}_v} ]
     }
@@ -516,8 +517,8 @@ $u,v$.
 \begin{align*}\setlength{\jot}{0.5ex}
   \textsf{com}_{A,u,v}\ a =
   \ & \primitive{letmod}\ a_1 \leftarrow a\\
-    & \primitive{let}\ a_2 \onleftarrow{\textsf{eval}_u}
-        \primitive{mod}\ a_1^{\textsf{prepare}_v * @u}\\
+    & \primitive{leteval}_u\ a_2 \leftarrow
+        \primitive{mod}\ a_1^{\textsf{prepare}_v * \textsf{id}_{@u}}\\
     & \primitive{in}\ \primitive{mod}\ a_2^{\textsf{id}}
 \end{align*}
 \end{example}
@@ -558,9 +559,50 @@ their future behaviour.
 \subsection{Categorical semantics}
 Following Gratzer, a categorical model for MTT$_{\mathcal{M}}$ is given by a
 functor $F : \mathcal{M}^{\textsf{coop}} \to \textbf{Cat}$, with additional
-conditions ensuring that $F$ supports all type formers and their terms. We give
-such a functor for our mode theory $\mathcal{M}_{\textrm{Chor}}$, and then
-sketch how the type formers are to be integrated.
+conditions ensuring that $F$ supports all type formers and their terms. This
+definition entails, for each modality $\mu : m \to n$, a functor
+$F(\mu) : F(n) \to F(m)$ modeling the \textit{contravariant} context restriction
+operation ${-}.\{\mu\} : \textsf{Ctx}_n \to \textsf{Ctx}_m$. Additionally, the
+existence of modal types in Gratzer's model implies the existence of a further
+\textit{covariant} functor $M_\mu : F(m) \to F(n)$, such that $F(\mu)$ and
+$M_\mu$ are ``adjoint'' in an appropriate sense\footnote{In the dependently
+  typed MTT of Gratzer the exact statement is that $M_\mu$ is a
+  \textit{dependent right adjoint}, but we can simplify the condition somewhat
+  in our simply typed case.}.
+
+While such a generic Model of MTT is required for Gratzer's goals, our intended
+semantics, in particular the fact that we want to compile Kami programs into
+real-world executables lead us to considering a less general, but more
+specifically useful class of models.
+
+\begin{definition}
+  Let $\mathcal{M}$ be a mode theory. A \textit{covariant model} for
+  simply typed MTT$_{\mathcal{M}}$ is given by the following data:
+  \begin{enumerate}
+  \item A category $\mathcal{C}$ representing the compilation target.
+  \item Closure of $\mathcal{C}$ under all type and term formers of MTT.
+  \item A (covariant) 1-functor $G : \mathcal{M} \to \textbf{Cat}$ modeling the semantics of
+    individual modes, and the modal types between them.
+  \item A family of 1-functors $\iota_m : G(m) \to \mathcal{C}$, where $m \in
+    \mathcal{M}$, describing how the category $G(m)$ is represented in the
+    compilation target category.
+  \item For each transformation $\alpha : \mu \Rightarrow \nu \in \mathcal{M}$,
+    a natural transformation
+    $\tau_\alpha : \iota_m \circ G(\mu) \Rightarrow \iota_m \circ G(\nu)$ in the
+    target category.
+  \end{enumerate}
+\end{definition}
+
+Such a covariant model is a special case of a contravariant model in the sense of Gratzer; we claim:
+
+\begin{conjecture}
+  A covariant model of MTT$_{\mathcal{M}}$ can be assembled into a contravariant
+  model, by freely adjoining context restriction operators.
+\end{conjecture}
+
+\medskip
+
+For our concrete use-case, we intend to obtain a covariant model in the following way:
 
 Let $\rho$ be a set of roles and let $\textbf{STLC}$ be the syntax
 category of the simply typed lambda calculus with sum types. Viewing the set
@@ -568,14 +610,59 @@ $\rho$ as a discrete category, we denote by $\textbf{STLC}^\rho$ the functor
 category $\rho \to \textbf{STLC}$. That is, an object $(\Gamma_i)_{i\in\rho}$
 is a $\rho$-indexed family of $\textbf{STLC}$-contexts and a morphism
 $(\Gamma_i)_{i\in\rho} \to (\Delta_i)_{i\in\rho}$ is given by a $\rho$-indexed
-family of substitutions $(\sigma_i : \Gamma_i \to \Delta_i)_{i\in\rho}$.
+family of substitutions $(\sigma_i : \Gamma_i \to \Delta_i)_{i\in\rho}$. The
+intuition is that $\textbf{STLC}^\rho$ describes the category of $\rho$
+processes running independently of each other, with no way to interact. To
+further add synchronous communication, we freely adjoin arrows axiomatizing
+such. To properly express these arrows, we need the following definition:
 
 \begin{definition}
-  We define the \textit{category of global terms} by $\mathcal{G}^\rho = \textbf{STLC}^{\rho}[\textrm{eval}]$ to be the.
+  Let $i\in\rho$ be a role, define
+  \begin{align*}
+    \delta_i({-}) : \textbf{STLC} &\to \textbf{STLC}^\rho \\
+    X &\mapsto j \mapsto \begin{cases}j = i \implies &X\\j \neq i \implies &1 \end{cases}
+  \end{align*}
+  to be the function mapping an object $X \in \textbf{STLC}$ to a family
+  $X_j$, whose $i$'th component is $X$, and all other components are the
+  terminal object.
 \end{definition}
 
-\subsection{Endpoint projection}
+\begin{definition} Define
+  \begin{align*}
+    [{-}] : \textbf{STLC}^\rho &\to \textbf{STLC} \\
+    (Y_j)_{j\in\rho} &\mapsto \product_{j \in \rho} Y_j
+  \end{align*}
+  to be the function mapping a family $(Y_j)_{j\in\rho} \in \textbf{STLC}^\rho$
+  to the product of its components.
+\end{definition}
 
+With these definitions in hand, we can represent the type of a hypothetical
+communication operation which communicates a global state $X \in
+\textbf{STLC}^\rho$ from all processes to a single process $i \in \rho$ as follows:
+\[
+  \textsf{com}_{X,i} : X \to \delta_i([X])
+\].
+
+\begin{definition}
+  Let the \textit{category of synchronously interacting processes},
+  $\textbf{SyncIntProc}_{\mathcal{C}} = \textbf{STLC}^\rho[\textsf{com}]$
+  be defined as the category
+  $\textbf{STLC}^\rho$ of independent processes with freely adjoined arrows of
+  the shape $\textsf{com}_{X,i} : X \to \delta_i([X])$ for any $X \in
+  \textbf{STLC}^\rho$ and $i \in \rho$.
+\end{definition}
+
+\begin{theorem}
+  Let $\mathcal{C}$ be a cartesian closed category. There is a covariant model
+  of MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$ which has
+  $\textbf{SyncIntProc}_{\mathcal{C}}$ as its compilation target category.
+\end{theorem}
+
+In particular, in this model, only the transformation $\textsf{eval}_v : (\square ;
+{}@ v) \Rightarrow \textsf{id}_\circ$ is modeled with the freely adjoined
+$\textsf{com}$ arrows, since it is the only one involving communication. All
+other transformations are modeled by arrows already existing as part of the
+cartesian closed structure of each processes' individual category $\mathcal{C}$.
 
 
 
