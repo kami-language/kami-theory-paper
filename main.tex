@@ -102,7 +102,8 @@ evaluates to a value of type \textsf{Bool} located at role $r$. The language
 has two communication primitives: \primitive{com} for communicating data and
 \primitive{select} for communicating choice of branching.
 
-\subsection{Modal Type Theory}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Simply typed modal type theory}
 Modal Type Theory (MTT)\cite{gratzer2023syntax}, introduced by Gratzer in his
 PhD dissertation, is a framework for constructing modal type theories, with
 Martin-L\"{of} type theory at its core. The framework is parametrized by a
@@ -129,11 +130,11 @@ to a simply typed fragment of MTT.
     $\alpha, \beta : \mu \Rightarrow \nu$.
   \end{itemize}
   Concretely, this data forms a 2-category, in the sense that identity
-  modalities (of type $id_m : m \to m$) and identity transformations (of type
-  $id_\mu : \mu \Rightarrow \mu $) exist, modalities and transformations can be
-  composed (denoted by $\mu \fatsemi \nu$ and $\alpha \fatsemi \beta$
-  respectively) if the domains and codomains match, and identity and
-  associativity laws hold as expected\cite{licata2016adjoint}.
+  modalities (of type $\textsf{id}_m : m \to m$) and identity transformations
+  (of type $\textsf{id}_\mu : \mu \Rightarrow \mu $) exist, modalities and
+  transformations can be composed (denoted by $\mu \fatsemi \nu$ and $\alpha
+  \fatsemi \beta$ respectively) if the domains and codomains match, and
+  identity and associativity laws hold as expected\cite{licata2016adjoint}.
 \end{definition}
 
 \begin{definition}[{\cite[following Chapter 6.2]{gratzer2023syntax}}]
@@ -153,7 +154,7 @@ to a simply typed fragment of MTT.
 \begin{figure}
   \centering
   \begin{mathpar}
-    \inferrule*[Lab=Mod]
+    \inferrule*[Lab=Mod-Form]
     {
       A \in \textsf{Type}_m
       \\
@@ -161,7 +162,7 @@ to a simply typed fragment of MTT.
     }
     {\langle A | \mu \rangle \in \textsf{Type}_n}
 
-    \inferrule*[Lab=Fun]
+    \inferrule*[Lab=Fun-Form]
     {
       A \in \textsf{Type}_m
       \\
@@ -171,7 +172,7 @@ to a simply typed fragment of MTT.
     }
     {(A | \mu) \to B \in \textsf{Type}_n}
     \\
-    \inferrule*[Lab=Prod]
+    \inferrule*[Lab=Prod-Form]
     {
       A \in \textsf{Type}_m
       \\
@@ -179,7 +180,7 @@ to a simply typed fragment of MTT.
     }
     {A \times B \in \textsf{Type}_m}
 
-    \inferrule*[Lab=Sum]
+    \inferrule*[Lab=Sum-Form]
     {
       A \in \textsf{Type}_m
       \\
@@ -191,6 +192,7 @@ to a simply typed fragment of MTT.
   \label{fig:mtt_type}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Well moded types}
 Types of \MTTM{} (figure \ref{fig:mtt_type}) mirror the standard types of STLC,
 with the following differences:
@@ -200,11 +202,11 @@ with the following differences:
   lifting a type $A \in \textsf{Type}_m$ to mode $n$ using a modality $\mu : m
   \to n$.
 \item
-  A \emph{modal function type} $(A | \mu) \to B$ is formed for each type $A :
-  \textsf{Type}_m$, $B : \textsf{Type}_n$, and modality $\mu : m \to n$. This
-  type is a convenience that behaves as the standard function type composed
-  with a modal type. We recover the standard function type using the identity
-  modality $id_m : m \to m$.
+  A \emph{modal function type} $(A | \mu) \to B \in \textsf{Type}_n$ is formed
+  for each type $A : \textsf{Type}_m$, $B : \textsf{Type}_n$, and modality $\mu
+  : m \to n$. This type is a convenience that behaves as the standard function
+  type composed with a modal type. We recover the standard function type using
+  the identity modality $\textsf{id}_m : m \to m$.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -214,7 +216,7 @@ with the following differences:
   \begin{mathpar}
     \inferrule*[Lab=Ctx-Empty]
     {\textrm{ }}
-    {\varepsilon \in \textsf{Ctx}_m}
+    {\cdot \in \textsf{Ctx}_m}
 
     \inferrule*[Lab=Ctx-Ext]
     {
@@ -238,6 +240,7 @@ with the following differences:
   \label{fig:mtt_ctx}
 \end{figure}
   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Well moded contexts}
 Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined as follows:
 \begin{itemize}
@@ -250,7 +253,7 @@ Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined as follows:
   means that an assumption in a context $\Gamma$ is of the form $(A | \mu) \in
   \Gamma$, where $A$ is a type, $n$ is an arbitrary mode, and $\mu : n \to m$
   is a modality that brings the assumption into mode $m$. If the assumption
-  originates at the current mode, then $\mu = id_m : m \to m$.
+  originates at the current mode, then $\mu = \textsf{id}_m : m \to m$.
 \item
   The context restriction rule \textsc{Ctx-Restr} allows us to restrict the use
   of assumptions to those under a particular modality. That is, starting with a
@@ -268,11 +271,11 @@ Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined as follows:
   \begin{mathpar}
     \inferrule*[Lab=Var-Zero]
     {\ }
-    {\primitive{zero}:(A|\mu) \in_{\textsf{id}} \Gamma.(A | \mu)}
+    {\primitive{zero} : (A|\mu) \in_{\textsf{id}_m} \Gamma.(A | \mu)}
 
     \inferrule*[Lab=Var-Suc]
     {x:(A|\mu) \in_{\nu} \Gamma}
-    {\primitive{suc\ }x:(A|\mu) \in_{\nu} \Gamma.(B | \eta)}
+    {\primitive{suc }x : (A|\mu) \in_{\nu} \Gamma.(B | \eta)}
     
     \inferrule*[Lab=Var-Restr]
     {x:(A|\mu) \in_{\nu} \Gamma}
@@ -283,8 +286,31 @@ Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined as follows:
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Well typed terms}
+Terms of \MTTM{} (figure \ref{fig:mtt_term}) differ from terms of STLC as
+follows:
+\begin{itemize}
+\item
+  There are new terms for introduction and elimination of modal types. The
+  introduction rule \textsc{Mod-Intro} enforces that terms of a modal type
+  $\langle A | \mu \rangle$ may only depend on variables that are themselves
+  under the $\mu$ modality. The elimination rule \textsc{Mod-Elim} allows us to
+  assume $x : (A|\mu)$ in order to eliminate a value of such a modal type.
+\item
+  The function type introduction rule \textsc{Fun-Intro} preserves the
+  additional modality by putting it into the context, alongside the new
+  variables' type.
+\item
+  The function type elimination rule \textsc{Fun-Intro} deals with its modality
+  annotation by restricting the context with it.
+\item
+  All other terms are mode-local and all occuring modalities are required to be
+  identities.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Terms
-\begin{figure}
+\begin{figure}[h]
   \centering
 
   \begin{mathpar}
@@ -294,108 +320,71 @@ Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined as follows:
       \\
       \alpha : \mu \Rightarrow \nu
     }
-    {\Gamma \vdash x^\alpha : A}
+    {\Gamma \vdash_m x^\alpha : A}
     \\
     \inferrule*[Lab=Mod-Intro]
     {\Gamma.\{\mu\} \vdash_m t : A}
-    {\Gamma \vdash_n \primitive{mod\ }t : \langle A | \mu \rangle}
+    {\Gamma \vdash_n \primitive{mod } t : \langle A | \mu \rangle}
 
     \inferrule*[Lab=Mod-Elim]
     {
-      \Gamma \vdash_m t : \langle A | \mu \rangle
+      \Gamma \vdash_m s : \langle A | \mu \rangle
       \\
-      \Gamma.(x : A|\mu) \vdash_m s : B
+      \Gamma.(x : A|\mu) \vdash_m t : B
     }
     {
-      \Gamma \vdash_m \primitive{letmod}\ x \leftarrow t\ \primitive{in}\ s : B
+      \Gamma \vdash_m \primitive{letmod } x \leftarrow s \primitive{ in } t : B
     }
     \\
     \inferrule*[Lab=Fun-Intro]
     {\Gamma.(x : A|\mu) \vdash_n t : B}
-    {\Gamma \vdash_n \lambda x.t : (A | \mu) \to B}
+    {\Gamma \vdash_n \pmb{\lambda\,} x \primitive{\,.\,} t : (A | \mu) \to B}
 
     \inferrule*[Lab=Fun-Elim]
-    {\Gamma \vdash_n f : (A | \mu) \to B
+    {
+      \Gamma \vdash_m t : (A | \mu) \to B
       \\
-      \Gamma \vdash_m x : A
+      \Gamma \vdash_n s : A
     }
-    {\Gamma \vdash_m f\ x : B}
+    {\Gamma \vdash_n t\,s : B}
     \\
     \inferrule*[Lab=Prod-Intro]
-    {\Gamma \vdash_m a : A
+    {
+      \Gamma \vdash_m s : A
       \\
-      \Gamma \vdash_m b : B
+      \Gamma \vdash_m t : B
     }
-    {\Gamma \vdash_m (a\,\primitive{,}\,b) : A \times B}
+    {\Gamma \vdash_m s \primitive{\,,\,} t : A \times B}
 
-    \inferrule*[Lab=Prod-Fst]
-    {\Gamma \vdash_m x : A \times B}
-    {\Gamma \vdash_m \primitive{fst } x : A}
+    \inferrule*[Lab=Prod-Elim${}_1$]
+    {\Gamma \vdash_m t : A \times B}
+    {\Gamma \vdash_m \primitive{fst } t : A}
 
-    \inferrule*[Lab=Prod-Snd]
-    {\Gamma \vdash_m x : A \times B}
-    {\Gamma \vdash_m \primitive{snd } x : B}
+    \inferrule*[Lab=Prod-Elim${}_2$]
+    {\Gamma \vdash_m t : A \times B}
+    {\Gamma \vdash_m \primitive{snd } t : B}
     \\
-    \inferrule*[Lab=Sum-Left]
-    {\Gamma \vdash_m x : A}
-    {\Gamma \vdash_m \primitive{left } x : A + B}
+    \inferrule*[Lab=Sum-Intro${}_1$]
+    {\Gamma \vdash_m t : A}
+    {\Gamma \vdash_m \primitive{left } t : A + B}
 
-    \inferrule*[Lab=Sum-Right]
-    {\Gamma \vdash_m x : B}
-    {\Gamma \vdash_m \primitive{right } x : A + B}
+    \inferrule*[Lab=Sum-Intro${}_2$]
+    {\Gamma \vdash_m t : B}
+    {\Gamma \vdash_m \primitive{right } t : A + B}
 
     \inferrule*[Lab=Sum-Elim]
-    {\Gamma \vdash_m x : A + B
+    {\Gamma \vdash_m s : A + B
       \\
-      \Gamma.(a : A|\textsf{id}) \vdash_m t : C
+      \Gamma.(x : A|\textsf{id}_m) \vdash_m t : C
       \\
-      \Gamma.(b : B|\textsf{id}) \vdash_m s : C
+      \Gamma.(y : B|\textsf{id}_m) \vdash_m u : C
     }
-    {\Gamma \vdash_m \primitive{case } x \primitive{ of } \{ \primitive{left } a
-      \mapsto t ; \primitive{right } b \mapsto s \}: C}
-    % \\
-    % \inferrule*[Lab=Nat-Zero]
-    % {\textsf{ }}
-    % {\Gamma \vdash_m \primitive{zero} : \mathbb{N}}
-
-    % \inferrule*[Lab=Nat-Suc]
-    % {\Gamma \vdash_m n : \mathbb{N}}
-    % {\Gamma \vdash_m \primitive{suc } n : \mathbb{N}}
-
-    % \inferrule*[Lab=Nat-Elim]
-    % {\Gamma \vdash_m n : \mathbb{N}}
-    % {\Gamma \vdash_m \primitive{suc } n : \mathbb{N}}
+    {\Gamma \vdash_m \primitive{case } s \primitive{ of left } x
+      \mapsto t \primitive{\,;\,right } y \mapsto u : C}
 \end{mathpar}
   \caption{Well typed terms of \MTTM{}}
   \label{fig:mtt_term}
 \end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% XXX TODO XXX
-% The introduction rule \textsc{Mod-Intro} enforces that
-% terms of such a modal type may only depend on variables that are themselves
-% under the $\mu$ modality. The elimination rule \textsc{Mod-Elim} allows us to
-%assume that we have a variable $x : (A|\mu)$ in order to eliminate from
-%$\langle A | \mu \rangle$.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsubsection*{Well typed terms}
-Terms of \MTTM{} (figure \ref{fig:mtt_term}) differ from terms of STLC as
-follows:
-\begin{itemize}
-\item
-  There are new terms for introduction and elimination of modal types
-  (\textsc{Mod-Intro} and \textsc{Mod-Elim}).
-\item
-  The function introduction rule (\textsc{Fun-Intro}) preserves the additional
-  modality by putting it into the context, alongside the new variables' type.
-\item
-  The function elimination rule (\textsc{Fun-Intro}) deals with its modality
-  annotation by restricting the context with it.
-\item
-  All other terms are mode-local and all occuring modalities are required to be
-  identities.
-\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Choreographic programming with MTT}
@@ -407,8 +396,6 @@ participating roles $\rho$ by introducing modalities $@r$ for each role $r \in
 \rho$. The type $\langle A | @r \rangle$ then is interpreted as ``data of type
 $A$, located at role $r$''.
 
-\medskip
-
 The second feature of MTT is that transformations between
 modalities can be introduced in a controlled way. In order to allow a term at
 role $r$ to be transformed into a term at role $s$, we simply have to introduce
@@ -416,8 +403,8 @@ a transformation $\tau_{r,s} : @r \Rightarrow @s$ between the corresponding
 modalities. These transformations can be chosen freely: we might disallow
 communications between some nodes and include multiple channels between some others.
 
-\subsection{A mode theory for choreographic programming}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mode theory for choreographic programming}
 However, a mode theory with only $@$-modalities and transformations $\tau_{r,s}$
 is not enough to recover the full expressive power of
 Chor$\lambda$. In particular, expressing the \textbf{select} operator, which is
@@ -445,17 +432,17 @@ meet-semilattice on $\rho$. The mode theory
 $\mathcal{M}^\rho_{\textrm{Chor}}$ is defined as follows:
 
 \begin{itemize}
-\item There are two modes: $\circ$ and
-  $\triangle$. The global mode $\circ$ represents the
+\item There are two modes: $\bigcirc$ and
+  $\triangle$. The global mode $\bigcirc$ represents the
   global perspective on a choreography, encompassing computations and data
   occuring at all roles. The local mode $\triangle$
   represents the perspective of a single location (which might be the
   conjunction of multiple roles) participating in the choreography.
 \item For each location $u \in \textrm{Loc}_\rho$ there is a modality $@u : \triangle \to
-  \circ$. Each of these modalities represents a different way of how a local
+  \bigcirc$. Each of these modalities represents a different way of how a local
   computation can be embedded in the global system. Concretely, $@u$ expresses
   that the computation exists at location $u$.
-\item An additional modality $\square : \circ \to \triangle$, allowing global
+\item An additional modality $\square : \bigcirc \to \triangle$, allowing global
   computations to be referenced locally.
 \item For each location $u \in \textrm{Loc}_\rho$, a transformation
   $\textsf{prepare}_u : \textsf{id}_\triangle \Rightarrow ({}@ u ;
@@ -463,7 +450,7 @@ $\mathcal{M}^\rho_{\textrm{Chor}}$ is defined as follows:
   arbitrary role $u$. It happens in local mode ($\triangle$) and its
   interpretation involves no communication.
 \item For each location $v \in \textrm{Loc}_\rho$, a transformation
-  $\textsf{eval}_v : (\square ; {}@ v) \Rightarrow \textsf{id}_\circ$. This
+  $\textsf{eval}_v : (\square ; {}@ v) \Rightarrow \textsf{id}_\bigcirc$. This
   transformation is the only one involving communication between roles. It
   describes that a global choreography, available in quoted form at location
   $v$, can be scheduled to be executed by all involved roles.
@@ -485,8 +472,6 @@ $\mathcal{M}^\rho_{\textrm{Chor}}$ is defined as follows:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Kami: An MTT based language for choreographic programming}
-
-
 Our mode theory expresses the interactions
 between participating roles in a distributed system, but standard MTT
 instantiated with $\mathcal{M}^{\rho}_{\textrm{Chor}}$ is not suitable to be used as a choreographic
@@ -507,7 +492,7 @@ reduction rules are displayed in figure \ref{fig:mtt_leteval}.
     {
       \Gamma \vdash t : \langle A | \square ; @v \rangle
       \\
-      \Gamma.(x : A|\textsf{id}_\circ) \vdash s : B
+      \Gamma.(x : A|\textsf{id}_\bigcirc) \vdash s : B
     }
     {
       \Gamma \vdash \primitive{leteval}_v\ x
@@ -540,8 +525,8 @@ reduction rules are displayed in figure \ref{fig:mtt_leteval}.
   \end{enumerate}
 \end{definition}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Behavioural semantics and relation with \texorpdfstring{Chor$\lambda$}{ChorLambda}}
-
 In order to allow for out-of-order execution of of independent processes, we can use
 the same machinery as Chor$\lambda$: restricting reduction rules to ensure that
 communications between a pair of processes always occur in the same order and an
@@ -597,6 +582,7 @@ their future behaviour.
   modality'' is called a \emph{crisp induction principle}.
 \end{example}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Categorical semantics}
 Following Gratzer, a categorical model for MTT$_{\mathcal{M}}$ is given by a
 functor $F : \mathcal{M}^{\textsf{coop}} \to \textbf{Cat}$, with additional
@@ -633,7 +619,7 @@ theory of Kami can be interpreted in them.
     compilation target category.
   \item For each transformation $\alpha : \mu \Rightarrow \nu \in \mathcal{M}$,
     a natural transformation
-    $\tau_\alpha : \iota_m \circ G(\mu) \Rightarrow \iota_m \circ G(\nu)$ in the
+    $\tau_\alpha : \iota_m \circ G(\mu) \Rightarrow \iota_m \circ G(\nu)$ in the % TODO: \circ probably needs to be changed to \fatsemi; check this
     target category.
   \end{enumerate}
 \end{definition}
@@ -704,7 +690,7 @@ communication operation that communicates a global state $X \in
 \end{theorem}
 
 In particular, in this model, only the transformation $\textsf{eval}_v : (\square ;
-{}@ v) \Rightarrow \textsf{id}_\circ$ is built up from the freely adjoined
+{}@ v) \Rightarrow \textsf{id}_\bigcirc$ is built up from the freely adjoined
 $\textsf{com}$ arrows, since it is the only one involving communication. All
 other transformations are modeled by arrows already existing as part of the
 cartesian closed structure of each processes' individual category $\mathcal{C}$.
