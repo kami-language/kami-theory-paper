@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 # Description of the Kami language
 
-See the [main project page](https://github.com/kami-language/kami) for details.
+This repository contains a description of the Kami language. The [generated pdf](./main.pdf) is included for convenience.
 
 ## Funding
 
