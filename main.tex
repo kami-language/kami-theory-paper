@@ -236,8 +236,8 @@ with the following differences:
       \\
       \mu : m \to n
     }
-    {\Gamma.(A|\mu) \in \textsf{Ctx}_n}
-    
+    {\Gamma.(A | \mu) \in \textsf{Ctx}_n}
+
     \inferrule*[Lab=Ctx-Restr]
     {
       \Gamma \in \textsf{Ctx}_n
@@ -249,7 +249,7 @@ with the following differences:
   \caption{Contexts of \MTTM{}}
   \label{fig:mtt_ctx}
 \end{figure}
-  
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Contexts}
 Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined as follows:
@@ -281,17 +281,17 @@ Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined as follows:
   \begin{mathpar}
     \inferrule*[Lab=Var-Zero]
     {\ }
-    {\primitive{zero} : (A|\mu) \in_{\textsf{id}_n} \Gamma.(A | \mu)}
+    {\primitive{zero} : (A | \mu) \in_{\textsf{id}_n} \Gamma.(A | \mu)}
 
     \inferrule*[Lab=Var-Suc]
     {
-      x:(A|\mu) \in_{\nu} \Gamma
+      x : (A | \mu) \in_{\nu} \Gamma
     }
-    {\primitive{suc }x : (A|\mu) \in_{\nu} \Gamma.(B | \eta)}
+    {\primitive{suc }x : (A | \mu) \in_{\nu} \Gamma.(B | \eta)}
 
     \inferrule*[Lab=Var-Restr]
-    {x:(A|\mu) \in_{\nu} \Gamma}
-    {x:(A|\mu) \in_{\eta \fatsemi \nu} \Gamma.\{\eta\}}
+    {x : (A | \mu) \in_{\nu} \Gamma}
+    {x : (A | \mu) \in_{\eta \fatsemi \nu} \Gamma.\{\eta\}}
   \end{mathpar}
   \caption{Variables (de Bruijn indices) of \MTTM{}}
   \label{fig:mtt_var}
@@ -331,10 +331,10 @@ follows:
       \\
       \alpha : \mu \Rightarrow \nu
       \\
-      x:(A|\mu) \in_\nu \Gamma
+      x : (A | \mu) \in_\nu \Gamma
     }
     {\Gamma \vdash_n x^\alpha : A}
-    \\
+
     \inferrule*[Lab=Mod-Intro]
     {
       \mu : m \to n
@@ -343,6 +343,7 @@ follows:
     }
     {\Gamma \vdash_n \primitive{mod}_\mu\  t : \langle A | \mu \rangle}
     \\
+
     \inferrule*[Lab=Mod-Elim]
     {
       \mu : m \to n
@@ -351,18 +352,19 @@ follows:
       \\
       \Gamma.\{\nu\} \vdash_n s : \langle A | \mu \rangle
       \\
-      \Gamma.(x : A|\mu \fatsemi \nu) \vdash_o t : B
+      \Gamma.\,x : (A | \mu \fatsemi \nu) \vdash_o t : B
     }
     {
       \Gamma \vdash_o \primitive{let}_\nu\:\primitive{mod}_\mu\  x
       \bm{\leftarrow} s \primitive{ in } t : B
     }
     \\
+
     \inferrule*[Lab=Fun-Intro]
     {
       \mu : m \to n
       \\
-      \Gamma.(x : A|\mu) \vdash_n t : B
+      \Gamma.\,x : (A | \mu) \vdash_n t : B
     }
     {\Gamma \vdash_n \bm{\lambda\,} x \bm{\,.\,} t : (A | \mu) \to B}
 
@@ -376,6 +378,7 @@ follows:
     }
     {\Gamma \vdash_n t\,s : B}
     \\
+
     \inferrule*[Lab=Prod-Intro]
     {
       \Gamma \vdash_m s : A
@@ -392,6 +395,7 @@ follows:
     {\Gamma \vdash_m t : A \times B}
     {\Gamma \vdash_m \primitive{snd } t : B}
     \\
+
     \inferrule*[Lab=Sum-Intro${}_1$]
     {\Gamma \vdash_m t : A}
     {\Gamma \vdash_m \primitive{left } t : A + B}
@@ -399,13 +403,14 @@ follows:
     \inferrule*[Lab=Sum-Intro${}_2$]
     {\Gamma \vdash_m t : B}
     {\Gamma \vdash_m \primitive{right } t : A + B}
+    \\
 
     \inferrule*[Lab=Sum-Elim]
     {\Gamma \vdash_m s : A + B
       \\
-      \Gamma.(x : A|\textsf{id}_m) \vdash_m t : C
+      \Gamma.\,x : (A | \textsf{id}_m) \vdash_m t : C
       \\
-      \Gamma.(y : B|\textsf{id}_m) \vdash_m u : C
+      \Gamma.\,y : (B | \textsf{id}_m) \vdash_m u : C
     }
     {\Gamma \vdash_m \primitive{case } s \primitive{ of}
       \,\bm{\{}\, \primitive{left } x \bm{\,\mapsto\,} t \bm{\,;\,}
@@ -527,10 +532,10 @@ need to add is \textsc{Let-Eval} (figure \ref{fig:mtt_leteval}).
     {
       \nu : \circle \to m
       \\
-      \Gamma .\{\nu\} \vdash_{\circle} s : \langle A | \square \fatsemi @u
+      \Gamma.\{\nu\} \vdash_{\circle} s : \langle A | \square \fatsemi @u
       \rangle
       \\
-      \Gamma.(x : A|\nu) \vdash_m t : B
+      \Gamma.\,x : (A | \nu) \vdash_m t : B
     }
     {
       \Gamma \vdash_m \primitive{let}_\nu\:\primitive{eval}_u\ x
