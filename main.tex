@@ -109,8 +109,8 @@ of global choreographies as values local to individual participants.
 \section{Preliminaries}
 \subsection{\texorpdfstring{Chor$\lambda$}{ChorLambda}}
 Chor$\lambda$\cite{cruz2022functional} is a functional choreographic
-programming language introduced by Cruz-Filipe et~al., and an extension of STLC
-with location annotations. For example, $t : \textsf{Bool} @ r$ means that $t$
+programming language introduced by Cruz-Filipe et~al., and extends STLC with
+location annotations. For example, $t : \textsf{Bool} @ r$ means that $t$
 evaluates to a value of type \textsf{Bool} located at role $r$. The language
 has two communication primitives: \primitive{com} for communicating data and
 \primitive{select} for communicating choice of branching.
@@ -570,7 +570,7 @@ rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt_leteval}).
 \end{definition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Informal semantics and relation with
+\subsection{Informal semantics and relation to
   \texorpdfstring{Chor$\lambda$}{ChorLambda}}
 In order to allow for out-of-order execution of of independent processes, we
 can use the same machinery as Chor$\lambda$: restricting reduction rules to
