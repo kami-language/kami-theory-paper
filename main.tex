@@ -303,17 +303,18 @@ Terms of \MTTM{} (figure \ref{fig:mtt_term}) differ from terms of STLC as
 follows:
 \begin{itemize}
 \item
-  There are additional terms for introduction and elimination of the modal type.
-  The introduction rule \textsc{Mod-Intro} enforces that terms of a modal type
-  $\langle A | \mu \rangle$ may only depend on variables that are themselves
-  under the $\mu$ modality. The elimination rule \textsc{Mod-Elim} allows us to
-  assume $x : (A|\mu)$ in order to eliminate a value of such a modal type.
-  Note that in the rule there is a second modality $\nu$, called \emph{framing
-    modality}, allowing the assumption $x$ to exist at a different mode than the
-  motive $B$. In case $\nu = \textsf{id}$, we omit it from the term for readability.
+  There are additional terms for introduction and elimination of the modal
+  type. The introduction rule \textsc{Mod-Intro} enforces that terms of a modal
+  type $\langle A | \mu \rangle$ may only depend on variables that are
+  themselves under the $\mu$ modality. The elimination rule \textsc{Mod-Elim}
+  allows us to assume $x : (A|\mu)$ in order to eliminate a value of such a
+  modal type. Note that in the rule there is a second modality $\nu$, called
+  \emph{framing modality}, allowing the assumption $x$ to exist at a different
+  mode than the motive $B$. In case $\nu = \textsf{id}$, we omit it from the
+  term for readability.
 \item
-  The terms for introduction and elimination of the function type reflect that the
-  type is endowed with an additional modality.
+  The terms for introduction and elimination of the function type reflect that
+  the type is endowed with an additional modality.
 \item
   All other terms are mode-local and any modalities that occur in the terms are
   identities.
@@ -353,8 +354,8 @@ follows:
       \Gamma.(x : A|\mu \fatsemi \nu) \vdash_o t : B
     }
     {
-      \Gamma \vdash_o \primitive{let}_\nu\:\primitive{mod}_\mu\  x \bm{\leftarrow} s \primitive{ in }
-        t : B
+      \Gamma \vdash_o \primitive{let}_\nu\:\primitive{mod}_\mu\  x
+      \bm{\leftarrow} s \primitive{ in } t : B
     }
     \\
     \inferrule*[Lab=Fun-Intro]
@@ -526,13 +527,14 @@ need to add is \textsc{Let-Eval} (figure \ref{fig:mtt_leteval}).
     {
       \nu : \circle \to m
       \\
-      \Gamma .\{\nu\} \vdash_{\circle} s : \langle A | \square \fatsemi @u \rangle
+      \Gamma .\{\nu\} \vdash_{\circle} s : \langle A | \square \fatsemi @u
+      \rangle
       \\
       \Gamma.(x : A|\nu) \vdash_m t : B
     }
     {
-      \Gamma \vdash_m \primitive{let}_\nu\:\primitive{eval}_u\ x \bm{\leftarrow} s
-      \primitive{ in } t : B
+      \Gamma \vdash_m \primitive{let}_\nu\:\primitive{eval}_u\ x
+      \bm{\leftarrow} s \primitive{ in } t : B
     }
     \\
     \inferrule*[Lab=Let-Eval-$\beta$]
@@ -540,10 +542,10 @@ need to add is \textsc{Let-Eval} (figure \ref{fig:mtt_leteval}).
       \textrm{ }
     }
     {
-      \Gamma \vdash_m \primitive{let}_\nu\:\primitive{eval}_u\ x \bm{\leftarrow} s
-      \primitive{ in } t \ \Longrightarrow\  \Gamma \vdash_m
-      \primitive{let}_\nu\:\primitive{mod}_{(\square \fatsemi @u)}\ y \bm{\leftarrow} s \primitive{ in } t
-      [ y^{\textsf{eval}_u} / x ]
+      \Gamma \vdash_m \primitive{let}_\nu\:\primitive{eval}_u\ x
+      \bm{\leftarrow} s \primitive{ in } t \ \Longrightarrow\ \Gamma \vdash_m
+      \primitive{let}_\nu\:\primitive{mod}_{(\square \fatsemi @u)}\ y
+      \bm{\leftarrow} s \primitive{ in } t [ y^{\textsf{eval}_u} / x ]
     }
   \end{mathpar}
   \caption{Typing and reduction rules for deferred transformations}
@@ -583,8 +585,9 @@ the \textsc{Let-Eval} rule.
   \begin{align*}
     \textsf{com}_{A,u,v}\ x =
     \ & \primitive{let}\:\primitive{mod}_{@u}\ y \bm{\leftarrow} x\\[-3pt]
-      & \primitive{let}\:\primitive{eval}_u\ z \bm{\leftarrow} \primitive{mod}_{@v}\ (\primitive{mod}_{(\square \fatsemi @u)}\ 
-        y^{\textsf{quote}_v \,\circledast\, \textsf{id}})\\[-3pt]
+      & \primitive{let}\:\primitive{eval}_u\ z \bm{\leftarrow}
+        \primitive{mod}_{@v}\ (\primitive{mod}_{(\square \fatsemi @u)}
+        \ y^{\textsf{quote}_v \,\circledast\, \textsf{id}})\\[-3pt]
       & \primitive{in } z^{\textsf{id}}
   \end{align*}
 \end{example}
@@ -724,9 +727,9 @@ follows:
   \delta_i([X])$ for any $X \in \textbf{STLC}^\rho$ and $i \in \rho$.
 \end{definition}
 \begin{theorem}
-  Let {\upshape$\mathcal{C}$} be a cartesian closed category. There is a covariant model
-  of {\upshape MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$} that has
-  {\upshape$\textbf{SIP}_{\rho}$} as its compilation target category.
+  Let {\upshape$\mathcal{C}$} be a cartesian closed category. There is a
+  covariant model of {\upshape MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$} that
+  has {\upshape$\textbf{SIP}_{\rho}$} as its compilation target category.
 \end{theorem}
 In particular, in this model, only the transformation $\textsf{eval}_v :
 (\square \fatsemi {}@ v) \Rightarrow \textsf{id}_{\circle}$ is built up from
