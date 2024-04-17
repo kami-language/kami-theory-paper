@@ -12,11 +12,18 @@
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{mathpartir}
-\usepackage[numbers]{natbib}
 \usepackage{stmaryrd}
 \usepackage{tikz}
 \usepackage[hyphens]{url}
 \usepackage{xcolor}
+
+% use biblatex for bibliography
+\usepackage[backend=biber,
+            doi=true,
+            natbib=true,
+            url=true]{biblatex}
+\addbibresource{main.bib}
+\DeclareFieldFormat{url}{\url{#1}}
 
 % use microtype for advanced typography
 \usepackage[activate={true,nocompatibility},
@@ -29,7 +36,6 @@
             shrink=10]{microtype}
 \microtypecontext{spacing=nonfrench}
 \SetTracking{encoding={*}, shape=sc}{0}
-\urlstyle{same}
 \definecolor{urlblue}{rgb}{0,0.2,0.8}
 
 % use hyperref last to avoid problems
@@ -760,7 +766,6 @@ financial support from the European Commission's Next Generation Internet
 program.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\bibliographystyle{plainnat}
-\bibliography{main}
+\printbibliography
 
 \end{document}
