@@ -351,7 +351,7 @@ follows:
       \Gamma.(x : A|\mu \fatsemi \nu) \vdash_o t : B
     }
     {
-      \Gamma \vdash_o \primitive{letmod } x \bm{\leftarrow} s \primitive{ in }
+      \Gamma \vdash_o \primitive{let}_\nu\:\primitive{mod}_\mu\  x \bm{\leftarrow} s \primitive{ in }
         t : B
     }
     \\
@@ -428,7 +428,7 @@ introduced in a controlled way. In order to allow a term at role $r$ to be
 transformed into a term at role $s$, we simply have to introduce a
 transformation $\tau_{r,s} : @r \Rightarrow @s$ between the corresponding
 modalities. These transformations can be chosen freely: we might disallow
-communications between some nodes and include multiple channels between some
+communications between some roles and include multiple channels between some
 others.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -436,7 +436,7 @@ others.
 However, a mode theory with only $@$-modalities and transformations
 $\tau_{r,s}$ is not enough to recover the full expressive power of
 Chor$\lambda$. In particular, expressing the \textbf{select} operator, which is
-used to notify other roles about decisions that happened locally at node $r$,
+used to notify other roles about decisions that happened locally at role $r$,
 requires the following additional features:
 \begin{enumerate}
 \item
@@ -446,7 +446,7 @@ requires the following additional features:
   \mathbb{N} | @(r\land s) \rangle$ expresses the fact that there is a natural
   number that is known by both roles $r$ and $s$.
 \item
-  We need roles to reference data that is about to be sent to other nodes. For
+  We need roles to reference data that is about to be sent to other roles. For
   this we use a new modality $\square$, which allows roles to reference global
   choreographies locally. That is, if $A$ is a global choreography type, then
   $t : \langle A | \square \rangle$ is a local term, containing a quoted
@@ -476,7 +476,7 @@ is defined as follows:
 \item
   For each location $u \in \textrm{Loc}_\rho$, a transformation
   $\textsf{quote}_u : \textsf{id}_{\triangle} \Rightarrow ({}@ u \fatsemi
-  \square)$. This transformation allows a process to quote a local term to be
+  \square)$. This transformation allows a role to quote a local term to be
   evaluated by an arbitrary role $u$. It happens in local mode ($\triangle$)
   and its interpretation involves no communication.
 \item
@@ -493,14 +493,14 @@ is defined as follows:
   Additional equalities governing the interactions of the transformations. For
   instance, composing $\textsf{quote}_u$ and $\textsf{eval}_u$ for the same
   role $u$ is equal to the identity transformation since it represents a
-  process communicating with itself.
+  role communicating with itself.
 \end{itemize}
 \end{definition}
 \begin{corollary}
   In {\upshape$\mathcal{M}^{\rho}_{\textrm{Chor}}$}, it is possible to recover
   a transformation $\tau_{u,v} : @u \Rightarrow @v$ by composing
   {\upshape$\textsf{quote}_v$} and {\upshape$\textsf{eval}_u$}. Additionally, a
-  process communicating with itself is equal to the identity transformation
+  role communicating with itself is equal to the identity transformation
   {\upshape$\tau_{u,u} = \textsf{id}_{@u}$}.
 \end{corollary}
 
@@ -523,14 +523,14 @@ representing it. Its typing and reduction rules are displayed in figure
   \begin{mathpar}
     \inferrule*[Lab=Let-Eval]
     {
-      \mu : \circle \to m
+      \nu : \circle \to m
       \\
-      \Gamma .\{\mu\} \vdash_{\circle} s : \langle A | \square \fatsemi @u \rangle
+      \Gamma .\{\nu\} \vdash_{\circle} s : \langle A | \square \fatsemi @u \rangle
       \\
-      \Gamma.(x : A|\mu) \vdash_m t : B
+      \Gamma.(x : A|\nu) \vdash_m t : B
     }
     {
-      \Gamma \vdash_m \primitive{leteval}_u\ x \bm{\leftarrow} s
+      \Gamma \vdash_m \primitive{let}_\nu\:\primitive{eval}_u\ x \bm{\leftarrow} s
       \primitive{ in } t : B
     }
     \\
@@ -539,9 +539,9 @@ representing it. Its typing and reduction rules are displayed in figure
       \textrm{ }
     }
     {
-      \Gamma \vdash_m \primitive{leteval}_u\ x \bm{\leftarrow} s
+      \Gamma \vdash_m \primitive{let}_\nu\:\primitive{eval}_u\ x \bm{\leftarrow} s
       \primitive{ in } t \ \Longrightarrow\  \Gamma \vdash_m
-      \primitive{letmod } y \bm{\leftarrow} s \primitive{ in } t
+      \primitive{let}_\nu\:\primitive{mod}_{(\square \fatsemi @u)}\ y \bm{\leftarrow} s \primitive{ in } t
       [ y^{\textsf{eval}_u} / x ]
     }
   \end{mathpar}
@@ -581,10 +581,10 @@ $\textsf{eval}$.
   locations $u,v$.
   \begin{align*}
     \textsf{com}_{A,u,v}\ x =
-    \ & \primitive{letmod } y \bm{\leftarrow} x\\[-3pt]
-      & \primitive{leteval}_u\ z \bm{\leftarrow} \primitive{mod }
-        y^{\textsf{quote}_v \,\circledast\, \textsf{id}_{@u}}\\[-3pt]
-      & \primitive{in } \primitive{mod } z^{\textsf{id}_{@u}}
+    \ & \primitive{let}\:\primitive{mod}_{@u}\ y \bm{\leftarrow} x\\[-3pt]
+      & \primitive{let}\:\primitive{eval}_u\ z \bm{\leftarrow} \primitive{mod}_{@v}\ (\primitive{mod}_{(\square \fatsemi @u)}\ 
+        y^{\textsf{quote}_v \,\circledast\, \textsf{id}_{@u}})\\[-3pt]
+      & \primitive{in } z^{\textsf{id}_{\textsf{id}_{@v}}}
   \end{align*}
 \end{example}
 \noindent
@@ -751,10 +751,16 @@ any target language with cartesian closed categorical semantics and synchronous
 communication primitives.
 
 \section*{Acknowledgements}
+<<<<<<< HEAD
 The Kami programming language\footnote{\url{https://nlnet.nl/project/Kami/}}
 has been originally envisioned and preliminary research was carried out
 together with Olivia R\"ohrig. The authors are tremendously grateful for
 countless hours of debating syntax and semantics.
+=======
+The Kami programming language\footnote{\url{https://nlnet.nl/project/Kami/}} has been originally envisioned and preliminary research was
+carried out together with Olivia R\"ohrig. The authors are tremendously
+grateful for countless hours of debating syntax and semantics.
+>>>>>>> 553f40c (Some changes:)
 
 This project is funded through NGI Zero
 Core\footnote{\url{https://nlnet.nl/core}}, a fund established by NLnet with
