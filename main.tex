@@ -474,17 +474,17 @@ is defined as follows:
   An additional modality $\square : \circle \to \triangle$, allowing global
   computations to be referenced locally.
 \item
-  For each location $u \in \textrm{Loc}_\rho$, a transformation
-  $\textsf{quote}_u : \textsf{id}_{\triangle} \Rightarrow ({}@ u \fatsemi
+  For each location $v \in \textrm{Loc}_\rho$, a transformation
+  $\textsf{quote}_v : \textsf{id}_{\triangle} \Rightarrow ({}@ v \fatsemi
   \square)$. This transformation allows a role to quote a local term to be
-  evaluated by an arbitrary role $u$. It happens in local mode ($\triangle$)
+  evaluated by an arbitrary role $v$. It happens in local mode ($\triangle$)
   and its interpretation involves no communication.
 \item
-  For each location $v \in \textrm{Loc}_\rho$, a transformation
-  $\textsf{eval}_v : (\square \fatsemi {}@ v) \Rightarrow
+  For each location $u \in \textrm{Loc}_\rho$, a transformation
+  $\textsf{eval}_u : (\square \fatsemi {}@ u) \Rightarrow
   \textsf{id}_{\circle}$. This transformation is the only one involving
   communication between roles. It describes that a global choreography,
-  available in quoted form at location $v$, can be scheduled to be executed by
+  available in quoted form at location $u$, can be scheduled to be executed by
   all involved roles.
 \item
   For each pair of locations $u, v \in \textrm{Loc}_\rho$ with $u \leq v$, a
