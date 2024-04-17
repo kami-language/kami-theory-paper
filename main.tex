@@ -282,12 +282,14 @@ Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined as follows:
   \begin{mathpar}
     \inferrule*[Lab=Var-Zero]
     {\ }
-    {\primitive{zero} : (A|\mu) \in_{\textsf{id}_m} \Gamma.(A | \mu)}
+    {\primitive{zero} : (A|\mu) \in_{\textsf{id}_n} \Gamma.(A | \mu)}
 
     \inferrule*[Lab=Var-Suc]
-    {x:(A|\mu) \in_{\nu} \Gamma}
+    {
+      x:(A|\mu) \in_{\nu} \Gamma
+    }
     {\primitive{suc }x : (A|\mu) \in_{\nu} \Gamma.(B | \eta)}
-    
+
     \inferrule*[Lab=Var-Restr]
     {x:(A|\mu) \in_{\nu} \Gamma}
     {x:(A|\mu) \in_{\eta \fatsemi \nu} \Gamma.\{\eta\}}
@@ -322,34 +324,50 @@ follows:
   \begin{mathpar}
     \inferrule*[Lab=Var]
     {
-      x:(A|\mu) \in_\nu \Gamma
+      \mu, \nu : m \to n
       \\
       \alpha : \mu \Rightarrow \nu
+      \\
+      x:(A|\mu) \in_\nu \Gamma
     }
-    {\Gamma \vdash_m x^\alpha : A}
+    {\Gamma \vdash_n x^\alpha : A}
     \\
     \inferrule*[Lab=Mod-Intro]
-    {\Gamma.\{\mu\} \vdash_m t : A}
+    {
+      \mu : m \to n
+      \\
+      \Gamma.\{\mu\} \vdash_m t : A
+    }
     {\Gamma \vdash_n \primitive{mod } t : \langle A | \mu \rangle}
-
+    \\
     \inferrule*[Lab=Mod-Elim]
     {
-      \Gamma \vdash_m s : \langle A | \mu \rangle
+      \mu : m \to n
       \\
-      \Gamma.(x : A|\mu) \vdash_m t : B
+      \nu : n \to o
+      \\
+      \Gamma.\{\nu\} \vdash_n s : \langle A | \mu \rangle
+      \\
+      \Gamma.(x : A|\mu \fatsemi \nu) \vdash_o t : B
     }
     {
-      \Gamma \vdash_m \primitive{letmod } x \bm{\leftarrow} s \primitive{ in }
+      \Gamma \vdash_o \primitive{letmod } x \bm{\leftarrow} s \primitive{ in }
         t : B
     }
     \\
     \inferrule*[Lab=Fun-Intro]
-    {\Gamma.(x : A|\mu) \vdash_n t : B}
+    {
+      \mu : m \to n
+      \\
+      \Gamma.(x : A|\mu) \vdash_n t : B
+    }
     {\Gamma \vdash_n \bm{\lambda\,} x \bm{\,.\,} t : (A | \mu) \to B}
 
     \inferrule*[Lab=Fun-Elim]
     {
-      \Gamma \vdash_m t : (A | \mu) \to B
+      \mu : m \to n
+      \\
+      \Gamma \vdash_n t : (A | \mu) \to B
       \\
       \Gamma \vdash_n s : A
     }
