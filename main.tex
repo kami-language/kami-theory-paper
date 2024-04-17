@@ -13,9 +13,8 @@
 \usepackage{mathpartir}
 \usepackage[numbers]{natbib}
 \usepackage{stmaryrd}
-\usepackage[hyphens]{url}
 \usepackage{tikz}
-\usepackage{wasysym}
+\usepackage[hyphens]{url}
 \usepackage{xcolor}
 
 % use microtype for advanced typography
@@ -53,19 +52,14 @@
 \newtheorem{corollary}{Corollary}
 \newtheorem{conjecture}{Conjecture}
 
-\renewcommand{\circle}{\mathchoice%
-{\tikz[baseline={([yshift=-.78ex]current bounding box.center)}]%
-  {\node[circle,inner sep=0.4,outer sep=0,draw]%
-    {$\displaystyle \phantom{o}$}}}%
-{\tikz[baseline={([yshift=-.78ex]current bounding box.center)}]%
-  {\node[circle,inner sep=0.4,outer sep=0,draw]%
-    {$\textstyle \phantom{o}$}}}%
-{\tikz[baseline={([yshift=-.78ex]current bounding box.center)}]%
-  {\node[circle,inner sep=0.4,outer sep=0,draw]%
-    {$\scriptstyle \phantom{o}$}}}%
-{\tikz[baseline={([yshift=-.78ex]current bounding box.center)}]%
-  {\node[circle,inner sep=0.4,outer sep=0,draw]%
-    {$\scriptscriptstyle \phantom{o}$}}}}%
+\renewcommand{\square}%
+  {\tikz{\draw (0,0) rectangle (0.2cm,0.2cm);}}
+
+\renewcommand{\circle}%
+  {\tikz{\draw (0,0) circle [radius=0.1cm];}}
+
+\renewcommand{\triangle}%
+  {\tikz{\draw (0,0) -- (0.2cm,0) -- (0.1cm,0.2cm) -- (0,0);}}
 
 \newcommand{\primitive}[1]{\textsf{\textbf{#1}}}
 \newcommand{\MTTM}{MTT${}_{\mathcal{M}}$}
@@ -308,20 +302,16 @@ Terms of \MTTM{} (figure \ref{fig:mtt_term}) differ from terms of STLC as
 follows:
 \begin{itemize}
 \item
-  There are new terms for introduction and elimination of modal types. The
-  introduction rule \textsc{Mod-Intro} enforces that terms of a modal type
+  There are additional terms for introduction and elimination of modal type.
+  The introduction rule \textsc{Mod-Intro} enforces that terms of a modal type
   $\langle A | \mu \rangle$ may only depend on variables that are themselves
   under the $\mu$ modality. The elimination rule \textsc{Mod-Elim} allows us to
   assume $x : (A|\mu)$ in order to eliminate a value of such a modal type.
 \item
-  The function type introduction rule \textsc{Fun-Intro} preserves the
-  additional modality by putting it into the context, alongside the new
-  variables' type.
+  The terms for introduction and elimination of function type reflect that the
+  type is endowed with an additional modality.
 \item
-  The function type elimination rule \textsc{Fun-Intro} deals with its modality
-  annotation by restricting the context with it.
-\item
-  All other terms are mode-local and all occuring modalities are required to be
+  All other terms are mode-local and any modalities that occur in the terms are
   identities.
 \end{itemize}
 
@@ -467,9 +457,9 @@ is defined as follows:
   computations to be referenced locally.
 \item
   For each location $u \in \textrm{Loc}_\rho$, a transformation
-  $\textsf{quote}_u : \textsf{id}_\triangle \Rightarrow ({}@ u ; \square)$.
-  This transformation allows a process to quote a local term to be evaluated
-  by an arbitrary role $u$. It happens in local mode ($\triangle$) and its
+  $\textsf{quote}_u : \textsf{id}_{\triangle} \Rightarrow ({}@ u ; \square)$.
+  This transformation allows a process to quote a local term to be evaluated by
+  an arbitrary role $u$. It happens in local mode ($\triangle$) and its
   interpretation involves no communication.
 \item
   For each location $v \in \textrm{Loc}_\rho$, a transformation
@@ -519,8 +509,8 @@ representing it. Its typing and reduction rules are displayed in figure
       \Gamma.(x : A|\textsf{id}_{\circle}) \vdash_m t(x) : B
     }
     {
-      \Gamma \vdash_m \primitive{leteval}_u\ x \leftarrow s \primitive{ in }
-    t(x) : B
+      \Gamma \vdash_m \primitive{leteval}_u\ x \bm{\leftarrow} s
+      \primitive{ in } t(x) : B
     }
     \\
     \inferrule*[Lab=Let-Eval-$\beta$]
@@ -528,12 +518,13 @@ representing it. Its typing and reduction rules are displayed in figure
       \textrm{ }
     }
     {
-      \Gamma \vdash_m \primitive{leteval}_u\ x \leftarrow s \primitive{ in }
-      t(x) \rightsquigarrow \Gamma \vdash_m \primitive{letmod } y \leftarrow s
-      \primitive{ in } t(x) [ y^{\textsf{eval}_u} / x ]
+      \Gamma \vdash_m \primitive{leteval}_u\ x \bm{\leftarrow} s
+      \primitive{ in } t(x) \ \Longrightarrow\  \Gamma \vdash_m
+      \primitive{letmod } y \bm{\leftarrow} s \primitive{ in } t(x)
+      [ y^{\textsf{eval}_u} / x ]
     }
   \end{mathpar}
-  \caption{Typing and reduction rule for deferred transformations.}
+  \caption{Typing and reduction rules for deferred transformations}
   \label{fig:mtt_leteval}
 \end{figure}
 
@@ -541,12 +532,12 @@ representing it. Its typing and reduction rules are displayed in figure
   Let Chor${}_{\textrm{MTT}}$ be the type theory obtained by:
   \begin{enumerate}
   \item
-    Initializing simply typed MTT with $\mathcal{M}^{\rho}_{\textrm{Chor}}$.
+    Instantiating simply typed MTT with $\mathcal{M}^{\rho}_{\textrm{Chor}}$.
   \item
     Extending it with the \textsc{Let-Eval} rule.
   \item
-    Restricting the reduction relation analogously how Chor$\lambda$ restricts
-    the reduction relation of STLC.
+    Restricting the reduction relation analogously to how Chor$\lambda$
+    restricts the reduction relation of STLC.
   \end{enumerate}
 \end{definition}
 
@@ -567,12 +558,12 @@ $\textsf{eval}$.
   In \ChorMTT, we can define a function $\textsf{com}_{A,u,v} : \langle A | @u
   \rangle \to \langle A | @v \rangle$ for each local type $A$ and pair of
   locations $u,v$.
-  \begin{align*}\setlength{\jot}{0.5ex}
-    \textsf{com}_{A,u,v}\ a =
-    \ & \primitive{letmod}\ a_1 \leftarrow a\\
-      & \primitive{leteval}_u\ a_2 \leftarrow
-          \primitive{mod}\ a_1^{\textsf{quote}_v * \textsf{id}_{@u}}\\
-      & \primitive{in}\ \primitive{mod}\ a_2^{\textsf{id}}
+  \begin{align*}
+    \textsf{com}_{A,u,v}\ x =
+    \ & \primitive{letmod } y \bm{\leftarrow} x\\[-3pt]
+      & \primitive{leteval}_u\ z \bm{\leftarrow} \primitive{mod }
+        y^{\textsf{quote}_v \,\circledast\, \textsf{id}_{@u}}\\[-3pt]
+      & \primitive{in } \primitive{mod } z^{\textsf{id}}
   \end{align*}
 \end{example}
 \noindent
