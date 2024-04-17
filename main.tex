@@ -483,7 +483,7 @@ is defined as follows:
   a transformation $\tau_{u,v} : @u \Rightarrow @v$ by composing
   {\upshape$\textsf{quote}_v$} and {\upshape$\textsf{eval}_u$}. Additionally, a
   process communicating with itself is equal to the identity transformation
-  {\upshape$\tau_{u,u} = \textsf{id}_u$}.
+  {\upshape$\tau_{u,u} = \textsf{id}_{@u}$}.
 \end{corollary}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -643,7 +643,7 @@ type theory of Kami can be interpreted in them.
   \item
     For each transformation $\alpha : \mu \Rightarrow \nu \in \mathcal{M}$, a
     natural transformation $\tau_\alpha : \iota_m \circ G(\mu) \Rightarrow
-    \iota_m \circ G(\nu)$ in the target category. % TODO: \circ probably needs to be changed to \fatsemi; check this
+    \iota_m \circ G(\nu)$ in the target category.
   \end{enumerate}
 \end{definition}
 \noindent
@@ -670,7 +670,11 @@ properly express these arrows, we need the following definition:
   Let $i\in\rho$ be a role, define
   \begin{align*}
     \delta_i({-}) : \textbf{STLC} &\to \textbf{STLC}^\rho \\
-    X &\mapsto j \mapsto \begin{cases}j = i \implies &X\\j \neq i \implies &1 \end{cases}
+    X &\mapsto j \mapsto
+    \begin{cases}
+      j = i \implies &X\\
+      j \neq i \implies &1
+    \end{cases}
   \end{align*}
   to be the function mapping an object $X \in \textbf{STLC}$ to a family
   $X_j$, whose $i$th component is $X$, and all other components are the
