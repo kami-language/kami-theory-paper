@@ -572,9 +572,9 @@ order and an additional rewriting relation that allows for independent
 processes to evaluate their terms independently.
 
 The expressivity of Chor$\lambda$ arises from the two primitives involved in
-process interaction: $\primitive{com}$ and $\primitive{select}$. Communication
-is easily reproduced in \ChorMTT{} by using $\textsf{quote}$ and
-$\textsf{eval}$.
+process interaction: $\primitive{com}$ for communication, and
+$\primitive{select}$ for selection. We recover communication in the following
+way:
 \begin{example}
   In \ChorMTT, we can define a function $\textsf{com}_{A,u,v} : \langle A | @u
   \rangle \to \langle A | @v \rangle$ for each local type $A$ and pair of
@@ -588,7 +588,7 @@ $\textsf{eval}$.
   \end{align*}
 \end{example}
 \noindent
-Selection in Chor$\lambda$ works as follows: a process at role $r$ chooses its
+Selection in Chor$\lambda$ works as follows: A process at role $r$ chooses its
 future behaviour based on locally available data and afterwards communicates
 its choice using \primitive{select} statements to those processes that need to
 be aware of this choice. In \ChorMTT{} the same functionality is available, but
