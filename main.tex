@@ -199,12 +199,12 @@ to a simply typed fragment of MTT.
     }
     {A + B \in \textsf{Type}_m}
   \end{mathpar}
-  \caption{Well moded types of \MTTM{}}
+  \caption{Types of \MTTM{}}
   \label{fig:mtt_type}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection*{Well moded types}
+\subsubsection*{Types}
 Types of \MTTM{} (figure \ref{fig:mtt_type}) mirror the standard types of STLC,
 with the following differences:
 \begin{itemize}
@@ -247,27 +247,27 @@ with the following differences:
     }
     {\Gamma.\{\mu\} \in \textsf{Ctx}_m}
   \end{mathpar}
-  \caption{Well moded contexts of \MTTM{}}
+  \caption{Contexts of \MTTM{}}
   \label{fig:mtt_ctx}
 \end{figure}
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection*{Well moded contexts}
+\subsubsection*{Contexts}
 Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined as follows:
 \begin{itemize}
 \item
   The empty context rule \textsc{Ctx-Empty}.
 \item
-  The context extension rule \textsc{Ctx-Ext} says that all assumptions in a
-  context $\Gamma \in \textsf{Ctx}_m$ must exist at a mode $m$, but they may
-  originate at a different mode $n$ by way of a modality $\mu : n \to m$. This
-  means that an assumption in a context $\Gamma$ is of the form $(A | \mu) \in
-  \Gamma$, where $A$ is a type, $n$ is an arbitrary mode, and $\mu : n \to m$
-  is a modality that brings the assumption into mode $m$. If the assumption
-  originates at the current mode, then $\mu = \textsf{id}_m : m \to m$.
+  The context extension rule \textsc{Ctx-Ext} says that all types in a context
+  $\Gamma \in \textsf{Ctx}_m$ must exist at a mode $m$, but they may originate
+  at a different mode $n$ by way of a modality $\mu : n \to m$. This means that
+  an assumption in a context $\Gamma$ is of the form $(A | \mu) \in \Gamma$,
+  where $A$ is a type, $n$ is an arbitrary mode, and $\mu : n \to m$ is a
+  modality that brings the assumption into mode $m$. If the type originates at
+  the current mode, then $\mu = \textsf{id}_m : m \to m$.
 \item
   The context restriction rule \textsc{Ctx-Restr} allows us to restrict the use
-  of assumptions to those under a particular modality. That is, starting with a
+  of types to those under a particular modality. That is, starting with a
   context $\Gamma \in \textsf{Ctx}_n$ and a pair of modalities $\mu, \nu : m
   \to n$, the restricted context $\Gamma.\{\nu\}\in\textsf{Ctx}_m$ only allows
   referring to the assumption $(A | \mu) \in \Gamma$ given a transformation
@@ -292,12 +292,12 @@ Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined as follows:
     {x:(A|\mu) \in_{\nu} \Gamma}
     {x:(A|\mu) \in_{\eta \fatsemi \nu} \Gamma.\{\eta\}}
   \end{mathpar}
-  \caption{Well typed variables (de Bruijn indices) of \MTTM{}}
+  \caption{Variables (de Bruijn indices) of \MTTM{}}
   \label{fig:mtt_var}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection*{Well typed terms}
+\subsubsection*{Terms}
 Terms of \MTTM{} (figure \ref{fig:mtt_term}) differ from terms of STLC as
 follows:
 \begin{itemize}
@@ -336,16 +336,16 @@ follows:
     {
       \Gamma \vdash_m s : \langle A | \mu \rangle
       \\
-      \Gamma.(x : A|\mu) \vdash_m t(x) : B
+      \Gamma.(x : A|\mu) \vdash_m t : B
     }
     {
       \Gamma \vdash_m \primitive{letmod } x \bm{\leftarrow} s \primitive{ in }
-        t(x) : B
+        t : B
     }
     \\
     \inferrule*[Lab=Fun-Intro]
-    {\Gamma.(x : A|\mu) \vdash_n t(x) : B}
-    {\Gamma \vdash_n \bm{\lambda\,} x \bm{\,.\,} t(x) : (A | \mu) \to B}
+    {\Gamma.(x : A|\mu) \vdash_n t : B}
+    {\Gamma \vdash_n \bm{\lambda\,} x \bm{\,.\,} t : (A | \mu) \to B}
 
     \inferrule*[Lab=Fun-Elim]
     {
@@ -382,15 +382,16 @@ follows:
     \inferrule*[Lab=Sum-Elim]
     {\Gamma \vdash_m s : A + B
       \\
-      \Gamma.(x : A|\textsf{id}_m) \vdash_m t(x) : C
+      \Gamma.(x : A|\textsf{id}_m) \vdash_m t : C
       \\
-      \Gamma.(y : B|\textsf{id}_m) \vdash_m u(y) : C
+      \Gamma.(y : B|\textsf{id}_m) \vdash_m u : C
     }
-    {\Gamma \vdash_m \primitive{case } s \primitive{ of }
-      \primitive{left } x \bm{\,.\,} t(x) \bm{\,;\,}
-      \primitive{right } y \bm{\,.\,} u(y) : C}
+    {\Gamma \vdash_m \primitive{case } s \primitive{ of}
+      \,\bm{\{}\, \primitive{left } x \bm{\,\mapsto\,} t \bm{\,;\,}
+      \primitive{right } y \bm{\,\mapsto\,} u : C \,\bm{\}}
+    }
   \end{mathpar}
-  \caption{Well typed terms of \MTTM{}}
+  \caption{Terms of \MTTM{}}
   \label{fig:mtt_term}
 \end{figure}
 
@@ -428,11 +429,10 @@ requires the following additional features:
   is known by both roles $r$ and $s$.
 \item
   We need roles to reference data that is about to be sent to other nodes. For
-  this we use a new modality $\square$\footnote{Usually this symbol is
-  pronounced ``box'', but we also refer to it by ``quote''.}, which allows
-  roles to reference global choreographies locally. That is, if $A$ is a global
-  choreography type, then $t : \langle A | \square \rangle$ is a local term,
-  containing a quoted representation of such a choreography.
+  this we use a new modality $\square$, which allows roles to reference global
+  choreographies locally. That is, if $A$ is a global choreography type, then
+  $t : \langle A | \square \rangle$ is a local term, containing a quoted
+  representation of such a choreography.
 \end{enumerate}
 We define our mode theory with $@$ and $\square$ modalities and common
 knowledge locations as follows:
@@ -457,16 +457,17 @@ is defined as follows:
   computations to be referenced locally.
 \item
   For each location $u \in \textrm{Loc}_\rho$, a transformation
-  $\textsf{quote}_u : \textsf{id}_{\triangle} \Rightarrow ({}@ u ; \square)$.
-  This transformation allows a process to quote a local term to be evaluated by
-  an arbitrary role $u$. It happens in local mode ($\triangle$) and its
-  interpretation involves no communication.
+  $\textsf{quote}_u : \textsf{id}_{\triangle} \Rightarrow ({}@ u \fatsemi
+  \square)$. This transformation allows a process to quote a local term to be
+  evaluated by an arbitrary role $u$. It happens in local mode ($\triangle$)
+  and its interpretation involves no communication.
 \item
   For each location $v \in \textrm{Loc}_\rho$, a transformation
-  $\textsf{eval}_v : (\square ; {}@ v) \Rightarrow \textsf{id}_{\circle}$. This
-  transformation is the only one involving communication between roles. It
-  describes that a global choreography, available in quoted form at location
-  $v$, can be scheduled to be executed by all involved roles.
+  $\textsf{eval}_v : (\square \fatsemi {}@ v) \Rightarrow
+  \textsf{id}_{\circle}$. This transformation is the only one involving
+  communication between roles. It describes that a global choreography,
+  available in quoted form at location $v$, can be scheduled to be executed by
+  all involved roles.
 \item
   For each pair of locations $u, v \in \textrm{Loc}_\rho$ with $u \leq v$, a
   transformation $\textsf{narrow}_{u,v} : @u \Rightarrow @v$.
@@ -506,11 +507,11 @@ representing it. Its typing and reduction rules are displayed in figure
     {
       \Gamma \vdash_{\circle} s : \langle A | \square \fatsemi @u \rangle
       \\
-      \Gamma.(x : A|\textsf{id}_{\circle}) \vdash_m t(x) : B
+      \Gamma.(x : A|\textsf{id}_{\circle}) \vdash_m t : B
     }
     {
       \Gamma \vdash_m \primitive{leteval}_u\ x \bm{\leftarrow} s
-      \primitive{ in } t(x) : B
+      \primitive{ in } t : B
     }
     \\
     \inferrule*[Lab=Let-Eval-$\beta$]
@@ -519,8 +520,8 @@ representing it. Its typing and reduction rules are displayed in figure
     }
     {
       \Gamma \vdash_m \primitive{leteval}_u\ x \bm{\leftarrow} s
-      \primitive{ in } t(x) \ \Longrightarrow\  \Gamma \vdash_m
-      \primitive{letmod } y \bm{\leftarrow} s \primitive{ in } t(x)
+      \primitive{ in } t \ \Longrightarrow\  \Gamma \vdash_m
+      \primitive{letmod } y \bm{\leftarrow} s \primitive{ in } t
       [ y^{\textsf{eval}_u} / x ]
     }
   \end{mathpar}
@@ -542,7 +543,7 @@ representing it. Its typing and reduction rules are displayed in figure
 \end{definition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Behavioural semantics and relation with
+\subsection{Informal semantics and relation with
   \texorpdfstring{Chor$\lambda$}{ChorLambda}}
 In order to allow for out-of-order execution of of independent processes, we
 can use the same machinery as Chor$\lambda$: restricting reduction rules to
@@ -709,8 +710,8 @@ follows:
 \vspace{0.5\baselineskip}
 \noindent
 In particular, in this model, only the transformation $\textsf{eval}_v :
-(\square ; {}@ v) \Rightarrow \textsf{id}_{\circle}$ is built up from the
-freely adjoined $\textsf{com}$ arrows, since it is the only one involving
+(\square \fatsemi {}@ v) \Rightarrow \textsf{id}_{\circle}$ is built up from
+the freely adjoined $\textsf{com}$ arrows, since it is the only one involving
 communication. All other transformations are modeled by arrows already existing
 as part of the cartesian closed structure of each processes' individual
 category $\mathcal{C}$.
