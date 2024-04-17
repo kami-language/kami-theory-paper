@@ -338,7 +338,7 @@ follows:
       \\
       \Gamma.\{\mu\} \vdash_m t : A
     }
-    {\Gamma \vdash_n \primitive{mod } t : \langle A | \mu \rangle}
+    {\Gamma \vdash_n \primitive{mod}_\mu\  t : \langle A | \mu \rangle}
     \\
     \inferrule*[Lab=Mod-Elim]
     {
@@ -749,6 +749,19 @@ category $\mathcal{C}$.
 In other words, this gives us a compilation procedure for Kami programs into
 any target language with cartesian closed categorical semantics and synchronous
 communication primitives.
+
+\section*{Acknowledgements}
+The Kami programming language\footnote{\url{https://nlnet.nl/project/Kami/}} has been originally envisioned and preliminary research was
+carried out together with Olivia R\"ohrig. The first author is tremendously
+grateful for countless hours of debating syntax and semantics.
+
+\medskip
+
+This project is
+  funded through NGI Zero Core\footnote{\url{https://nlnet.nl/core}}, a fund
+  established by NLnet with financial support
+  from the European Commission's Next Generation
+  Internet program.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \bibliographystyle{plainnat}
