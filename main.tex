@@ -486,7 +486,7 @@ is defined as follows:
   $\textsf{eval}_u : (\square \fatsemi {}@ u) \Rightarrow
   \textsf{id}_{\circle}$. This transformation is the only one involving
   communication between roles. It describes that a global choreography,
-  available in quoted form at location $u$, can be scheduled to be executed by
+  available in quoted form at location $u$, can be scheduled to be performed by
   all involved roles.
 \item
   For each pair of locations $u, v \in \textrm{Loc}_\rho$ with $u \leq v$, a
@@ -515,10 +515,10 @@ choreographic programming language. The problem is that there is no notion of
 deferred transformations: transformations are always pushed down the syntax
 tree as far as possible and only recorded at the variables. This means that in
 order to control the communication behaviour of terms, we need to introduce a
-dedicated term for not yet executed communications. In our semantics only
-$\textsf{eval}_v$ involves communications, so we simply add a dedicated term
-representing it. Its typing and reduction rules are displayed in figure
-\ref{fig:mtt_leteval}.
+dedicated term for communications that have not been performed yet. In our
+semantics only $\textsf{eval}_v$ involves communications, so we simply add a
+dedicated term representing it. Its typing and reduction rules are displayed in
+figure \ref{fig:mtt_leteval}.
 
 \begin{figure}
   \centering
