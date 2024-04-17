@@ -9,6 +9,7 @@
 \usepackage{amsthm}
 \usepackage{bm}
 \usepackage{enumitem}
+\usepackage{float}
 \usepackage{graphicx}
 \usepackage{mathpartir}
 \usepackage[numbers]{natbib}
@@ -298,31 +299,8 @@ Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined in the following way:
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection*{Terms}
-Terms of \MTTM{} (figure \ref{fig:mtt_term}) differ from terms of STLC as
-follows:
-\begin{itemize}
-\item
-  There are additional terms for introduction and elimination of the modal
-  type. The introduction rule \textsc{Mod-Intro} enforces that terms of a modal
-  type $\langle A | \mu \rangle$ may only depend on variables that are
-  themselves under the $\mu$ modality. The elimination rule \textsc{Mod-Elim}
-  allows us to assume $x : (A|\mu)$ in order to eliminate a value of such a
-  modal type. Note that in the rule there is a second modality $\nu$, called
-  \emph{framing modality}, allowing the assumption $x$ to exist at a different
-  mode than the motive $B$. In case $\nu = \textsf{id}$, we omit it from the
-  term for readability.
-\item
-  The terms for introduction and elimination of the function type reflect that
-  the type is endowed with an additional modality.
-\item
-  All other terms are mode-local and any modalities that occur in the terms are
-  identities.
-\end{itemize}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Terms
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \begin{mathpar}
     \inferrule*[Lab=Var]
@@ -420,6 +398,26 @@ follows:
   \caption{Terms of \MTTM{}}
   \label{fig:mtt_term}
 \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Terms}
+Terms of \MTTM{} (figure \ref{fig:mtt_term}) differ from terms of STLC as
+follows:
+\begin{itemize}
+\item
+  The modality introduction rule \textsc{Mod-Intro} enforces that terms of a
+  modal type $\langle A | \mu \rangle$ may only depend on variables that are
+  themselves under the $\mu$ modality. Values of this type are eliminated using
+  the modality elimination \textsc{Mod-Elim} rule, which allows us to assume
+  $(A | \mu)$. The \emph{framing modality} $\nu$, omitted when possible, allows
+  the type $A$ to exist at a different mode than the motive $B$.
+\item
+  The terms for introduction and elimination of the function type reflect that
+  the type is endowed with an additional modality.
+\item
+  All other terms are mode-local and any modalities that occur in the terms are
+  identities.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Choreographic programming with MTT}
