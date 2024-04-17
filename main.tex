@@ -154,10 +154,9 @@ to a simply typed fragment of MTT.
   follows: For each mode $m \in M$, let $\Gamma\in\textsf{Ctx}_m$, $A \in
   \textsf{Type}_m$, $t \in \textsf{Term}_m$, and $\Gamma \vdash_m t : A$ denote
   the contexts, types, terms, and typing judgements of the $m$th copy of an
-  extension of STLC respectively.
-  
-  The rules of \MTTM{} are displayed in figures \ref{fig:mtt_type},
-  \ref{fig:mtt_ctx}, \ref{fig:mtt_var}, and \ref{fig:mtt_term}.
+  extension of STLC respectively. The rules of \MTTM{} are displayed in figures
+  \ref{fig:mtt_type}, \ref{fig:mtt_ctx}, \ref{fig:mtt_var}, and
+  \ref{fig:mtt_term}.
 \end{definition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -587,7 +586,6 @@ way:
       & \primitive{in } z^{\textsf{id}_{\textsf{id}_{\circle}}}
   \end{align*}
 \end{example}
-\noindent
 Selection in Chor$\lambda$ works as follows: A process at role $r$ chooses its
 future behaviour based on locally available data and afterwards communicates
 its choice using \primitive{select} statements to those processes that need to
@@ -605,22 +603,22 @@ their future behaviour.
     \to (\langle B | @r \rangle \to Z)
     \to Z
   \]
-  Note that since $Z$ is global, a value $z : Z$ is a choreography involving
-  possibly all roles\footnote{For the sake of brevity our mode theory
-  $\mathcal{M}^{\rho}_{\textrm{Chor}}$ as defined in this paper does not track
-  which roles are actually involved in a given term of global type. It can be
-  done though by extending the mode theory with a family of global modes.}. The
-  semantics of $\textsf{choice}$ is: Given the knowledge of $A + B$ at role
-  $r$, a global behaviour $z : Z$ can be chosen for all roles, with the
-  additional knowledge of either the value $a : A$ or $b : B$ at role $r$. The
-  function can be implemented in such a way that only the information regarding
-  which branch is going to be chosen is communicated from $r$ to other
-  processes, the actual value of $a$ or $b$ stays at $r$.
-
-  The interaction of the $\square$ and $@r$ modalities are key to the
-  definition of choice. Gratzer calls a function that allows induction ``from
-  under a modality'' a \emph{crisp induction principle}\cite{gratzer2023syntax}.
 \end{example}
+Note that since $Z$ is global, a value $z : Z$ is a choreography involving
+possibly all roles\footnote{For the sake of brevity our mode theory
+$\mathcal{M}^{\rho}_{\textrm{Chor}}$ as defined in this paper does not track
+which roles are actually involved in a given term of global type. It can be
+done though by extending the mode theory with a family of global modes.}. The
+semantics of $\textsf{choice}$ is: Given the knowledge of $A + B$ at role $r$,
+a global behaviour $z : Z$ can be chosen for all roles, with the additional
+knowledge of either the value $a : A$ or $b : B$ at role $r$. The function can
+be implemented in such a way that only the information regarding which branch
+is going to be chosen is communicated from $r$ to other processes, the actual
+value of $a$ or $b$ stays at $r$.
+
+The interaction of the $\square$ and $@r$ modalities are key to the definition
+of choice. Gratzer calls a function that allows induction ``from under a
+modality'' a \emph{crisp induction principle}\cite{gratzer2023syntax}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Categorical semantics}
@@ -666,14 +664,12 @@ type theory of Kami can be interpreted in them.
     \iota_m \circ G(\nu)$ in the target category.
   \end{enumerate}
 \end{definition}
-\noindent
 Such a covariant model is a special case of a contravariant model in the sense
 of Gratzer; we claim:
 \begin{conjecture}
   A covariant model of MTT$_{\mathcal{M}}$ can be assembled into a
   contravariant model, by freely adjoining context restriction operators.
 \end{conjecture}
-\noindent
 For our concrete use-case, we intend to obtain a covariant model as follows:
 Let $\rho$ be a finite set of roles and let $\textbf{STLC}$ be the syntax
 category of STLC with sum types. Viewing the set $\rho$ as a discrete category,
@@ -708,8 +704,6 @@ properly express these arrows, we need the following definition:
   to be the function mapping a family $(Y_j)_{j\in\rho} \in \textbf{STLC}^\rho$
   to the product of its components.
 \end{definition}
-\vspace{0.5\baselineskip}
-\noindent
 With these definitions in hand, we can represent the type of a hypothetical
 communication operation that communicates a global state $X \in
 \textbf{STLC}^\rho$ from all processes to a single process $i \in \rho$ as
@@ -717,7 +711,6 @@ follows:
 \[
   \textsf{com}_{X,i} : X \to \delta_i([X])
 \]
-\vspace{0.5\baselineskip}
 \begin{definition}
   Let the \emph{category of synchronously interacting processes},
   $\textbf{SyncIntProc}_{\mathcal{C}} = \textbf{STLC}^\rho[\textsf{com}]$ be
@@ -725,14 +718,11 @@ follows:
   freely adjoined arrows of the shape $\textsf{com}_{X,i} : X \to
   \delta_i([X])$ for any $X \in \textbf{STLC}^\rho$ and $i \in \rho$.
 \end{definition}
-\vspace{0.5\baselineskip}
 \begin{theorem}
   Let $\mathcal{C}$ be a cartesian closed category. There is a covariant model
   of MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$ that has
   $\textbf{SyncIntProc}_{\mathcal{C}}$ as its compilation target category.
 \end{theorem}
-\vspace{0.5\baselineskip}
-\noindent
 In particular, in this model, only the transformation $\textsf{eval}_v :
 (\square \fatsemi {}@ v) \Rightarrow \textsf{id}_{\circle}$ is built up from
 the freely adjoined $\textsf{com}$ arrows, since it is the only one involving
@@ -743,8 +733,6 @@ as part of the cartesian closed structure of $\textbf{STLC}^\rho$.
   MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$ to
   $\textbf{SyncIntProc}_{\mathcal{C}}$.
 \end{corollary}
-\vspace{0.5\baselineskip}
-\noindent
 In other words, this gives us a compilation procedure for Kami programs into
 any target language with cartesian closed categorical semantics and synchronous
 communication primitives.
