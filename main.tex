@@ -581,8 +581,8 @@ $\textsf{eval}$.
   locations $u,v$.
   \begin{align*}
     \textsf{com}_{A,u,v}\ x =
-    \ & \primitive{let}\:\primitive{mod}_{@u}\ y \bm{\leftarrow} x\\[-3pt]
-      & \primitive{let}\:\primitive{eval}_u\ z \bm{\leftarrow} \primitive{mod}_{@v}\ (\primitive{mod}_{(\square \fatsemi @u)}\ 
+    \ & \primitive{let}_{\textsf{id}}\:\primitive{mod}_{@u}\ y \bm{\leftarrow} x\\[-3pt]
+      & \primitive{let}_{\textsf{id}}\:\primitive{eval}_u\ z \bm{\leftarrow} \primitive{mod}_{@v}\ (\primitive{mod}_{(\square \fatsemi @u)}\ 
         y^{\textsf{quote}_v \,\circledast\, \textsf{id}_{@u}})\\[-3pt]
       & \primitive{in } z^{\textsf{id}_{\textsf{id}_{\circle}}}
   \end{align*}
