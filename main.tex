@@ -717,8 +717,8 @@ follows:
   \textsf{com}_{X,i} : X \to \delta_i([X])
 \]
 \begin{definition}
-  Let the \emph{category of synchronously interacting processes},
-  $\textbf{SyncIntProc}_{\mathcal{C}} = \textbf{STLC}^\rho[\textsf{com}]$ be
+  Let the \emph{category of synchronously interacting processes}
+  $\textbf{SIP}_{\rho}$ be
   defined as the category $\textbf{STLC}^\rho$ of independent processes with
   freely adjoined arrows of the shape $\textsf{com}_{X,i} : X \to
   \delta_i([X])$ for any $X \in \textbf{STLC}^\rho$ and $i \in \rho$.
@@ -726,7 +726,7 @@ follows:
 \begin{theorem}
   Let {\upshape$\mathcal{C}$} be a cartesian closed category. There is a covariant model
   of {\upshape MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$} that has
-  {\upshape$\textbf{SyncIntProc}_{\mathcal{C}}$} as its compilation target category.
+  {\upshape$\textbf{SIP}_{\rho}$} as its compilation target category.
 \end{theorem}
 In particular, in this model, only the transformation $\textsf{eval}_v :
 (\square \fatsemi {}@ v) \Rightarrow \textsf{id}_{\circle}$ is built up from
@@ -736,7 +736,7 @@ as part of the cartesian closed structure of $\textbf{STLC}^\rho$.
 \begin{corollary}
   There is a translation function from the syntax category of
   {\upshape MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$} to
-  {\upshape$\textbf{SyncIntProc}_{\mathcal{C}}$}.
+  {\upshape$\textbf{SIP}_{\rho}$}.
 \end{corollary}
 In other words, this gives us a compilation procedure for Kami programs into
 any target language with cartesian closed categorical semantics and synchronous
