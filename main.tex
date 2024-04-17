@@ -420,8 +420,8 @@ availability: When constructing a term of type $\langle A | \mu \rangle$, only
 variables that are themselves under a $\mu$ modality can be used. This leads us
 naturally to the idea that we can use MTT for a distributed system with a set
 of participating roles $\rho$ by introducing modalities $@r$ for each role $r
-\in \rho$. The type $\langle A | @r \rangle$ then is interpreted as ``data of
-type $A$, located at role $r$''.
+\in \rho$. The type $\langle A | @r \rangle$ then is interpreted as data of
+type $A$, located at role $r$.
 
 The second feature of MTT is that transformations between modalities can be
 introduced in a controlled way. In order to allow a term at role $r$ to be
@@ -440,11 +440,11 @@ used to notify other roles about decisions that happened locally at node $r$,
 requires the following additional features:
 \begin{enumerate}
 \item
-  We need modalities expressing the fact that some data is ``common knowledge''
-  of multiple roles. We do so by allowing arbitrary conjunctions $r_1 \land
-  \ldots \land r_k$ in the modality. For example, the type $\langle \mathbb{N}
-  | @(r\land s) \rangle$ expresses the fact that there is a natural number that
-  is known by both roles $r$ and $s$.
+  We need modalities expressing the fact that some data is common knowledge
+  between multiple roles. We do so by allowing arbitrary conjunctions $r_1
+  \land \ldots \land r_k$ in the modality. For example, the type $\langle
+  \mathbb{N} | @(r\land s) \rangle$ expresses the fact that there is a natural
+  number that is known by both roles $r$ and $s$.
 \item
   We need roles to reference data that is about to be sent to other nodes. For
   this we use a new modality $\square$, which allows roles to reference global
