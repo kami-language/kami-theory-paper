@@ -584,7 +584,7 @@ $\textsf{eval}$.
     \ & \primitive{letmod } y \bm{\leftarrow} x\\[-3pt]
       & \primitive{leteval}_u\ z \bm{\leftarrow} \primitive{mod }
         y^{\textsf{quote}_v \,\circledast\, \textsf{id}_{@u}}\\[-3pt]
-      & \primitive{in } \primitive{mod } z^{\textsf{id}}
+      & \primitive{in } \primitive{mod } z^{\textsf{id}_{@u}}
   \end{align*}
 \end{example}
 \noindent
