@@ -670,7 +670,7 @@ type theory of Kami can be interpreted in them.
 Such a covariant model is a special case of a contravariant model in the sense
 of Gratzer; we claim:
 \begin{conjecture}
-  A covariant model of MTT$_{\mathcal{M}}$ can be assembled into a
+  A covariant model of {\upshape MTT$_{\mathcal{M}}$} can be assembled into a
   contravariant model, by freely adjoining context restriction operators.
 \end{conjecture}
 For our concrete use-case, we intend to obtain a covariant model as follows:
@@ -724,9 +724,9 @@ follows:
   \delta_i([X])$ for any $X \in \textbf{STLC}^\rho$ and $i \in \rho$.
 \end{definition}
 \begin{theorem}
-  Let $\mathcal{C}$ be a cartesian closed category. There is a covariant model
-  of MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$ that has
-  $\textbf{SyncIntProc}_{\mathcal{C}}$ as its compilation target category.
+  Let {\upshape$\mathcal{C}$} be a cartesian closed category. There is a covariant model
+  of {\upshape MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$} that has
+  {\upshape$\textbf{SyncIntProc}_{\mathcal{C}}$} as its compilation target category.
 \end{theorem}
 In particular, in this model, only the transformation $\textsf{eval}_v :
 (\square \fatsemi {}@ v) \Rightarrow \textsf{id}_{\circle}$ is built up from
@@ -735,8 +735,8 @@ communication. All other transformations are modeled by arrows already existing
 as part of the cartesian closed structure of $\textbf{STLC}^\rho$.
 \begin{corollary}
   There is a translation function from the syntax category of
-  MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$ to
-  $\textbf{SyncIntProc}_{\mathcal{C}}$.
+  {\upshape MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$} to
+  {\upshape$\textbf{SyncIntProc}_{\mathcal{C}}$}.
 \end{corollary}
 In other words, this gives us a compilation procedure for Kami programs into
 any target language with cartesian closed categorical semantics and synchronous
