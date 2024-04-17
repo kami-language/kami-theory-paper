@@ -252,7 +252,7 @@ with the following differences:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Contexts}
-Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined as follows:
+Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined in the following way:
 \begin{itemize}
 \item
   The empty context rule \textsc{Ctx-Empty}.
@@ -517,12 +517,13 @@ Our mode theory expresses the interactions between participating roles in a
 distributed system, but standard MTT instantiated with
 $\mathcal{M}^{\rho}_{\textrm{Chor}}$ is not suitable to be used as a
 choreographic programming language. The problem is that MTT has no notion of
-deferred transformations: transformations are always pushed down the syntax
-tree as far as possible, and only recorded at the variables. This means that in
-order to control the communication behaviour of terms, we need to introduce a
-dedicated term for communications that have not been performed yet. In our
-semantics only $\textsf{eval}_v$ involves communications, so the only rule we
-need to add is \textsc{Let-Eval} (figure \ref{fig:mtt_leteval}).
+\emph{deferred transformations,} because transformations are always pushed down
+the syntax tree as far as possible, and only recorded at the variables. This
+means that in order to control the communication behaviour of terms, we need to
+introduce a dedicated term for communications that have not been performed yet.
+
+In our semantics, only $\textsf{eval}_v$ involves communications, so the only
+rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt_leteval}).
 
 % Let-Eval
 \begin{figure}[h]
@@ -615,8 +616,8 @@ their future behaviour.
     \to Z
   \]
 \end{example}
-Note that since $Z$ is global, a value $z : Z$ is a choreography involving
-possibly all roles.\footnote{For the sake of brevity our mode theory
+Note that since $Z$ is global, a value $z : Z$ is a choreography potentially
+involving all roles.\footnote{For the sake of brevity our mode theory
 $\mathcal{M}^{\rho}_{\textrm{Chor}}$ as defined in this paper does not track
 which roles are actually involved in a given term of global type. It can be
 done though by extending the mode theory with a family of global modes.} The
@@ -628,8 +629,8 @@ is going to be chosen is communicated from $r$ to other processes, the actual
 value of $a$ or $b$ stays at $r$.
 
 The interaction of the $\square$ and $@r$ modalities are key to the definition
-of choice. Gratzer calls a function that allows induction ``from under a
-modality'' a \emph{crisp induction principle}\cite{gratzer2023syntax}.
+of \textsf{choice}. Gratzer refers to functions that allow induction ``from
+under a modality'' as \emph{crisp induction principles}\cite{gratzer2023syntax}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Categorical semantics}
@@ -647,8 +648,8 @@ $M_\mu$ are adjoint in an appropriate sense.\footnote{In the dependently
   case.}
 
 While such a generic Model of MTT is required for Gratzer's goals, our intended
-semantics, in particular the fact that we want to compile Kami programs into
-real-world executables leads us to considering a less general, but more
+semantics and in particular, the fact that we want to compile Kami programs
+into real-world executables, leads us to consider a less general, but more
 specifically useful class of models.
 
 In the following we give the definition of our special class of models and
@@ -676,7 +677,7 @@ type theory of Kami can be interpreted in them.
   \end{enumerate}
 \end{definition}
 Such a covariant model is a special case of a contravariant model in the sense
-of Gratzer; we claim:
+of Gratzer.  Specifically, we claim that:
 \begin{conjecture}
   A covariant model of {\upshape MTT$_{\mathcal{M}}$} can be assembled into a
   contravariant model, by freely adjoining context restriction operators.
@@ -692,7 +693,7 @@ $(\sigma_i : \Gamma_i \to \Delta_i)_{i\in\rho}$. The intuition is that
 $\textbf{STLC}^\rho$ describes the category of $\rho$ processes running
 independently of each other, with no way to interact.
 
-Next, we freely adjoin arrows axiomatizing synchronous communication between
+Next, we freely adjoin arrows that axiomatize synchronous communication between
 the processes. To properly express these arrows, we need the following
 definition:
 \begin{definition}
