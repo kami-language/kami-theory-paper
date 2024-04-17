@@ -523,9 +523,11 @@ representing it. Its typing and reduction rules are displayed in figure
   \begin{mathpar}
     \inferrule*[Lab=Let-Eval]
     {
-      \Gamma \vdash_{\circle} s : \langle A | \square \fatsemi @u \rangle
+      \mu : \circle \to m
       \\
-      \Gamma.(x : A|\textsf{id}_{\circle}) \vdash_m t : B
+      \Gamma .\{\mu\} \vdash_{\circle} s : \langle A | \square \fatsemi @u \rangle
+      \\
+      \Gamma.(x : A|\mu) \vdash_m t : B
     }
     {
       \Gamma \vdash_m \primitive{leteval}_u\ x \bm{\leftarrow} s
