@@ -98,40 +98,38 @@
 \begin{abstract}
   \noindent
   We present Kami, a programming language for distributed systems based on
-  Modal Type Theory\cite{gratzer2023syntax}. In particular, we describe a mode
-  theory that is suitable for distributed programming, and show how the
-  primitives of Chor$\lambda$\cite{cruz2022functional}, a choreographic
-  programming language, can be recovered in Kami. Finally, we sketch a
-  categorical semantics that gives rise to a generic compilation procedure for
-  Kami.
+  Modal Type Theory. In particular, we describe a mode theory that is suitable
+  for distributed programming, and show how the primitives of Chor$\lambda$, a
+  choreographic programming language, can be recovered in Kami. Finally, we
+  sketch a categorical semantics that gives rise to a generic compilation
+  procedure for Kami.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 Modalities provide a way to extend a type theory with domain-specific type
-constructors, which can be used to track runtime properties of code directly in
-the type system. For example, modalities have been used to represent
-unevaluated code for metaprogramming\cite{bak2020self} and staged
+constructors, which can be used to track runtime properties of programs
+directly in the type system. For example, modalities have been used to
+represent unevaluated programs for metaprogramming\cite{bak2020self} and staged
 computation\cite{davies2001modal}, and to encode the notion of location in
 ML5\cite{murphy2008modal}, a language for distributed systems. In fact, the
 \texttt{at} modality of ML5 serves the same purpose as the location annotations
-in choreographic programming languages\cite{cruz2022functional,
-giallorenzo2024choral}, and it stands to reason that existing research on
-modalities could provide some stepping stones for the design of type systems
-for choreographic programming languages.
+in choreographic programming languages\cite{giallorenzo2024choral}, and it
+stands to reason that existing research on modalities could provide a stepping
+stone for the design of type systems for such languages.
 
 In this paper, we explore how Chor$\lambda$\cite{cruz2022functional}, a
 functional choreographic programming language, can be based on top of a simply
-typed lambda calculus (STLC) with modalities, a variant of Modal Type
-Theory\cite{gratzer2023syntax}. This requires the introduction of two new
-concepts: common knowledge between multiple participants, and the representation
-of global choreographies as values local to individual participants.
+typed lambda calculus with modalities, a variant of Modal Type
+Theory\cite{gratzer2023syntax}. This requires introducing two new concepts:
+common knowledge between multiple participants, and the representation of
+global choreographies as values local to individual participants.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Preliminaries}
 \subsection{\texorpdfstring{Chor$\lambda$}{ChorLambda}}
-Chor$\lambda$\cite{cruz2022functional} is a functional choreographic
-programming language introduced by Cruz-Filipe et~al., and extends STLC with
+Chor$\lambda$ is a functional choreographic programming language introduced by
+Cruz-Filipe et~al., and extends the simply typed lambda calculus (STLC) with
 location annotations. For example, $t : \textsf{Bool} @ r$ means that $t$
 evaluates to a value of type \textsf{Bool} located at role $r$. The language
 has two communication primitives: \primitive{com} for communicating data, and
@@ -139,12 +137,11 @@ has two communication primitives: \primitive{com} for communicating data, and
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Simply typed modal type theory}
-Modal Type Theory (MTT)\cite{gratzer2023syntax}, introduced by Gratzer in his
-PhD thesis, is a framework for constructing modal type theories, with
-Martin-L\"{of} type theory at its core. The framework is parametrized by a
-system of modalities specified in the form of a \emph{mode theory}. MTT
-includes so-called ``full-spectrum'' dependent types, but we restrict ourselves
-to a simply typed fragment of MTT.
+Modal Type Theory (MTT), introduced by Gratzer in his PhD thesis, is a
+framework for constructing modal type theories, with Martin-L\"{of} type theory
+at its core. The framework is parametrized by a system of modalities specified
+in the form of a \emph{mode theory}. MTT includes so-called ``full-spectrum''
+dependent types, but we restrict ourselves to a simply typed fragment of MTT.
 \begin{definition}[{\cite[Chapter 6.1.1]{gratzer2023syntax}}]
   A \emph{mode theory} is given by the following data:
   \begin{itemize}
@@ -154,17 +151,17 @@ to a simply typed fragment of MTT.
   \item
     For each pair of modes $m, n \in M$, a set $m \to n$ of \emph{modalities}
     between the modes. A modality $\mu : m \to n$ allows us to use types and
-    terms of mode $m$ in mode $n$. There might be multiple distinct modalities
+    terms of mode $m$ in mode $n$. There may be multiple distinct modalities
     $\mu , \nu : m \to n$.
   \item
     For every pair of modalities $\mu, \nu \in m \to n$ with matching domains
     and codomains, a set $\mu \Rightarrow \nu$ of \emph{transformations}
     between the modalities. A transformation $\alpha : \mu \Rightarrow \nu$
     allows us to convert types and terms from under the modality $\mu$ to under
-    the modality $\nu$. There might be multiple distinct transformations
-    $\alpha, \beta : \mu \Rightarrow \nu$.
+    the modality $\nu$. There may be multiple distinct transformations $\alpha,
+    \beta : \mu \Rightarrow \nu$.
   \end{itemize}
-  Concretely, this data forms a 2-category, in the sense that identity
+  Concretely, these data form a 2-category, in the sense that identity
   modalities (of type $\textsf{id}_m : m \to m$) and identity transformations
   (of type $\textsf{id}_\mu : \mu \Rightarrow \mu $) exist, modalities and
   transformations can be composed (denoted by $\mu \fatsemi \nu$ and $\alpha
@@ -444,7 +441,7 @@ follows:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Choreographic programming with MTT}
-The first, essential feature of modalities in MTT is that they restrict code
+The first, essential feature of modalities in MTT is that they restrict program
 availability: When constructing a term of type $\langle A | \mu \rangle$, only
 variables that are themselves under a $\mu$ modality can be used. This leads us
 naturally to the idea that we can use MTT for a distributed system with a set
@@ -456,7 +453,7 @@ The second feature of MTT is that transformations between modalities can be
 introduced in a controlled way. In order to allow a term at role $r$ to be
 transformed into a term at role $s$, we must introduce a transformation
 $\tau_{r,s} : @r \Rightarrow @s$ between the corresponding modalities. These
-transformations can be chosen freely: we might disallow communications between
+transformations can be chosen freely: we may disallow communications between
 some roles and include multiple channels between some others.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -468,14 +465,14 @@ used to notify other roles about decisions that happened locally at role $r$,
 requires the following additional features:
 \begin{enumerate}
 \item
-  We need modalities expressing the fact that some data is common knowledge
+  We need modalities expressing the fact that some data are common knowledge
   between multiple roles. We do so by allowing arbitrary conjunctions $r_1
   \land \ldots \land r_k$ in the modality. For example, the type $\langle
   \mathbb{N} | @(r\land s) \rangle$ expresses the fact that there is a natural
   number that is known by both roles $r$ and $s$.
 \item
-  We need roles to reference data that is about to be sent to other roles. For
-  this we use a new modality $\square$, which allows roles to reference global
+  We need roles to reference data that are about to be sent to other roles. For
+  this, we use a new modality $\square$, which allows roles to reference global
   choreographies locally. That is, if $A$ is a global choreography type, then
   $t : \langle A | \square \rangle$ is a local term, containing a quoted
   representation of such a choreography.
@@ -490,9 +487,9 @@ is defined as follows:
 \item
   There are two modes: $\circle$ and $\triangle$. The global mode $\circle$
   represents the global perspective on a choreography, encompassing
-  computations and data occurring at all roles. The local mode $\triangle$
-  represents the perspective of a single location (which might be the
-  conjunction of multiple roles) participating in the choreography.
+  computations and data that occur at all roles. The local mode $\triangle$
+  represents the perspective of a single location (which may be the conjunction
+  of multiple roles) participating in the choreography.
 \item
   For each location $u \in \textrm{Loc}_\rho$ there is a modality $@u :
   \triangle \to \circle$. Each of these modalities represents a different way
@@ -604,7 +601,7 @@ processes to evaluate their terms independently.
 The expressivity of Chor$\lambda$ arises from the two primitives involved in
 process interaction: $\primitive{com}$ and $\primitive{select}$. Communicating
 data is done using $\primitive{com}$, and can be recovered in \ChorMTT{} using
-the \textsc{Let-Eval} rule.
+the \textsc{Let-Eval} rule in the following way:
 \begin{example}
   Define a function $\textsf{com}_{A,u,v} : \langle A | @u
   \rangle \to \langle A | @v \rangle$ for each local type $A$ and pair of
@@ -624,12 +621,12 @@ behaviour based on locally available data, and afterwards communicates its
 choice using \primitive{select} statements to those processes that need to be
 aware of this choice. In \ChorMTT{}, the same functionality is available, but
 must be stated in reverse order. First, the required data for choosing future
-behaviour is communicated from $r$ to all roles that need to be aware of this
+behaviour are communicated from $r$ to all roles that need to be aware of this
 choice. After receiving the data, all relevant processes synchronously decide
 their future behaviour.
 \begin{example}
   Let $A, B$ be local types, and $Z$ a global type. A function of the following
-  type can be derived in \ChorMTT:
+  type can be defined in \ChorMTT:
   \[
     \textsf{choice}_{A,B,Z,r} : \langle A + B | @r \rangle
     \to (\langle A | @r \rangle \to Z)
@@ -651,7 +648,8 @@ the actual value of $a$ or $b$ stays at $r$.
 
 The interaction of the $\square$ and $@r$ modalities are key to the definition
 of \textsf{choice}. Gratzer refers to functions that allow induction ``from
-under a modality'' as \emph{crisp induction principles}\cite{gratzer2023syntax}.
+under a modality'' as \emph{crisp induction principles}\cite[Section
+6.3.1]{gratzer2023syntax}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Categorical semantics}
