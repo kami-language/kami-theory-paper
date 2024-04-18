@@ -134,7 +134,7 @@ Chor$\lambda$\cite{cruz2022functional} is a functional choreographic
 programming language introduced by Cruz-Filipe et~al., and extends STLC with
 location annotations. For example, $t : \textsf{Bool} @ r$ means that $t$
 evaluates to a value of type \textsf{Bool} located at role $r$. The language
-has two communication primitives: \primitive{com} for communicating data and
+has two communication primitives: \primitive{com} for communicating data, and
 \primitive{select} for communicating choice of branching.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -437,8 +437,8 @@ follows:
   The terms for introduction and elimination of the function type reflect that
   the type is endowed with an additional modality.
 \item
-  All other terms are mode-local and any modalities that occur in the terms are
-  identities.
+  All other terms are mode-local, and any modalities that occur in the terms
+  are identities.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -504,7 +504,7 @@ is defined as follows:
   For each location $v \in \textrm{Loc}_\rho$, a transformation
   $\textsf{quote}_v : \textsf{id}_{\triangle} \Rightarrow ({}@ v \fatsemi
   \square)$. This transformation allows a role to quote a local term to be
-  evaluated by an arbitrary role $v$. It happens in local mode ($\triangle$)
+  evaluated by an arbitrary role $v$. It happens in local mode $\triangle$,
   and its interpretation involves no communication.
 \item
   For each location $u \in \textrm{Loc}_\rho$, a transformation
@@ -619,7 +619,7 @@ the \textsc{Let-Eval} rule.
 \end{example}
 In Chor$\lambda$, $\primitive{select}$ is used to communicate choice of
 branching. This works as follows: A process at role $r$ chooses its future
-behaviour based on locally available data and afterwards communicates its
+behaviour based on locally available data, and afterwards communicates its
 choice using \primitive{select} statements to those processes that need to be
 aware of this choice. In \ChorMTT{}, the same functionality is available, but
 has to be stated in reverse order. First, the required data for choosing future
@@ -672,7 +672,7 @@ semantics and in particular, the fact that we want to compile Kami programs
 into real-world executables, leads us to consider a less general, but more
 specifically useful class of models.
 
-In the following we give the definition of our special class of models and
+In the following we give the definition of our special class of models, and
 sketch how MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$, i.e., the underlying
 type theory of Kami can be interpreted in them.
 \begin{definition}
@@ -685,7 +685,7 @@ type theory of Kami can be interpreted in them.
     Closure of $\mathcal{C}$ under all type and term formers of MTT.
   \item
     A (covariant) 1-functor $G : \mathcal{M} \to \textbf{Cat}$ modeling the
-    semantics of individual modes, and the modal types between them.
+    semantics of individual modes and the modal types between them.
   \item
     A family of 1-functors $\iota_m : G(m) \to \mathcal{C}$, where $m \in
     \mathcal{M}$, describing how the category $G(m)$ is represented in the
@@ -703,11 +703,11 @@ of Gratzer.  Specifically, we claim that:
   contravariant model, by freely adjoining context restriction operators.
 \end{conjecture}
 For our concrete use case, we intend to obtain a covariant model as follows:
-Let $\rho$ be a finite set of roles and let $\textbf{STLC}$ be the syntax
+Let $\rho$ be a finite set of roles, and let $\textbf{STLC}$ be the syntax
 category of STLC with sum types. Viewing the set $\rho$ as a discrete category,
 we denote by $\textbf{STLC}^\rho$ the functor category $\rho \to
 \textbf{STLC}$. That is, an object $(\Gamma_i)_{i\in\rho}$ is a $\rho$-indexed
-family of $\textbf{STLC}$-contexts and a morphism $(\Gamma_i)_{i\in\rho} \to
+family of $\textbf{STLC}$-contexts, and a morphism $(\Gamma_i)_{i\in\rho} \to
 (\Delta_i)_{i\in\rho}$ is given by a $\rho$-indexed family of substitutions
 $(\sigma_i : \Gamma_i \to \Delta_i)_{i\in\rho}$. The intuition is that
 $\textbf{STLC}^\rho$ describes the category of $\rho$ processes running
