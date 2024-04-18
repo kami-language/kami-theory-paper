@@ -472,7 +472,10 @@ requires the following additional features:
   between multiple roles. We do so by allowing arbitrary conjunctions $r_1
   \land \ldots \land r_k$ in the modality. For example, the type $\langle
   \mathbb{N} | @(r\land s) \rangle$ expresses the fact that there is a natural
-  number that is known by both roles $r$ and $s$.
+  number that is known by both roles $r$ and $s$. Furthermore, a
+  meet-semilattice structure arises:
+  e.g., it holds that $r \land s \leq r$, since
+  the knowledge available at $r \land s$ is a subset of the knowledge at $r$.
 \item
   We need roles to reference data that are about to be sent to other roles. For
   this, we use a new modality $\square$, which allows roles to reference global
@@ -515,7 +518,9 @@ is defined as follows:
   quoted form at $u$, can be scheduled to be performed by all involved roles.
 \item
   For each pair of locations $u, v \in \textrm{Loc}_\rho$ with $u \leq v$, a
-  \emph{narrowing transformation} $\textsf{narrow}_{u,v} : @u \Rightarrow @v$.
+  \emph{narrowing transformation} $\textsf{narrow}_{u,v} : @u \Rightarrow @v$. The intuition is
+  that if $u$ is a sublocation of $v$, then information available at the former
+  is also available at the latter.
 \item
   Additional equalities governing the interactions of the transformations. For
   instance, composing $\textsf{quote}_u$ and $\textsf{eval}_u$ for the same
