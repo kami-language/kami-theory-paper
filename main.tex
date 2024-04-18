@@ -66,14 +66,23 @@
 \newtheorem{corollary}[definition]{Corollary}
 \newtheorem{conjecture}[definition]{Conjecture}
 
-\renewcommand{\square}%
-  {\tikz{\draw (0,0) rectangle (0.2cm,0.2cm);}}
+\renewcommand{\circle}{\mathchoice%
+  {\tikz{\draw (0,0) circle [radius=0.1cm];}}%
+  {\tikz{\draw (0,0) circle [radius=0.1cm];}}%
+  {\tikz{\draw (0,0) circle [radius=0.075cm];}}%
+  {\tikz{\draw (0,0) circle [radius=0.05cm];}}}
 
-\renewcommand{\circle}%
-  {\tikz{\draw (0,0) circle [radius=0.1cm];}}
+\renewcommand{\triangle}{\mathchoice%
+  {\tikz{\draw (0,0) -- (0.2cm,0) -- (0.1cm,0.2cm) -- cycle;}}%
+  {\tikz{\draw (0,0) -- (0.2cm,0) -- (0.1cm,0.2cm) -- cycle;}}%
+  {\tikz{\draw (0,0) -- (0.15cm,0) -- (0.075cm,0.15cm) -- cycle;}}%
+  {\tikz{\draw (0,0) -- (0.10cm,0) -- (0.05cm,0.10cm) -- cycle;}}}
 
-\renewcommand{\triangle}%
-  {\tikz{\draw (0,0) -- (0.2cm,0) -- (0.1cm,0.2cm) -- (0,0);}}
+\renewcommand{\square}{\mathchoice%
+  {\tikz{\draw (0,0) rectangle (0.2cm,0.2cm);}}%
+  {\tikz{\draw (0,0) rectangle (0.2cm,0.2cm);}}%
+  {\tikz{\draw (0,0) rectangle (0.15cm,0.15cm);}}%
+  {\tikz{\draw (0,0) rectangle (0.10cm,0.10cm);}}}
 
 \newcommand{\primitive}[1]{\textsf{\textbf{#1}}}
 \newcommand{\MTTM}{MTT${}_{\mathcal{M}}$}
