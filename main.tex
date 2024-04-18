@@ -17,13 +17,20 @@
 \usepackage[hyphens]{url}
 \usepackage{xcolor}
 
+% hide quotation marks in bibliography
+\usepackage{csquotes}
+\DeclareQuoteStyle{none}{}{}{}{}
+\setquotestyle{none}
+
 % use biblatex for bibliography
 \usepackage[backend=biber,
             doi=true,
+            maxnames=10,
             natbib=true,
             url=true]{biblatex}
 \addbibresource{main.bib}
 \DeclareFieldFormat{url}{\url{#1}}
+\renewcommand{\intitlepunct}{ }
 
 % use microtype for advanced typography
 \usepackage[activate={true,nocompatibility},
