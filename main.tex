@@ -638,16 +638,16 @@ their future behaviour.
   \]
 \end{example}
 Note that since $Z$ is global, a value $z : Z$ is a choreography potentially
-involving all roles.\footnote{For the sake of brevity our mode theory
-$\mathcal{M}^{\rho}_{\textrm{Chor}}$ as defined in this paper does not track
-which roles are actually involved in a given term of global type. It can be
-done though by extending the mode theory with a family of global modes.} The
-semantics of $\textsf{choice}$ is: Given the knowledge of $A + B$ at role $r$,
-a global behaviour $z : Z$ can be chosen for all roles, with the additional
-knowledge of either the value $a : A$ or $b : B$ at role $r$. The function can
-be implemented in such a way that only the information regarding which branch
-is going to be chosen is communicated from $r$ to other processes, the actual
-value of $a$ or $b$ stays at $r$.
+involving all roles.\footnote{For the sake of brevity, our mode theory
+  $\mathcal{M}^{\rho}_{\textrm{Chor}}$ as defined in this paper does not track
+  which roles are involved in a given term of global type. It can be done by
+  extending the mode theory with a family of global modes.}
+The semantics of $\textsf{choice}$ is: Given the knowledge of $A + B$ at role
+$r$, a global behaviour $z : Z$ can be chosen for all roles, with the
+additional knowledge of either the value $a : A$ or $b : B$ at role $r$. The
+function can be implemented in such a way that only the information regarding
+which branch is going to be chosen is communicated from $r$ to other processes,
+the actual value of $a$ or $b$ stays at $r$.
 
 The interaction of the $\square$ and $@r$ modalities are key to the definition
 of \textsf{choice}. Gratzer refers to functions that allow induction ``from
@@ -664,9 +664,9 @@ ${-}.\{\mu\} : \textsf{Ctx}_n \to \textsf{Ctx}_m$. Additionally, the existence
 of modal types in Gratzer's model implies the existence of a further
 \emph{covariant} functor $M_\mu : F(m) \to F(n)$, such that $F(\mu)$ and
 $M_\mu$ are adjoint in an appropriate sense.\footnote{In the dependently
-  typed MTT of Gratzer the exact statement is that $M_\mu$ is a \emph{dependent
+  typed MTT of Gratzer, the exact statement is that $M_\mu$ is a \emph{dependent
   right adjoint}, but we can simplify the condition somewhat in our simply typed
-  case.}
+  system.}
 
 While such a generic Model of MTT is required for Gratzer's goals, our intended
 semantics and in particular, the fact that we want to compile Kami programs
