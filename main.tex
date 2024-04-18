@@ -145,7 +145,7 @@ theories, with Martin-L\"{of} type theory at its core. The~framework is
 parametrized by a system of modalities specified in the form of a \emph{mode
 theory}. MTT~includes so-called ``full-spectrum'' dependent types, but we
 restrict ourselves to a~simply typed fragment of MTT.
-\begin{definition}[{\cite[6.1.1]{gratzer2023syntax}}]
+\begin{definition}[{\cite[§6.1.1]{gratzer2023syntax}}]
   A \emph{mode theory} is given by the following data:
   \begin{itemize}
   \item
@@ -171,7 +171,7 @@ restrict ourselves to a~simply typed fragment of MTT.
   \fatsemi \beta$ respectively) if the domains and codomains match, and
   identity and associativity laws hold as expected\cite{licata2016adjoint}.
 \end{definition}
-\begin{definition}[{\cite[following 6.2]{gratzer2023syntax}}]
+\begin{definition}[{\cite[following §6.2]{gratzer2023syntax}}]
   Let $\mathcal{M}$ be a mode theory. A \emph{simply typed modal type theory}
   \MTTM{} is given by $|M|$ copies of an extension of STLC, combined as
   follows: For~each mode $m \in M$, let $\Gamma\in\textsf{Ctx}_m$, $A \in
@@ -432,7 +432,7 @@ follows:
   themselves under a~$\mu$~modality. Given a value of such type, the modality
   elimination rule \textsc{Mod-Elim} allows us to assume $(A | \mu)$. The
   \emph{framing modality} $\nu$ allows the type $A$ to exist at a different
-  mode than the motive $B$\cite[6.1.9]{gratzer2023syntax}. We omit this
+  mode than the motive $B$\cite[§6.1.9]{gratzer2023syntax}. We omit this
   modality when it is the identity.
 \item
   The terms for introduction and elimination of the function type reflect that
@@ -655,7 +655,7 @@ the actual value of $a$ or $b$ stays at $r$.
 
 The interaction of the $\square$ and $@r$ modalities are key to the definition
 of \textsf{choice}. Gratzer refers to functions that allow induction ``from
-under a modality'' as \emph{crisp induction principles}\cite[6.3.1]{gratzer2023syntax}.
+under a modality'' as \emph{crisp induction principles}\cite[§6.3.1]{gratzer2023syntax}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Categorical semantics}
