@@ -12,6 +12,9 @@
 **.fls
 **.log
 **.out
+**.pag
 **.run.xml
 **.synctex.gz
 .texauto/**
+example.*
+generic.bib
