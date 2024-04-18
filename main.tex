@@ -623,7 +623,7 @@ branching. This works as follows: A process at role $r$ chooses its future
 behaviour based on locally available data, and afterwards communicates its
 choice using \primitive{select} statements to those processes that need to be
 aware of this choice. In \ChorMTT{}, the same functionality is available, but
-has to be stated in reverse order. First, the required data for choosing future
+must be stated in reverse order. First, the required data for choosing future
 behaviour is communicated from $r$ to all roles that need to be aware of this
 choice. After receiving the data, all relevant processes synchronously decide
 their future behaviour.
