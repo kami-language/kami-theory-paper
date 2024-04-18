@@ -488,35 +488,34 @@ meet-semilattice on $\rho$. The mode theory $\mathcal{M}^\rho_{\textrm{Chor}}$
 is defined as follows:
 \begin{itemize}
 \item
-  There are two modes: $\circle$ and $\triangle$. The global mode $\circle$
-  represents the global perspective on a choreography, encompassing
-  computations and data that occur at all roles. The local mode $\triangle$
-  represents the perspective of a single location (which may be the conjunction
-  of multiple roles) participating in the choreography.
+  There are two modes: $\circle$ and $\triangle$. The \emph{global mode}
+  $\circle$ represents the global perspective on a choreography, encompassing
+  computations and data that occur at all roles. The \emph{local mode}
+  $\triangle$ represents the perspective of a single location, which may be
+  a~conjunction of multiple roles, that participates in the choreography.
 \item
-  For each location $u \in \textrm{Loc}_\rho$ there is a modality $@u :
+  For each location $u \in \textrm{Loc}_\rho$, a \emph{location modality} $@u :
   \triangle \to \circle$. Each of these modalities represents a different way
   of how a local computation can be embedded in the global system. Concretely,
-  $@u$ expresses that the computation exists at location $u$.
+  the type $t : @u$ expresses that the computation $t$ exists at $u$.
 \item
-  An additional modality $\square : \circle \to \triangle$, allowing global
-  computations to be referenced locally.
+  An additional \emph{quotation modality} $\square : \circle \to \triangle$,
+  which allows global computations to be referenced locally.
 \item
-  For each location $v \in \textrm{Loc}_\rho$, a transformation
-  $\textsf{quote}_v : \textsf{id}_{\triangle} \Rightarrow ({}@ v \fatsemi
-  \square)$. This transformation allows a role to quote a local term to be
-  evaluated by an arbitrary role $v$. It happens in local mode $\triangle$,
-  and its interpretation involves no communication.
+  For each location $v \in \textrm{Loc}_\rho$, a \emph{quotation
+  transformation} $\textsf{quote}_v : \textsf{id}_{\triangle} \Rightarrow ({}@
+  v \fatsemi \square)$, which allows a role to quote a local term to be
+  evaluated by an arbitrary role $v$. This transformation happens in local mode
+  $\triangle$, and its interpretation involves no communication.
 \item
-  For each location $u \in \textrm{Loc}_\rho$, a transformation
-  $\textsf{eval}_u : (\square \fatsemi {}@ u) \Rightarrow
-  \textsf{id}_{\circle}$. This transformation is the only one involving
-  communication between roles. It describes that a global choreography,
-  available in quoted form at location $u$, can be scheduled to be performed by
-  all involved roles.
+  For each location $u \in \textrm{Loc}_\rho$, an \emph{evaluation
+  transformation} $\textsf{eval}_u : (\square \fatsemi {}@ u) \Rightarrow
+  \textsf{id}_{\circle}$, which is the only one involving communication between
+  roles. This transformation describes that a global choreography, available in
+  quoted form at $u$, can be scheduled to be performed by all involved roles.
 \item
   For each pair of locations $u, v \in \textrm{Loc}_\rho$ with $u \leq v$, a
-  transformation $\textsf{narrow}_{u,v} : @u \Rightarrow @v$.
+  \emph{narrowing transformation} $\textsf{narrow}_{u,v} : @u \Rightarrow @v$.
 \item
   Additional equalities governing the interactions of the transformations. For
   instance, composing $\textsf{quote}_u$ and $\textsf{eval}_u$ for the same
