@@ -595,9 +595,9 @@ rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt_leteval}).
 \subsection{Informal semantics and relation to
   \texorpdfstring{Chor$\lambda$}{ChorLambda}}
 In order to allow for out-of-order execution of of independent processes, we
-can use the same machinery as Chor$\lambda$: restricting reduction rules to
+can use the same machinery as Chor$\lambda$: we can restrict reduction rules to
 ensure that communications between a pair of processes always occur in the same
-order and an additional rewriting relation that allows for independent
+order, and add an additional rewriting relation that allows for independent
 processes to evaluate their terms independently.
 
 The expressivity of Chor$\lambda$ arises from the two primitives involved in
