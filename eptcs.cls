@@ -1,3 +1,6 @@
+% SPDX-FileCopyrightText: 2024 Kartik Singhal
+% SPDX-License-Identifier: CC-BY-4.0
+
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{eptcs}[2022/05/20 v1.7]
 

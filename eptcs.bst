@@ -1,3 +1,4 @@
+%% SPDX-License-Identifier: LPPL-1.0
 %%
 %% This is file `eptcs.bst',
 %% generated with the docstrip utility.

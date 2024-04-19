@@ -2,7 +2,7 @@
 SPDX-FileCopyrightText: 2024 Maxim Urschumzew <mxmurw@determi.io>
 SPDX-FileCopyrightText: 2024 Miëtek Bak
 
-SPDX-License-Identifier: MIT
+SPDX-License-Identifier: CC-BY-4.0
 -->
 
 # Description of the Kami language
