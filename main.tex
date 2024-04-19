@@ -412,11 +412,11 @@ Contexts of \MTTM{} (figure \ref{fig:mtt-ctx}) are defined in the following way:
       \\
       \Gamma.\{\nu\} \vdash_n s : \langle A | \mu \rangle
       \\
-      \Gamma.\,x : (A | \mu \fatsemi \nu) \vdash_o t : B
+      \Gamma.\,x : (A | \mu \fatsemi \nu) \vdash_o t : C
     }
     {
       \Gamma \vdash_o \primitive{let}_\nu\:\primitive{mod}_\mu\  x
-      \bm{\leftarrow} s \primitive{ in } t : B
+      \bm{\leftarrow} s \primitive{ in } t : C
     }
     \\
 
@@ -483,7 +483,7 @@ Contexts of \MTTM{} (figure \ref{fig:mtt-ctx}) are defined in the following way:
 
     \inferrule*[Lab=Empty-Elim]
     {\Gamma \vdash_m t : \bot}
-    {\Gamma \vdash_m \primitive{abort } t : A}
+    {\Gamma \vdash_m \primitive{abort } t : C}
   \end{mathpar}
   \caption{Terms of \MTTM{}}
   \label{fig:mtt-term}
@@ -503,7 +503,7 @@ follows:
   elimination rule \textsc{Mod-Elim} allows us to assume $(A | \mu)$. The
   \emph{framing modality} $\nu$ allows the type $\langle A | \mu \rangle$ to
   exist at a different mode than the motive
-  $B$\cite[§6.1.9]{gratzer2023syntax}. We omit this modality when it is the
+  $C$\cite[§6.1.9]{gratzer2023syntax}. We omit this modality when it is the
   identity.
 \item
   The terms for introduction and elimination of the function type reflect that
@@ -653,11 +653,11 @@ rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt-leteval}).
       \Gamma.\{\nu\} \vdash_{\circle} s : \langle A | \square \fatsemi @u
       \rangle
       \\
-      \Gamma.\,x : (A | \nu) \vdash_m t : B
+      \Gamma.\,x : (A | \nu) \vdash_m t : C
     }
     {
       \Gamma \vdash_m \primitive{let}_\nu\:\primitive{eval}_u\ x
-      \bm{\leftarrow} s \primitive{ in } t : B
+      \bm{\leftarrow} s \primitive{ in } t : C
     }
     \\
     \inferrule*[Lab=Let-Eval-$\beta$]
