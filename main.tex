@@ -247,6 +247,10 @@ restrict ourselves to a~simply typed fragment of MTT.
     }
     {(A | \mu) \to B \in \textsf{Type}_n}
     \\
+    \inferrule*[Lab=Unit-Form]
+    {\textrm{ }}
+    {\top \in \textsf{Type}_m}
+
     \inferrule*[Lab=Prod-Form]
     {
       A \in \textsf{Type}_m
@@ -262,6 +266,10 @@ restrict ourselves to a~simply typed fragment of MTT.
       B \in \textsf{Type}_m
     }
     {A + B \in \textsf{Type}_m}
+
+    \inferrule*[Lab=Empty-Form]
+    {\textrm{ }}
+    {\bot \in \textsf{Type}_m}
   \end{mathpar}
   \caption{Types of \MTTM{}}
   \label{fig:mtt-type}
@@ -431,6 +439,10 @@ Contexts of \MTTM{} (figure \ref{fig:mtt-ctx}) are defined in the following way:
     {\Gamma \vdash_n t\,s : B}
     \\
 
+    \inferrule*[Lab=Unit-Intro]
+    {\textrm{ }}
+    {\Gamma \vdash_m \primitive{unit} : \top}
+
     \inferrule*[Lab=Prod-Intro]
     {
       \Gamma \vdash_m s : A
@@ -468,6 +480,10 @@ Contexts of \MTTM{} (figure \ref{fig:mtt-ctx}) are defined in the following way:
       \,\bm{\{}\, \primitive{left } x \bm{\,\mapsto\,} t \bm{\,;\,}
       \primitive{right } y \bm{\,\mapsto\,} u : C \,\bm{\}}
     }
+
+    \inferrule*[Lab=Empty-Elim]
+    {\Gamma \vdash_m t : \bot}
+    {\Gamma \vdash_m \primitive{abort } t : A}
   \end{mathpar}
   \caption{Terms of \MTTM{}}
   \label{fig:mtt-term}
