@@ -3,52 +3,83 @@
 %
 % SPDX-License-Identifier: CC-BY-4.0
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \documentclass{scrartcl}
+
+%% use special EPCTS class
+% \documentclass[submission,copyright,creativecommons]{eptcs}
+
+% accept precomposed glyphs in .tex input
+\usepackage[utf8]{inputenc}
+
+% accept unescaped underscores in .bib input, especially in doi and url fields
+\usepackage{underscore}
+
+% emit precomposed glyphs in .pdf output
+\usepackage[T1]{fontenc}
+
+% use standard AMS things
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+
+% use \bm for bold math symbols; not so nice in EPTCS but nice elsewhere
 \usepackage{bm}
-\usepackage{enumitem}
+
+% use H for forced figure placement
 \usepackage{float}
-\usepackage{graphicx}
+
+% use \inferrule to construct derivation trees
 \usepackage{mathpartir}
-\usepackage{stmaryrd}
-\usepackage{tikz}
-\usepackage[hyphens]{url}
-\usepackage{xcolor}
 
-% hide quotation marks in bibliography
-\usepackage{csquotes}
-\DeclareQuoteStyle{none}{}{}{}{}
-\setquotestyle{none}
-
-% use biblatex for bibliography
-\usepackage[backend=biber,
-            doi=true,
-            maxnames=10,
-            natbib=true,
-            url=true]{biblatex}
-\addbibresource{main.bib}
-\DeclareFieldFormat{url}{\url{#1}}
-\renewcommand{\intitlepunct}{~}
-
-% use microtype for advanced typography
-\usepackage[activate={true,nocompatibility},
-            final,
-            tracking=true,
-            kerning=true,
-            spacing=true,
-            factor=1100,
-            stretch=10,
-            shrink=10]{microtype}
+% use advanced typography
+\usepackage[
+  activate={true,nocompatibility},
+  factor=1100,
+  final,
+  kerning=true,
+  shrink=10,
+  spacing=true,
+  stretch=10,
+  tracking=true
+]{microtype}
 \microtypecontext{spacing=nonfrench}
 \DeclareMicrotypeSet*[tracking]{ttfonts}{family=tt*}
 \SetTracking{encoding={*}, family=tt*}{-10}
 \SetTracking{encoding={*}, shape=sc}{0}
 
-% use hyperref last to avoid problems
-\usepackage{hyperref}
+% use BibTeX for bibliography
+\usepackage[numbers]{natbib}
+
+% use \fatsemi for forward composition symbol
+\usepackage{stmaryrd}
+
+% use \circle, \triangle, and \square in a matching style
+\usepackage{tikz}
+\renewcommand{\circle}{\mathop{\mathchoice%
+  {\tikz{\draw (0,0) circle [radius=0.1cm];}}%
+  {\tikz{\draw (0,0) circle [radius=0.1cm];}}%
+  {\tikz{\draw (0,0) circle [radius=0.075cm];}}%
+  {\tikz{\draw (0,0) circle [radius=0.05cm];}}}}
+\renewcommand{\triangle}{\mathop{\mathchoice%
+  {\tikz{\draw (0,0) -- (0.2cm,0) -- (0.1cm,0.2cm) -- cycle;}}%
+  {\tikz{\draw (0,0) -- (0.2cm,0) -- (0.1cm,0.2cm) -- cycle;}}%
+  {\tikz{\draw (0,0) -- (0.15cm,0) -- (0.075cm,0.15cm) -- cycle;}}%
+  {\tikz{\draw (0,0) -- (0.10cm,0) -- (0.05cm,0.10cm) -- cycle;}}}}
+\renewcommand{\square}{\mathop{\mathchoice%
+  {\tikz{\draw (0,0) rectangle (0.2cm,0.2cm);}}%
+  {\tikz{\draw (0,0) rectangle (0.2cm,0.2cm);}}%
+  {\tikz{\draw (0,0) rectangle (0.15cm,0.15cm);}}%
+  {\tikz{\draw (0,0) rectangle (0.10cm,0.10cm);}}}}
+
+% use a nice color for hyperlinks
+\usepackage{xcolor}
 \definecolor{urlblue}{rgb}{0,0.2,0.8}
+
+% use nice hyperlinks; last to avoid trouble
+\usepackage{hyperref}
 \hypersetup{
   allcolors=urlblue,
   bookmarksnumbered=false,
@@ -59,7 +90,10 @@
   pdfborderstyle={/S/U/W 1}
 }
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% use one counter for all theorem-like things
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
 \newtheorem{example}[definition]{Example}
@@ -68,32 +102,31 @@
 \newtheorem{corollary}[definition]{Corollary}
 \newtheorem{conjecture}[definition]{Conjecture}
 
-\renewcommand{\circle}{\mathchoice%
-  {\tikz{\draw (0,0) circle [radius=0.1cm];}}%
-  {\tikz{\draw (0,0) circle [radius=0.1cm];}}%
-  {\tikz{\draw (0,0) circle [radius=0.075cm];}}%
-  {\tikz{\draw (0,0) circle [radius=0.05cm];}}}
-
-\renewcommand{\triangle}{\mathchoice%
-  {\tikz{\draw (0,0) -- (0.2cm,0) -- (0.1cm,0.2cm) -- cycle;}}%
-  {\tikz{\draw (0,0) -- (0.2cm,0) -- (0.1cm,0.2cm) -- cycle;}}%
-  {\tikz{\draw (0,0) -- (0.15cm,0) -- (0.075cm,0.15cm) -- cycle;}}%
-  {\tikz{\draw (0,0) -- (0.10cm,0) -- (0.05cm,0.10cm) -- cycle;}}}
-
-\renewcommand{\square}{\mathchoice%
-  {\tikz{\draw (0,0) rectangle (0.2cm,0.2cm);}}%
-  {\tikz{\draw (0,0) rectangle (0.2cm,0.2cm);}}%
-  {\tikz{\draw (0,0) rectangle (0.15cm,0.15cm);}}%
-  {\tikz{\draw (0,0) rectangle (0.10cm,0.10cm);}}}
-
+% use custom macros
+\newcommand{\emailhref}[1]{\\{\footnotesize\ttfamily\href{mailto:#1}{#1}}}
 \newcommand{\primitive}[1]{\textsf{\textbf{#1}}}
 \newcommand{\MTTM}{MTT${}_{\mathcal{M}}$}
 \newcommand{\ChorMTT}{Chor${}_{\textrm{MTT}}$}
 \newcommand{\ProcMTT}{Proc${}_{\textrm{MTT}}$}
 
+%% use special EPCTS things
+% \setlength{\abovecaptionskip}{0pt plus 3pt minus 2pt}
+% \setlength{\belowcaptionskip}{15pt plus 3pt minus 2pt}
+% \def\titlerunning{Kami: A Modal Type Theory for~Distributed~Systems}
+% \def\authorrunning{M. Urschumzew \& M. Bak}
+% \providecommand{\event}{GandALF 2024}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Kami: A modal type theory for~distributed~systems}
-\author{Maxim Urschumzew \and Miëtek Bak}
+
+\title{Kami: A Modal Type Theory for~Distributed~Systems}
+\author{
+  Maxim Urschumzew
+  \emailhref{mxmurw@determi.io}
+  \and
+  Miëtek Bak
+  \emailhref{mietek@bak.io}
+}
 \date{\today}
 \begin{document}
 \maketitle
@@ -137,11 +170,13 @@ located at role~$r$. The language has two communication primitives:
 \primitive{com} for communicating data, and \primitive{select} for
 communicating choice of branching.
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Simply typed modal type theory}
 Modal Type Theory (MTT), introduced by Gratzer in his PhD
 thesis\cite{gratzer2023syntax}, is a framework for constructing modal type
-theories, with Martin-L\"{of} type theory at its core. The~framework is
+theories, with Martin-Löf type theory at its core. The~framework is
 parametrized by a system of modalities specified in the form of a \emph{mode
 theory}. MTT~includes so-called ``full-spectrum'' dependent types, but we
 restrict ourselves to a~simply typed fragment of MTT.
@@ -178,8 +213,8 @@ restrict ourselves to a~simply typed fragment of MTT.
   \textsf{Type}_m$, $t \in \textsf{Term}_m$, and $\Gamma \vdash_m t : A$ denote
   the contexts, types, terms, and typing judgements of the $m$th copy of an
   extension of STLC respectively. The rules of \MTTM{} are displayed in figures
-  \ref{fig:mtt_type}, \ref{fig:mtt_ctx}, \ref{fig:mtt_var}, and
-  \ref{fig:mtt_term}.
+  \ref{fig:mtt-type}, \ref{fig:mtt-ctx}, \ref{fig:mtt-var}, and
+  \ref{fig:mtt-term}.
 \end{definition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -222,12 +257,12 @@ restrict ourselves to a~simply typed fragment of MTT.
     {A + B \in \textsf{Type}_m}
   \end{mathpar}
   \caption{Types of \MTTM{}}
-  \label{fig:mtt_type}
+  \label{fig:mtt-type}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Types}
-Types of \MTTM{} (figure \ref{fig:mtt_type}) mirror the standard types of STLC,
+Types of \MTTM{} (figure \ref{fig:mtt-type}) mirror the standard types of STLC,
 with the following differences:
 \begin{itemize}
 \item
@@ -270,12 +305,12 @@ with the following differences:
     {\Gamma.\{\mu\} \in \textsf{Ctx}_m}
   \end{mathpar}
   \caption{Contexts of \MTTM{}}
-  \label{fig:mtt_ctx}
+  \label{fig:mtt-ctx}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Contexts}
-Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined in the following way:
+Contexts of \MTTM{} (figure \ref{fig:mtt-ctx}) are defined in the following way:
 \begin{itemize}
 \item
   The empty context rule \textsc{Ctx-Empty}.
@@ -294,7 +329,7 @@ Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined in the following way:
   \to n$, the restricted context $\Gamma.\{\nu\}\in\textsf{Ctx}_m$ only allows
   referring to the assumption $(A | \mu) \in \Gamma$ given a transformation
   $\alpha : \mu \Rightarrow \nu$. This is ensured by the variable rule
-  \textsc{Var} (figure \ref{fig:mtt_term}).
+  \textsc{Var} (figure \ref{fig:mtt-term}).
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -317,7 +352,7 @@ Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined in the following way:
     {x : (A | \mu) \in_{\eta \fatsemi \nu} \Gamma.\{\eta\}}
   \end{mathpar}
   \caption{Variables (de Bruijn indices) of \MTTM{}}
-  \label{fig:mtt_var}
+  \label{fig:mtt-var}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -418,12 +453,12 @@ Contexts of \MTTM{} (figure \ref{fig:mtt_ctx}) are defined in the following way:
     }
   \end{mathpar}
   \caption{Terms of \MTTM{}}
-  \label{fig:mtt_term}
+  \label{fig:mtt-term}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Terms}
-Terms of \MTTM{} (figure \ref{fig:mtt_term}) differ from terms of STLC as
+Terms of \MTTM{} (figure \ref{fig:mtt-term}) differ from terms of STLC as
 follows:
 \begin{itemize}
 \item
@@ -548,7 +583,9 @@ means that in order to control the communication behaviour of terms, we need to
 introduce a dedicated term for communications that have not been performed yet.
 
 In our semantics, only $\textsf{eval}_v$ involves communications, so the only
-rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt_leteval}).
+rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt-leteval}).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Let-Eval
 \begin{figure}[ht]
@@ -579,8 +616,9 @@ rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt_leteval}).
       \bm{\leftarrow} s \primitive{ in } t [ y^{\textsf{eval}_u} / x ]
     }
   \end{mathpar}
-  \caption{Typing and reduction rules for deferred transformations}
-  \label{fig:mtt_leteval}
+  \caption{Additional term for deferred transformations and its reduction rule
+   in \ChorMTT{}}
+  \label{fig:mtt-leteval}
 \end{figure}
 
 \begin{definition}
@@ -777,7 +815,7 @@ communication primitives.
 
 \section*{Acknowledgements}
 The Kami programming language\footnote{\url{https://nlnet.nl/project/Kami/}}
-has been envisioned and initially developed together with Olivia R\"ohrig. The
+has been envisioned and initially developed together with Olivia Röhrig. The
 authors are grateful for many hours of debate on syntax and semantics.
 
 This project is funded through NGI Zero
@@ -785,7 +823,10 @@ Core,\footnote{\url{https://nlnet.nl/core}} a fund established by NLnet with
 financial support from the European Commission's Next Generation Internet
 program.
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\printbibliography
+
+\bibliographystyle{eptcs}
+\bibliography{main}
 
 \end{document}
