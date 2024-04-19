@@ -170,7 +170,7 @@ to individual participants.
 Chor$\lambda$ is a functional choreographic programming language introduced by
 Cruz-Filipe et~al.\cite{cruz2022functional}, and extends the simply typed
 lambda calculus (STLC) with location annotations. For example, $t :
-\textsf{Bool} @ r$ means that $t$ evaluates to a value of type \textsf{Bool}
+\textsf{Bool} @r$ means that $t$ evaluates to a value of type \textsf{Bool}
 located at role~$r$. The language has two communication primitives:
 \primitive{com} for communicating data, and \primitive{select} for
 communicating choice of branching.
@@ -564,13 +564,13 @@ is defined as follows:
   which allows global computations to be referenced locally.
 \item
   For each location $v \in \textrm{Loc}_\rho$, a \emph{quotation
-  transformation} $\textsf{quote}_v : \textsf{id}_{\triangle} \Rightarrow ({}@
-  v \fatsemi \square)$, which allows a~role to quote a local term to be
-  evaluated by an arbitrary role $v$. This transformation happens in local mode
+  transformation} $\textsf{quote}_v : \textsf{id}_{\triangle} \Rightarrow (@v
+  \fatsemi \square)$, which allows a~role to quote a local term to be evaluated
+  by an arbitrary role $v$. This transformation happens in local mode
   $\triangle$, and its interpretation involves no communication.
 \item
   For each location $u \in \textrm{Loc}_\rho$, an \emph{evaluation
-  transformation} $\textsf{eval}_u : (\square \fatsemi {}@ u) \Rightarrow
+  transformation} $\textsf{eval}_u : (\square \fatsemi @u) \Rightarrow
   \textsf{id}_{\circle}$, which is the only one involving communication between
   roles. This transformation describes that a global choreography, available in
   quoted form at $u$, can be scheduled to be performed by all involved roles.
@@ -830,8 +830,8 @@ follows:
   has {\upshape$\textbf{SIP}_{\rho}$} as its compilation target category.
 \end{theorem}
 In particular, in this model, only the transformation $\textsf{eval}_v :
-(\square \fatsemi {}@ v) \Rightarrow \textsf{id}_{\circle}$ is built up from
-the freely adjoined $\textsf{com}$ arrows, since it is the only one involving
+(\square \fatsemi @v) \Rightarrow \textsf{id}_{\circle}$ is built up from the
+freely adjoined $\textsf{com}$ arrows, since it is the only one involving
 communication. All other transformations are modeled by arrows already existing
 as part of the cartesian closed structure of $\textbf{STLC}^\rho$.
 \begin{corollary}
