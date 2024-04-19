@@ -727,11 +727,11 @@ principles}\cite[§6.3.1]{gratzer2023syntax}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Categorical semantics}
-Following Gratzer, a categorical model for MTT$_{\mathcal{M}}$ is given by a
-functor $F : \mathcal{M}^{\textsf{coop}} \to \textbf{Cat}$, with additional
-conditions ensuring that $F$ supports all types and terms. This definition
-entails, for each modality $\mu : m \to n$, a functor $F(\mu) : F(n) \to F(m)$
-modeling the \emph{contravariant} context restriction operation ${-}.\{\mu\} :
+Following Gratzer, a categorical model for \MTTM{} is given by a functor $F :
+\mathcal{M}^{\textsf{coop}} \to \textbf{Cat}$, with additional conditions
+ensuring that $F$ supports all types and terms. This definition entails, for
+each modality $\mu~:~m \to n$, a functor $F(\mu) : F(n) \to F(m)$ modeling the
+\emph{contravariant} context restriction operation ${-}.\{\mu\} :
 \textsf{Ctx}_n \to \textsf{Ctx}_m$. Additionally, the existence of modal types
 in Gratzer's model implies the existence of a~further \emph{covariant} functor
 $M_\mu : F(m) \to F(n)$, such that $F(\mu)$ and $M_\mu$ are adjoint in an
@@ -748,8 +748,8 @@ In the following we give the definition of our special class of models, and
 sketch how MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$, i.e., the underlying
 type theory of Kami, can be interpreted in them.
 \begin{definition}
-  Let $\mathcal{M}$ be a mode theory. A \emph{covariant model} for
-  simply typed MTT$_{\mathcal{M}}$ is given by the following data:
+  Let $\mathcal{M}$ be a mode theory. A \emph{covariant model} for simply typed
+  MTTM{} is given by the following data:
   \begin{enumerate}
   \item
     A category $\mathcal{C}$ representing the compilation target.
@@ -771,8 +771,8 @@ type theory of Kami, can be interpreted in them.
 Such a covariant model is a special case of a contravariant model in the sense
 of Gratzer. Specifically, we claim that:
 \begin{conjecture}
-  A covariant model of {\upshape MTT$_{\mathcal{M}}$} can be assembled into a
-  contravariant model, by freely adjoining context restriction operators.
+  A covariant model of {\upshape \MTTM{}} can be assembled into a contravariant
+  model, by freely adjoining context restriction operators.
 \end{conjecture}
 For our purposes, we intend to obtain a covariant model as follows: Let
 $\rho$~be a~finite set of roles, and let $\textbf{STLC}$ be the syntax category
