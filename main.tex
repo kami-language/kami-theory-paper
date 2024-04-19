@@ -584,6 +584,19 @@ introduce a dedicated term for communications that have not been performed yet.
 
 In our semantics, only $\textsf{eval}_v$ involves communications, so the only
 rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt-leteval}).
+\begin{definition}
+  Let \ChorMTT{} be the type theory obtained by:
+  \begin{enumerate}
+  \item
+    Instantiating simply typed MTT with $\mathcal{M}^{\rho}_{\textrm{Chor}}$.
+  \item
+    Extending it with the \textsc{Let-Eval} rule.
+  \item
+    Restricting the reduction relation analogously to how Chor$\lambda$
+    restricts the STLC reduction relation.
+  \end{enumerate}
+\end{definition}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -621,18 +634,6 @@ rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt-leteval}).
   \label{fig:mtt-leteval}
 \end{figure}
 
-\begin{definition}
-  Let Chor${}_{\textrm{MTT}}$ be the type theory obtained by:
-  \begin{enumerate}
-  \item
-    Instantiating simply typed MTT with $\mathcal{M}^{\rho}_{\textrm{Chor}}$.
-  \item
-    Extending it with the \textsc{Let-Eval} rule.
-  \item
-    Restricting the reduction relation analogously to how Chor$\lambda$
-    restricts the reduction relation of STLC.
-  \end{enumerate}
-\end{definition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Informal semantics and relation to
