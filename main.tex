@@ -128,19 +128,22 @@
   \emailhref{mietek@bak.io}
 }
 \date{\today}
+
 \begin{document}
 \maketitle
 \begin{abstract}
   \noindent
   We present Kami, a programming language for distributed systems, based on
-  Modal Type Theory. In particular, we describe a mode theory that is suitable
+  Modal Type Theory. In~particular, we describe a mode theory that is suitable
   for distributed programming, and show how the primitives of Chor$\lambda$, a
   choreographic programming language, can be recovered in Kami. Finally, we
   sketch a categorical semantics that gives rise to a generic compilation
   procedure for Kami.
 \end{abstract}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Introduction}
 Modalities provide a way to extend a type theory with domain-specific type
 constructors, which can be used to track runtime properties of programs
@@ -159,7 +162,9 @@ requires introducing two new concepts: common knowledge between multiple
 participants, and the representation of global choreographies as values local
 to individual participants.
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Preliminaries}
 \subsection{\texorpdfstring{Chor$\lambda$}{ChorLambda}}
 Chor$\lambda$ is a functional choreographic programming language introduced by
@@ -217,9 +222,11 @@ restrict ourselves to a~simply typed fragment of MTT.
   \ref{fig:mtt-term}.
 \end{definition}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Types
-\begin{figure}
+\begin{figure}[t]
   \centering
   \begin{mathpar}
     \inferrule*[Lab=Mod-Form]
@@ -260,7 +267,9 @@ restrict ourselves to a~simply typed fragment of MTT.
   \label{fig:mtt-type}
 \end{figure}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsubsection*{Types}
 Types of \MTTM{} (figure \ref{fig:mtt-type}) mirror the standard types of STLC,
 with the following differences:
@@ -277,9 +286,11 @@ with the following differences:
   the identity modality $\textsf{id}_m : m \to m$.
 \end{itemize}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Contexts
-\begin{figure}
+\begin{figure}[t]
   \centering
   \begin{mathpar}
     \inferrule*[Lab=Ctx-Empty]
@@ -308,7 +319,9 @@ with the following differences:
   \label{fig:mtt-ctx}
 \end{figure}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsubsection*{Contexts}
 Contexts of \MTTM{} (figure \ref{fig:mtt-ctx}) are defined in the following way:
 \begin{itemize}
@@ -324,17 +337,19 @@ Contexts of \MTTM{} (figure \ref{fig:mtt-ctx}) are defined in the following way:
   mode, then $\mu = \textsf{id}_m : m \to m$.
 \item
   The context restriction rule \textsc{Ctx-Restr} allows us to restrict the use
-  of types to those under a particular modality. That is, starting with a
+  of types to those under a~particular modality. That is, starting with a
   context $\Gamma \in \textsf{Ctx}_n$ and a pair of modalities $\mu, \nu : m
   \to n$, the restricted context $\Gamma.\{\nu\}\in\textsf{Ctx}_m$ only allows
-  referring to the assumption $(A | \mu) \in \Gamma$ given a transformation
+  referring to the assumption $(A | \mu) \in \Gamma$ given a~transformation
   $\alpha : \mu \Rightarrow \nu$. This is ensured by the variable rule
   \textsc{Var} (figure \ref{fig:mtt-term}).
 \end{itemize}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Variables
-\begin{figure}
+\begin{figure}[t]
   \centering
   \begin{mathpar}
     \inferrule*[Lab=Var-Zero]
@@ -355,9 +370,11 @@ Contexts of \MTTM{} (figure \ref{fig:mtt-ctx}) are defined in the following way:
   \label{fig:mtt-var}
 \end{figure}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Terms
-\begin{figure}[H]
+\begin{figure}[t]
   \centering
   \begin{mathpar}
     \inferrule*[Lab=Var]
@@ -456,7 +473,9 @@ Contexts of \MTTM{} (figure \ref{fig:mtt-ctx}) are defined in the following way:
   \label{fig:mtt-term}
 \end{figure}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsubsection*{Terms}
 Terms of \MTTM{} (figure \ref{fig:mtt-term}) differ from terms of STLC as
 follows:
@@ -477,7 +496,9 @@ follows:
   the terms are the identity.
 \end{itemize}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Choreographic programming with MTT}
 The first, essential feature of modalities in MTT is that they restrict program
 availability: When constructing a term of type $\langle A | \mu \rangle$, only
@@ -494,7 +515,9 @@ $\tau_{r,s} : @r \Rightarrow @s$ between the corresponding modalities. These
 transformations can be chosen freely: we may disallow communications between
 some roles, and include multiple channels between other roles.
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Mode theory for choreographic programming}
 However, a mode theory with only $@$-modalities and transformations
 $\tau_{r,s}$ is not enough to recover the full expressive power of
@@ -516,7 +539,7 @@ requires the following additional features:
   this, we use a new modality $\square$, which allows roles to reference global
   choreographies locally. That is, if $A$ is a global choreography type, then
   $t : \langle A | \square \rangle$ is a local term, containing a quoted
-  representation of such a choreography.
+  representation of such a~choreography.
 \end{enumerate}
 We define our mode theory with $@$ and $\square$ modalities and common
 knowledge locations as follows:
@@ -533,7 +556,7 @@ is defined as follows:
   a~conjunction of multiple roles, that participates in the choreography.
 \item
   For each location $u \in \textrm{Loc}_\rho$, a \emph{location modality} $@u :
-  \triangle \to \circle$. Each of these modalities represents a different way
+  \triangle \to \circle$. Each of these modalities represents a~different way
   of how a local computation can be embedded in the global system. Concretely,
   $@u$ expresses that the computation exists at location $u$.
 \item
@@ -542,7 +565,7 @@ is defined as follows:
 \item
   For each location $v \in \textrm{Loc}_\rho$, a \emph{quotation
   transformation} $\textsf{quote}_v : \textsf{id}_{\triangle} \Rightarrow ({}@
-  v \fatsemi \square)$, which allows a role to quote a local term to be
+  v \fatsemi \square)$, which allows a~role to quote a local term to be
   evaluated by an arbitrary role $v$. This transformation happens in local mode
   $\triangle$, and its interpretation involves no communication.
 \item
@@ -559,8 +582,8 @@ is defined as follows:
 \item
   Additional equalities governing the interactions of the transformations. For
   instance, composing $\textsf{quote}_u$ and $\textsf{eval}_u$ for the same
-  role $u$ is equal to the identity transformation, since it represents a
-  role communicating with itself.
+  role $u$ is equal to the identity transformation, since it represents a~role
+  communicating with itself.
 \end{itemize}
 \end{definition}
 \begin{corollary}
@@ -568,15 +591,17 @@ is defined as follows:
   a transformation $\tau_{u,v} : @u \Rightarrow @v$ by composing
   {\upshape$\textsf{quote}_v$} and {\upshape$\textsf{eval}_u$}. Additionally, a
   role communicating with itself is equal to the identity transformation
-  {\upshape$\tau_{u,u} = \textsf{id}_{@u}$}.
+  {\upshape$\tau_{u,u}~=~\textsf{id}_{@u}$}.
 \end{corollary}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Kami: An MTT-based language for choreographic programming}
 Our mode theory expresses the interactions between participating roles in a
 distributed system, but standard MTT instantiated with
-$\mathcal{M}^{\rho}_{\textrm{Chor}}$ is not suitable to be used as a~
-choreographic programming language. The problem is that MTT has no notion of
+$\mathcal{M}^{\rho}_{\textrm{Chor}}$ is not suitable to be used as
+a~choreographic programming language. The problem is that MTT has no notion of
 \emph{deferred transformations,} because transformations are always pushed down
 the syntax tree as far as possible, and only recorded at the variables. This
 means that in order to control the communication behaviour of terms, we need to
@@ -601,7 +626,7 @@ rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt-leteval}).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Let-Eval
-\begin{figure}[ht]
+\begin{figure}[t]
   \centering
   \begin{mathpar}
     \inferrule*[Lab=Let-Eval]
@@ -636,6 +661,7 @@ rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt-leteval}).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Informal semantics and relation to
   \texorpdfstring{Chor$\lambda$}{ChorLambda}}
 In order to allow for out-of-order execution of of independent processes, we
@@ -692,11 +718,14 @@ function can be implemented in such a way that only the information regarding
 which branch is going to be chosen is communicated from $r$~to other processes,
 the actual value of $a$ or $b$ stays at $r$.
 
-The interaction of the $\square$ and $@r$ modalities are key to the definition
-of \textsf{choice}. Gratzer refers to functions that allow induction ``from
-under a modality'' as \emph{crisp induction principles}\cite[§6.3.1]{gratzer2023syntax}.
+The interaction between the $\square$ and $@r$ modalities is key to the
+definition of \textsf{choice}. Gratzer refers to functions that allow induction
+``from under a modality'' as \emph{crisp induction
+principles}\cite[§6.3.1]{gratzer2023syntax}.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Categorical semantics}
 Following Gratzer, a categorical model for MTT$_{\mathcal{M}}$ is given by a
 functor $F : \mathcal{M}^{\textsf{coop}} \to \textbf{Cat}$, with additional
@@ -704,7 +733,7 @@ conditions ensuring that $F$ supports all types and terms. This definition
 entails, for each modality $\mu : m \to n$, a functor $F(\mu) : F(n) \to F(m)$
 modeling the \emph{contravariant} context restriction operation ${-}.\{\mu\} :
 \textsf{Ctx}_n \to \textsf{Ctx}_m$. Additionally, the existence of modal types
-in Gratzer's model implies the existence of a further \emph{covariant} functor
+in Gratzer's model implies the existence of a~further \emph{covariant} functor
 $M_\mu : F(m) \to F(n)$, such that $F(\mu)$ and $M_\mu$ are adjoint in an
 appropriate sense.\footnote{In the dependently typed MTT of Gratzer, the exact
   statement is that $M_\mu$ is a \emph{dependent right adjoint}, but we can
@@ -752,7 +781,7 @@ denote by $\textbf{STLC}^\rho$ the functor category $\rho \to \textbf{STLC}$.
 That is, an object $(\Gamma_i)_{i\in\rho}$ is a $\rho$-indexed family of
 $\textbf{STLC}$ contexts, and a~morphism $(\Gamma_i)_{i\in\rho} \to
 (\Delta_i)_{i\in\rho}$ is given by a $\rho$-indexed family of substitutions
-$(\sigma_i : \Gamma_i \to \Delta_i)_{i\in\rho}$. The~intuition is that
+$(\sigma_i~:~\Gamma_i~\to~\Delta_i)_{i\in\rho}$. The~intuition is that
 $\textbf{STLC}^\rho$ describes the category of $\rho$ processes running
 independently of each other, with no way to interact.
 
@@ -813,6 +842,9 @@ as part of the cartesian closed structure of $\textbf{STLC}^\rho$.
 In other words, this gives us a compilation procedure for Kami programs into
 any target language with cartesian closed categorical semantics and synchronous
 communication primitives.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section*{Acknowledgements}
 The Kami programming language\footnote{\url{https://nlnet.nl/project/Kami/}}
