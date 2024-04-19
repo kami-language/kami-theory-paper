@@ -675,17 +675,17 @@ process interaction: $\primitive{com}$ and $\primitive{select}$. Communicating
 data is done using $\primitive{com}$, and can be recovered in \ChorMTT{} using
 the \textsc{Let-Eval} rule in the following way:
 \begin{example}
-  Define a function $\textsf{com}_{A,u,v} : \langle A | @u
-  \rangle \to \langle A | @v \rangle$ for each local type $A$ and pair of
-  locations $u,v$.
-  \begin{align*}
-    \textsf{com}_{A,u,v}\ x =
-    \ & \primitive{let}\:\primitive{mod}_{@u}\ y \bm{\leftarrow} x\\[-3pt]
-      & \primitive{let}\:\primitive{eval}_u\ z \bm{\leftarrow}
-        \primitive{mod}_{@v}\ (\primitive{mod}_{(\square \fatsemi @u)}
-        \ y^{\textsf{quote}_v \,\circledast\, \textsf{id}})\\[-3pt]
-      & \primitive{in } z^{\textsf{id}}
-  \end{align*}
+  For each local type $A$ and pair of locations $u,v$, define a function:
+  \begin{alignat*}{3}
+    & \rlap{$\textsf{com}_{A,u,v} :
+        \langle A | @u \rangle \to \langle A | @v \rangle$}\\
+    & \textsf{com}_{A,u,v}\ x =
+      \ && \primitive{let}\:\primitive{mod}_{@u}\ y \bm{\leftarrow} x\\[-3pt]
+    &   && \primitive{let}\:\primitive{eval}_u\ z \bm{\leftarrow}
+             \primitive{mod}_{@v}\ (\primitive{mod}_{(\square \fatsemi @u)}
+             \ y^{\textsf{quote}_v \,\circledast\, \textsf{id}})\\[-3pt]
+    &   && \primitive{in } z^{\textsf{id}}
+  \end{alignat*}
 \end{example}
 In Chor$\lambda$, $\primitive{select}$ is used to communicate choice of
 branching. This works as follows: A process at role $r$ chooses its future
