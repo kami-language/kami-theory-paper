@@ -636,7 +636,8 @@ rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt-leteval}).
   \item
     Instantiating simply typed MTT with $\MrhoChor$.
   \item
-    Extending it with the \textsc{Let-Eval} rule.
+    Extending the theory with the \textsc{Let-Eval} rule (figure
+    \ref{fig:mtt-leteval}).
   \item
     Restricting the reduction relation in a similar way to how the STLC
     reduction relation is restricted in Chor$\lambda$.
@@ -694,7 +695,7 @@ processes to evaluate their terms independently.
 The expressivity of Chor$\lambda$ arises from the two primitives involved in
 process interaction: $\primitive{com}$ and $\primitive{select}$. Communicating
 data is done using $\primitive{com}$, and can be recovered in \ChorMTT{} using
-the \textsc{Let-Eval} rule in the following way:
+the \textsc{Let-Eval} rule (figure \ref{fig:mtt-leteval}) in the following way:
 \begin{example}
   For each local type $A$ and pair of locations $u,v$, define a function:
   \begin{alignat*}{3}
