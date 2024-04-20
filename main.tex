@@ -188,7 +188,7 @@ communicating choice of branching.
 Modal Type Theory (MTT), introduced by Gratzer in his PhD
 thesis\cite{gratzer2023syntax}, is a framework for constructing modal type
 theories, with Martin-Löf type theory at its core. The~framework is
-parametrized by a system of modalities specified in the form of a \emph{mode
+parameterised by a system of modalities specified in the form of a \emph{mode
 theory}. MTT~includes so-called ``full-spectrum'' dependent types, but we
 restrict ourselves to a~simply typed fragment of MTT.
 \begin{definition}[{\cite[§6.1.1]{gratzer2023syntax}}]
@@ -535,7 +535,7 @@ The second feature of MTT is that transformations between modalities can be
 introduced in a controlled way. In order to allow a term at role $r$ to be
 transformed into a term at role $s$, we must introduce a transformation
 $\tau_{r,s} : @r \Rightarrow @s$ between the corresponding modalities. These
-transformations can be chosen freely: we may disallow communications between
+transformations can be chosen freely: We may disallow communications between
 some roles, and include multiple channels between other roles.
 
 
@@ -778,8 +778,8 @@ can be interpreted in these models.
   \item
     Closure of $\mathcal{C}$ under all type and term formers of \MTTM{}.
   \item
-    A (covariant) 1-functor $G : \M \to \textbf{Cat}$ modeling the semantics of
-    individual modes and the modal types between them.
+    A (covariant) 1-functor $G : \M \to \textbf{Cat}$ modelling the semantics
+    of individual modes and the modal types between them.
   \item
     A family of 1-functors $\iota_m : G(m) \to \mathcal{C}$, where $m \in \M$,
     describing how the category $G(m)$ is represented in the target category.
@@ -806,7 +806,7 @@ $(\sigma_i~:~\Gamma_i~\to~\Delta_i)_{i\in\rho}$. The~intuition is that
 $\textbf{STLC}^\rho$ describes the category of $\rho$ processes running
 independently of each other, with no way to interact.
 
-Next, we freely adjoin arrows that axiomatize synchronous communication between
+Next, we freely adjoin arrows that axiomatise synchronous communication between
 the processes. To properly express these arrows, we need the following
 definition:
 \begin{definition}
@@ -846,21 +846,21 @@ follows:
   \delta_i([X])$ for any $X \in \textbf{STLC}^\rho$ and $i \in \rho$.
 \end{definition}
 \begin{theorem}
-  Let {\upshape$\mathcal{C}$} be a cartesian closed category. There is a
+  Let {\upshape$\mathcal{C}$} be a Cartesian closed category. There is a
   covariant model of {\upshape \MTTMrhoChor} that has
   {\upshape$\textbf{SIP}_{\rho}$} as its compilation target category.
 \end{theorem}
 In particular, in this model, only the transformation $\textsf{eval}_v :
 (\square \fatsemi @v) \Rightarrow \textsf{id}_{\circle}$ is built up from the
 freely adjoined $\textsf{com}$ arrows, since it is the only one involving
-communication. All other transformations are modeled by arrows already existing
-as part of the cartesian closed structure of $\textbf{STLC}^\rho$.
+communication. All other transformations are modelled by arrows already
+existing as part of the Cartesian closed structure of $\textbf{STLC}^\rho$.
 \begin{corollary}
   There is a translation function from the syntax category of {\upshape
   \MTTMrhoChor} to {\upshape$\textbf{SIP}_{\rho}$}.
 \end{corollary}
 In other words, this gives us a compilation procedure for Kami programs into
-any target language with cartesian closed categorical semantics and synchronous
+any target language with Cartesian closed categorical semantics and synchronous
 communication primitives.
 
 
