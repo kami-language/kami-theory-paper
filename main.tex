@@ -199,7 +199,7 @@ restrict ourselves to a~simply typed fragment of MTT.
     copy of an extension of STLC.
   \item
     For each pair of modes $m, n \in M$, a set $m \to n$ of \emph{modalities}
-    between the modes. A modality $\mu : m \to n$ allows us to use types and
+    between the modes. A~modality $\mu : m \to n$ allows us to use types and
     terms of mode $m$ in mode $n$. There may be multiple distinct modalities
     $\mu , \nu : m \to n$.
   \item
@@ -222,10 +222,11 @@ restrict ourselves to a~simply typed fragment of MTT.
   given by $|M|$ copies of an extension of STLC, combined as follows: For~each
   mode $m \in M$, let $\Gamma\in\textsf{Ctx}_m$, $A \in \textsf{Type}_m$, $t
   \in \textsf{Term}_m$, and $\Gamma \vdash_m t : A$ denote the contexts, types,
-  terms, and typing judgements of the $m$th copy of an extension of STLC
-  respectively. The rules of \MTTM{} are displayed in figures
-  \ref{fig:mtt-type}, \ref{fig:mtt-ctx}, \ref{fig:mtt-var}, and
-  \ref{fig:mtt-term}.
+  terms, and typing judgements of the $m$-th copy of an extension of STLC
+  respectively.
+
+  The rules of \MTTM{} are displayed in figures \ref{fig:mtt-type},
+  \ref{fig:mtt-ctx}, \ref{fig:mtt-var}, and \ref{fig:mtt-term}.
 \end{definition}
 
 
@@ -345,15 +346,15 @@ Contexts of \MTTM{} (figure \ref{fig:mtt-ctx}) are defined in the following way:
   The context extension rule \textsc{Ctx-Ext} says that all types in a context
   $\Gamma \in \textsf{Ctx}_m$ must exist at a mode $m$, but they may originate
   at a different mode $n$ by way of a~modality $\mu : n \to m$. This means that
-  an assumption in $\Gamma$ is of the form $(A | \mu) \in \Gamma$, where $A$ is
+  an~assumption in $\Gamma$ is of the form $(A | \mu) \in \Gamma$, where $A$ is
   a type at an arbitrary mode $n$, and $\mu : n \to m$ is a modality that
   brings the assumption into mode $m$. If the type originates at the current
-  mode, then $\mu = \textsf{id}_m : m \to m$.
+  mode, then $\mu$ is the identity modality $\textsf{id}_m : m \to m$.
 \item
-  The context restriction rule \textsc{Ctx-Restr} allows us to restrict the use
-  of types to those under a~particular modality. That is, starting with a
-  context $\Gamma \in \textsf{Ctx}_n$ and a pair of modalities $\mu, \nu : m
-  \to n$, the restricted context $\Gamma.\{\nu\}\in\textsf{Ctx}_m$ only allows
+  The context restriction rule \textsc{Ctx-Restr} allows restricting the use
+  of types to those under a specific modality. That is, given a context
+  $\Gamma \in \textsf{Ctx}_n$ and a pair of modalities $\mu, \nu : m \to n$,
+  the restricted context $\Gamma.\{\nu\}\in\textsf{Ctx}_m$ only allows
   referring to the assumption $(A | \mu) \in \Gamma$ given a~transformation
   $\alpha : \mu \Rightarrow \nu$. This is ensured by the variable rule
   \textsc{Var} (figure \ref{fig:mtt-term}).
@@ -491,49 +492,49 @@ Contexts of \MTTM{} (figure \ref{fig:mtt-ctx}) are defined in the following way:
     {\Gamma \vdash_m t : \bot}
     {\Gamma \vdash_m \primitive{abort } t : C}
   \end{mathpar}
-  \caption{Terms of \MTTM{}}
+  \caption{Terms and typing judgments of \MTTM{}}
   \label{fig:mtt-term}
 \end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection*{Terms}
-Terms of \MTTM{} (figure \ref{fig:mtt-term}) differ from terms of STLC as
-follows:
+\subsubsection*{Terms and typing judgments}
+Terms and typing judgments of \MTTM{} (figure \ref{fig:mtt-term}) differ from
+those of STLC as follows:
 \begin{itemize}
 \item
   The modality introduction rule \textsc{Mod-Intro} ensures that terms of a
-  modal type $\langle A | \mu \rangle$ may only depend on variables that are
+  modal type $\langle A | \mu \rangle$ may only depend on assumptions that are
   themselves under a~$\mu$~modality. Given a value of such type, the modality
   elimination rule \textsc{Mod-Elim} allows us to assume $(A | \mu)$. The
   \emph{framing modality} $\nu$ allows the type $\langle A | \mu \rangle$ to
   exist at a different mode than the motive
-  $C$\cite[§6.1.9]{gratzer2023syntax}. We omit this modality when it is the
-  identity.
+  $C$\cite[§6.1.9]{gratzer2023syntax}. When $\nu$ is the identity modality
+  $\textsf{id}_m : m \to m$, we elide it.
 \item
   The terms for introduction and elimination of the function type reflect that
   the type is endowed with an additional modality.
 \item
   All other terms involve a single mode only, and any modalities that occur in
-  the terms are the identity.
+  these terms are the identity modality $\textsf{id}_m : m \to m$.
 \end{itemize}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Choreographic programming with MTT}
-The first, essential feature of modalities in MTT is that they restrict program
-availability: When constructing a term of type $\langle A | \mu \rangle$, only
-variables that are themselves under a~$\mu$~modality can be used. This leads us
-naturally to the idea that we can use MTT for a distributed system with a set
-of participants $\rho$, by introducing modalities $@r$ for each role $r \in
-\rho$. The type $\langle A | @r \rangle$ then is interpreted as data of type
-$A$, located at role $r$.
+The first essential feature of modalities in MTT is that they restrict the
+availability of programs: When constructing a term of type $\langle A | \mu
+\rangle$, only assumptions that are themselves under a~$\mu$~modality can
+be~used. This~leads us naturally to the idea that we can use MTT for a
+distributed system with a set of participants $\rho$, by introducing modalities
+$@r$ for each role $r \in \rho$. A value of type $\langle A | @r \rangle$ is
+then interpreted as a~program of type $A$, located at role $r$.
 
-The second feature of MTT is that transformations between modalities can be
-introduced in a controlled way. In order to allow a term at role $r$ to be
-transformed into a term at role $s$, we must introduce a transformation
+The second salient feature of MTT is that transformations between modalities
+can be introduced in a~controlled way. In order to allow a term at role $r$ to
+be transformed into a term at role $s$, we must introduce a transformation
 $\tau_{r,s} : @r \Rightarrow @s$ between the corresponding modalities. These
 transformations can be chosen freely: We may disallow communications between
 some roles, and include multiple channels between other roles.
@@ -559,9 +560,9 @@ a certain role, requires the following additional features:
   at $r$.
 \item
   We need roles to reference data that are about to be sent to other roles. For
-  this, we use a new modality $\square$, which allows roles to reference global
-  choreographies locally. That is, if $A$ is a global choreography type, then
-  $t : \langle A | \square \rangle$ is a local term, containing a quoted
+  this, we use a new modality $\square\,$, which allows roles to reference
+  global choreographies locally. That is, if $A$ is a~global choreography type,
+  then $t : \langle A | \square \rangle$ is a local term, containing a quoted
   representation of such a~choreography.
 \end{enumerate}
 We can now define our mode theory with $@$ and $\square$ modalities, and common
@@ -571,31 +572,33 @@ Let $\rho$ be a set of roles and $\textrm{Loc}_\rho$ be the freely generated
 meet-semilattice on $\rho$. The mode theory $\MrhoChor$ is defined as follows:
 \begin{itemize}
 \item
-  There are two modes: $\circle$ and $\triangle$. The \emph{global mode}
-  $\circle$ represents the global perspective on a choreography, encompassing
-  computations and data that occur at all roles. The \emph{local mode}
-  $\triangle$ represents the perspective of a single location, which may be
-  a~conjunction of multiple roles, that participates in the choreography.
+  There are two modes: the \emph{global mode} $\circle$ and the \emph{local
+  mode} $\triangle\,$. The global mode $\circle$ represents the global
+  perspective on a choreography, encompassing computations and data that occur
+  at all roles. The local mode $\triangle$ represents the perspective of a
+  single location, which may be a~conjunction of multiple roles, that
+  participates in the choreography.
 \item
   For each location $u \in \textrm{Loc}_\rho$, a \emph{location modality} $@u :
   \triangle \to \circle$. Each of these modalities represents a~different way
   of how a local computation can be embedded in the global system. Concretely,
   $@u$ expresses that the computation exists at location $u$.
 \item
-  An additional \emph{quotation modality} $\square : \circle \to \triangle$,
-  which allows global computations to be referenced locally.
+  An additional \emph{quotation modality} $\square : \circle \to \triangle\,$,
+  which allows referencing global computations locally.
 \item
   For each location $v \in \textrm{Loc}_\rho$, a \emph{quotation
   transformation} $\textsf{quote}_v : \textsf{id}_{\triangle} \Rightarrow (@v
   \fatsemi \square)$, which allows a~role to quote a local term to be evaluated
   by an arbitrary role $v$. This transformation happens in local mode
-  $\triangle$, and its interpretation involves no communication.
+  $\triangle\,$, and its interpretation involves no communication.
 \item
   For each location $u \in \textrm{Loc}_\rho$, an \emph{evaluation
   transformation} $\textsf{eval}_u : (\square \fatsemi @u) \Rightarrow
-  \textsf{id}_{\circle}$, which is the only one involving communication between
-  roles. This transformation describes that a global choreography, available in
-  quoted form at $u$, can be scheduled to be performed by all involved roles.
+  \textsf{id}_{\circle}\,$, which is the only one involving communication
+  between roles. This transformation describes that a global choreography,
+  available in quoted form at $u$, can be scheduled to be performed by all
+  involved~roles.
 \item
   For each pair of locations $u, v \in \textrm{Loc}_\rho$ with $u \leq v$, a
   \emph{narrowing transformation} $\textsf{narrow}_{u,v} : @u \Rightarrow @v$.
@@ -609,11 +612,11 @@ meet-semilattice on $\rho$. The mode theory $\MrhoChor$ is defined as follows:
 \end{itemize}
 \end{definition}
 \begin{corollary}
-  In {\upshape$\MrhoChor$}, it is possible to recover a transformation
+  In {\upshape$\MrhoChor\,$}, it is possible to recover a transformation
   $\tau_{u,v} : @u \Rightarrow @v$ by composing {\upshape$\textsf{quote}_v$}
-  and {\upshape$\textsf{eval}_u$}. Moreover, a role communicating with itself
+  and {\upshape$\textsf{eval}_u\,$}. Moreover, a role communicating with itself
   is equal to the identity transformation
-  {\upshape$\tau_{u,u}~=~\textsf{id}_{@u}$}.
+  {\upshape$\tau_{u,u}~=~\textsf{id}_{@u}\,$}.
 \end{corollary}
 
 
@@ -621,26 +624,26 @@ meet-semilattice on $\rho$. The mode theory $\MrhoChor$ is defined as follows:
 
 \section{Kami: An MTT-based language for choreographic programming}
 Our mode theory expresses the interactions between participating roles in a
-distributed system, but standard MTT instantiated with $\MrhoChor$ is not
+distributed system. However, MTT merely instantiated with $\MrhoChor$ is not
 suitable to be used as a~choreographic programming language. The problem is
 that MTT has no notion of \emph{deferred transformations,} because
 transformations are always pushed down the syntax tree as far as possible, and
 only recorded at the variables. This means that in order to control the
 communication behaviour of terms, we need to introduce a dedicated term for
-communications that have not been performed yet.
-In our semantics, only $\textsf{eval}_v$ involves communications, so the only
-rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt-leteval}).
+communications that have not been performed yet. In our semantics, only
+$\textsf{eval}_v$ involves communication, so the only rule we need to add is
+\textsc{Let-Eval} (figure \ref{fig:mtt-leteval}).
 \begin{definition}
   Let \ChorMTT{} be the type theory obtained by:
   \begin{enumerate}
   \item
-    Instantiating simply typed MTT with $\MrhoChor$.
+    Instantiating simply typed MTT with $\MrhoChor\,$.
   \item
     Extending the theory with the \textsc{Let-Eval} rule (figure
     \ref{fig:mtt-leteval}).
   \item
-    Restricting the reduction relation in a similar way to how the STLC
-    reduction relation is restricted in Chor$\lambda$.
+    Restricting the reduction relation of the theory in a similar way to how
+    the STLC reduction relation is restricted in Chor$\lambda$.
   \end{enumerate}
 \end{definition}
 
@@ -728,12 +731,12 @@ their future behaviour.
     \to Z
   \]
 \end{example}
-Note that since $Z$ is global, a value $z : Z$ is a choreography potentially
-involving all roles.\footnote{For the sake of brevity, our mode theory
+Note that since $Z$ is global, a value $z : Z$ is a choreography that can
+potentially involve all roles.\footnote{For the sake of brevity, our mode theory
   $\MrhoChor$ as defined in this paper does not track which roles are involved
   in a given term of global type. This can be done by extending the mode theory
   with a~family of global modes.}
-The semantics of $\textsf{choice}$ is: Given the knowledge of $A + B$ at role
+The~semantics of $\textsf{choice}$ is: Given the knowledge of $A + B$ at role
 $r$, a global behaviour $z : Z$ can be chosen for all roles, with the
 additional knowledge of either the value $a : A$ or $b : B$ at role $r$. The
 function can be implemented in such a way that only the information regarding
@@ -751,11 +754,11 @@ principles}\cite[§6.3.1]{gratzer2023syntax}.
 \subsection{Categorical semantics}
 Following Gratzer, a categorical model for \MTTM{} is given by a functor $F :
 \M^{\textsf{coop}} \to \textbf{Cat}$, with additional conditions ensuring that
-$F$ supports all types and terms. This definition entails, for each modality
-$\mu~:~m \to n$, a functor $F(\mu) : F(n) \to F(m)$ modeling the
+the functor $F$ supports all types and terms. This definition entails, for each
+modality $\mu : m \to n$, a functor $F(\mu) : F(n) \to F(m)$ modelling the
 \emph{contravariant} context restriction operation ${-}.\{\mu\} :
-\textsf{Ctx}_n \to \textsf{Ctx}_m$. Additionally, the existence of modal types
-in Gratzer's model implies the existence of a~further \emph{covariant} functor
+\textsf{Ctx}_n \to \textsf{Ctx}_m\,$. Moreover, the existence of modal types in
+Gratzer's model implies the existence of a~further \emph{covariant} functor
 $M_\mu : F(m) \to F(n)$, such that $F(\mu)$ and $M_\mu$ are adjoint in an
 appropriate sense.\footnote{In the dependently typed MTT of Gratzer, the exact
   statement is that $M_\mu$ is a \emph{dependent right adjoint}, but we can
@@ -795,14 +798,14 @@ of Gratzer. Specifically, we claim that:
   A covariant model of {\upshape \MTTM{}} can be assembled into a contravariant
   model, by freely adjoining context restriction operators.
 \end{conjecture}
-For our purposes, we intend to obtain a covariant model as follows: Let
-$\rho$~be a~finite set of roles, and let $\textbf{STLC}$ be the syntax category
-of STLC with sum types. Viewing the set $\rho$ as a discrete category, we
-denote by $\textbf{STLC}^\rho$ the functor category $\rho \to \textbf{STLC}$.
-That is, an object $(\Gamma_i)_{i\in\rho}$ is a $\rho$-indexed family of
-$\textbf{STLC}$ contexts, and a~morphism $(\Gamma_i)_{i\in\rho} \to
+For our use case, we intend to obtain a covariant model in the following way:
+Let $\rho$ be a finite set of roles, and let $\textbf{STLC}$ be the syntax
+category of STLC with sum types. Viewing the set $\rho$ as a~discrete category,
+we denote by $\textbf{STLC}^\rho$ the functor category $\rho \to
+\textbf{STLC}$. That is, an object $(\Gamma_i)_{i\in\rho}$ is a $\rho$-indexed
+family of $\textbf{STLC}$ contexts, and a~morphism $(\Gamma_i)_{i\in\rho} \to
 (\Delta_i)_{i\in\rho}$ is given by a $\rho$-indexed family of substitutions
-$(\sigma_i~:~\Gamma_i~\to~\Delta_i)_{i\in\rho}$. The~intuition is that
+$(\sigma_i : \Gamma_i \to \Delta_i)_{i\in\rho}$. The~intuition is that
 $\textbf{STLC}^\rho$ describes the category of $\rho$ processes running
 independently of each other, with no way to interact.
 
@@ -815,13 +818,13 @@ definition:
     \delta_i({-}) : \textbf{STLC} &\to \textbf{STLC}^\rho \\
     X &\mapsto j \mapsto
     \begin{cases}
-      j = i \implies &X\\
-      j \neq i \implies &1
+      j = i    & \mkern-5\thinmuskip \implies X\\
+      j \neq i & \mkern-5\thinmuskip \implies 1
     \end{cases}
   \end{align*}
-  to be the function mapping an object $X \in \textbf{STLC}$ to a family
-  $X_j$, whose $i$th component is $X$, and all other components are the
-  terminal object.
+  to be the function mapping an object $X \in \textbf{STLC}$ to a family $X_j$,
+  whose $i$-th component is $X$, and all other components are the terminal
+  object.
 \end{definition}
 \begin{definition} Define
   \begin{align*}
