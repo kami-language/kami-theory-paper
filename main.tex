@@ -553,10 +553,10 @@ a certain role, requires the following additional features:
   between multiple roles. We do so by allowing arbitrary conjunctions $r_1
   \land \ldots \land r_k$ in the modality. For example, the type $\langle
   \mathbb{N} | @(r\land s) \rangle$ expresses the fact that there is a natural
-  number that is known by both roles $r$ and $s$. Furthermore, a
-  meet-semilattice structure arises: e.g., it holds that $r \land s \leq r$,
-  since the knowledge available at $r \land s$ is a subset of the knowledge at
-  $r$.
+  number that is known by both roles $r$~and~$s$. Furthermore, a
+  meet-semilattice structure arises: For example, it holds that $r \land s \leq
+  r$, since the knowledge available at $r \land s$ is a subset of the knowledge
+  at $r$.
 \item
   We need roles to reference data that are about to be sent to other roles. For
   this, we use a new modality $\square$, which allows roles to reference global
@@ -599,7 +599,7 @@ meet-semilattice on $\rho$. The mode theory $\MrhoChor$ is defined as follows:
 \item
   For each pair of locations $u, v \in \textrm{Loc}_\rho$ with $u \leq v$, a
   \emph{narrowing transformation} $\textsf{narrow}_{u,v} : @u \Rightarrow @v$.
-  The intuition is that if $u$ is a sublocation of $v$, then information
+  The intuition is that if $u$ is a sub-location of $v$, then information
   available at the former is also available at the latter.
 \item
   Additional equalities governing the interactions of the transformations. For
@@ -638,8 +638,8 @@ rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt-leteval}).
   \item
     Extending it with the \textsc{Let-Eval} rule.
   \item
-    Restricting the reduction relation analogously to how Chor$\lambda$
-    restricts the STLC reduction relation.
+    Restricting the reduction relation in a similar way to how the STLC
+    reduction relation is restricted in Chor$\lambda$.
   \end{enumerate}
 \end{definition}
 
