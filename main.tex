@@ -105,7 +105,11 @@
 % use custom macros
 \newcommand{\emailhref}[1]{\\{\footnotesize\ttfamily\href{mailto:#1}{#1}}}
 \newcommand{\primitive}[1]{\textsf{\textbf{#1}}}
-\newcommand{\MTTM}{MTT${}_{\mathcal{M}}$}
+\newcommand{\modetheory}[1]{\mathcal{#1}}
+\newcommand{\M}{\modetheory{M}}
+\newcommand{\MrhoChor}{\M^\rho_{\textrm{Chor}}}
+\newcommand{\MTTM}{MTT${}_{\M}$}
+\newcommand{\MTTMrhoChor}{MTT${}_{\MrhoChor}$}
 \newcommand{\ChorMTT}{Chor${}_{\textrm{MTT}}$}
 \newcommand{\ProcMTT}{Proc${}_{\textrm{MTT}}$}
 
@@ -212,12 +216,12 @@ restrict ourselves to a~simply typed fragment of MTT.
   identity and associativity laws hold as expected\cite{licata2016adjoint}.
 \end{definition}
 \begin{definition}[{\cite[following §6.2]{gratzer2023syntax}}]
-  Let $\mathcal{M}$ be a mode theory. A \emph{simply typed modal type theory}
-  \MTTM{} is given by $|M|$ copies of an extension of STLC, combined as
-  follows: For~each mode $m \in M$, let $\Gamma\in\textsf{Ctx}_m$, $A \in
-  \textsf{Type}_m$, $t \in \textsf{Term}_m$, and $\Gamma \vdash_m t : A$ denote
-  the contexts, types, terms, and typing judgements of the $m$th copy of an
-  extension of STLC respectively. The rules of \MTTM{} are displayed in figures
+  Let $\M$ be a mode theory. A \emph{simply typed modal type theory} \MTTM{} is
+  given by $|M|$ copies of an extension of STLC, combined as follows: For~each
+  mode $m \in M$, let $\Gamma\in\textsf{Ctx}_m$, $A \in \textsf{Type}_m$, $t
+  \in \textsf{Term}_m$, and $\Gamma \vdash_m t : A$ denote the contexts, types,
+  terms, and typing judgements of the $m$th copy of an extension of STLC
+  respectively. The rules of \MTTM{} are displayed in figures
   \ref{fig:mtt-type}, \ref{fig:mtt-ctx}, \ref{fig:mtt-var}, and
   \ref{fig:mtt-term}.
 \end{definition}
@@ -562,8 +566,7 @@ We can now define our mode theory with $@$ and $\square$ modalities, and common
 knowledge locations.
 \begin{definition}
 Let $\rho$ be a set of roles and $\textrm{Loc}_\rho$ be the freely generated
-meet-semilattice on $\rho$. The mode theory $\mathcal{M}^\rho_{\textrm{Chor}}$
-is defined as follows:
+meet-semilattice on $\rho$. The mode theory $\MrhoChor$ is defined as follows:
 \begin{itemize}
 \item
   There are two modes: $\circle$ and $\triangle$. The \emph{global mode}
@@ -604,10 +607,10 @@ is defined as follows:
 \end{itemize}
 \end{definition}
 \begin{corollary}
-  In {\upshape$\mathcal{M}^{\rho}_{\textrm{Chor}}$}, it is possible to recover
-  a transformation $\tau_{u,v} : @u \Rightarrow @v$ by composing
-  {\upshape$\textsf{quote}_v$} and {\upshape$\textsf{eval}_u$}. Moreover, a
-  role communicating with itself is equal to the identity transformation
+  In {\upshape$\MrhoChor$}, it is possible to recover a transformation
+  $\tau_{u,v} : @u \Rightarrow @v$ by composing {\upshape$\textsf{quote}_v$}
+  and {\upshape$\textsf{eval}_u$}. Moreover, a role communicating with itself
+  is equal to the identity transformation
   {\upshape$\tau_{u,u}~=~\textsf{id}_{@u}$}.
 \end{corollary}
 
@@ -616,21 +619,20 @@ is defined as follows:
 
 \section{Kami: An MTT-based language for choreographic programming}
 Our mode theory expresses the interactions between participating roles in a
-distributed system, but standard MTT instantiated with
-$\mathcal{M}^{\rho}_{\textrm{Chor}}$ is not suitable to be used as
-a~choreographic programming language. The problem is that MTT has no notion of
-\emph{deferred transformations,} because transformations are always pushed down
-the syntax tree as far as possible, and only recorded at the variables. This
-means that in order to control the communication behaviour of terms, we need to
-introduce a dedicated term for communications that have not been performed yet.
-
+distributed system, but standard MTT instantiated with $\MrhoChor$ is not
+suitable to be used as a~choreographic programming language. The problem is
+that MTT has no notion of \emph{deferred transformations,} because
+transformations are always pushed down the syntax tree as far as possible, and
+only recorded at the variables. This means that in order to control the
+communication behaviour of terms, we need to introduce a dedicated term for
+communications that have not been performed yet.
 In our semantics, only $\textsf{eval}_v$ involves communications, so the only
 rule we need to add is \textsc{Let-Eval} (figure \ref{fig:mtt-leteval}).
 \begin{definition}
   Let \ChorMTT{} be the type theory obtained by:
   \begin{enumerate}
   \item
-    Instantiating simply typed MTT with $\mathcal{M}^{\rho}_{\textrm{Chor}}$.
+    Instantiating simply typed MTT with $\MrhoChor$.
   \item
     Extending it with the \textsc{Let-Eval} rule.
   \item
@@ -725,9 +727,9 @@ their future behaviour.
 \end{example}
 Note that since $Z$ is global, a value $z : Z$ is a choreography potentially
 involving all roles.\footnote{For the sake of brevity, our mode theory
-  $\mathcal{M}^{\rho}_{\textrm{Chor}}$ as defined in this paper does not track
-  which roles are involved in a given term of global type. This can be done by
-  extending the mode theory with a~family of global modes.}
+  $\MrhoChor$ as defined in this paper does not track which roles are involved
+  in a given term of global type. This can be done by extending the mode theory
+  with a~family of global modes.}
 The semantics of $\textsf{choice}$ is: Given the knowledge of $A + B$ at role
 $r$, a global behaviour $z : Z$ can be chosen for all roles, with the
 additional knowledge of either the value $a : A$ or $b : B$ at role $r$. The
@@ -745,9 +747,9 @@ principles}\cite[§6.3.1]{gratzer2023syntax}.
 
 \subsection{Categorical semantics}
 Following Gratzer, a categorical model for \MTTM{} is given by a functor $F :
-\mathcal{M}^{\textsf{coop}} \to \textbf{Cat}$, with additional conditions
-ensuring that $F$ supports all types and terms. This definition entails, for
-each modality $\mu~:~m \to n$, a functor $F(\mu) : F(n) \to F(m)$ modeling the
+\M^{\textsf{coop}} \to \textbf{Cat}$, with additional conditions ensuring that
+$F$ supports all types and terms. This definition entails, for each modality
+$\mu~:~m \to n$, a functor $F(\mu) : F(n) \to F(m)$ modeling the
 \emph{contravariant} context restriction operation ${-}.\{\mu\} :
 \textsf{Ctx}_n \to \textsf{Ctx}_m$. Additionally, the existence of modal types
 in Gratzer's model implies the existence of a~further \emph{covariant} functor
@@ -761,28 +763,27 @@ semantics, and in particular, the fact that we want to compile Kami programs
 into real-world executables, leads us to consider a less general, but more
 specifically useful class of models.
 
-In the following we give the definition of our special class of models, and
-sketch how MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$, i.e., the underlying
-type theory of Kami, can be interpreted in them.
+In the following, we give the definition of our special class of models, and
+sketch how the underlying type theory of Kami, which we denote \MTTMrhoChor,
+can be interpreted in these models.
 \begin{definition}
-  Let $\mathcal{M}$ be a mode theory. A \emph{covariant model} for simply typed
-  \MTTM{} is given by the following data:
+  Let $\M$ be a mode theory. A \emph{covariant model} for simply typed \MTTM{}
+  is given by the following data:
   \begin{enumerate}
   \item
     A category $\mathcal{C}$ representing the compilation target.
   \item
     Closure of $\mathcal{C}$ under all type and term formers of \MTTM{}.
   \item
-    A (covariant) 1-functor $G : \mathcal{M} \to \textbf{Cat}$ modeling the
-    semantics of individual modes and the modal types between them.
+    A (covariant) 1-functor $G : \M \to \textbf{Cat}$ modeling the semantics of
+    individual modes and the modal types between them.
   \item
-    A family of 1-functors $\iota_m : G(m) \to \mathcal{C}$, where $m \in
-    \mathcal{M}$, describing how the category $G(m)$ is represented in the
-    target category.
+    A family of 1-functors $\iota_m : G(m) \to \mathcal{C}$, where $m \in \M$,
+    describing how the category $G(m)$ is represented in the target category.
   \item
-    For each transformation $\alpha : \mu \Rightarrow \nu \in \mathcal{M}$, a
-    natural transformation in the target category, of type $\tau_\alpha :
-    \iota_m \circ G(\mu) \Rightarrow \iota_m \circ G(\nu)$.
+    For each transformation $\alpha : \mu \Rightarrow \nu \in \M$, a natural
+    transformation in the target category, of type $\tau_\alpha : \iota_m \circ
+    G(\mu) \Rightarrow \iota_m \circ G(\nu)$.
   \end{enumerate}
 \end{definition}
 Such a covariant model is a special case of a contravariant model in the sense
@@ -843,8 +844,8 @@ follows:
 \end{definition}
 \begin{theorem}
   Let {\upshape$\mathcal{C}$} be a cartesian closed category. There is a
-  covariant model of {\upshape MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$} that
-  has {\upshape$\textbf{SIP}_{\rho}$} as its compilation target category.
+  covariant model of {\upshape \MTTMrhoChor} that has
+  {\upshape$\textbf{SIP}_{\rho}$} as its compilation target category.
 \end{theorem}
 In particular, in this model, only the transformation $\textsf{eval}_v :
 (\square \fatsemi @v) \Rightarrow \textsf{id}_{\circle}$ is built up from the
@@ -852,9 +853,8 @@ freely adjoined $\textsf{com}$ arrows, since it is the only one involving
 communication. All other transformations are modeled by arrows already existing
 as part of the cartesian closed structure of $\textbf{STLC}^\rho$.
 \begin{corollary}
-  There is a translation function from the syntax category of
-  {\upshape MTT${}_{\mathcal{M}^\rho_{\textrm{Chor}}}$} to
-  {\upshape$\textbf{SIP}_{\rho}$}.
+  There is a translation function from the syntax category of {\upshape
+  \MTTMrhoChor} to {\upshape$\textbf{SIP}_{\rho}$}.
 \end{corollary}
 In other words, this gives us a compilation procedure for Kami programs into
 any target language with cartesian closed categorical semantics and synchronous
