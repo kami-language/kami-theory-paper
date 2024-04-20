@@ -536,11 +536,11 @@ some roles, and include multiple channels between other roles.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Mode theory for choreographic programming}
-However, a mode theory with only $@$-modalities and transformations
+However, a mode theory with only $@$ modalities and transformations
 $\tau_{r,s}$ is not enough to recover the full expressive power of
 Chor$\lambda$. In particular, expressing the \primitive{select} primitive,
 which is used to notify other roles about decisions that happened locally at
-role $r$, requires the following additional features:
+a certain role, requires the following additional features:
 \begin{enumerate}
 \item
   We need modalities expressing the fact that some data are common knowledge
@@ -558,7 +558,7 @@ role $r$, requires the following additional features:
   $t : \langle A | \square \rangle$ is a local term, containing a quoted
   representation of such a~choreography.
 \end{enumerate}
-We can now define our mode theory with $@$ and $\square$ modalities and common
+We can now define our mode theory with $@$ and $\square$ modalities, and common
 knowledge locations.
 \begin{definition}
 Let $\rho$ be a set of roles and $\textrm{Loc}_\rho$ be the freely generated
